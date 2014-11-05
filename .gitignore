@@ -4,3 +4,5 @@
 
 .idea/workspace.xml
 web2py/httpserver.pid
+
+web2py/parameters_8000.py
