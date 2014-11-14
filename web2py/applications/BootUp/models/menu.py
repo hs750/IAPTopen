@@ -23,9 +23,21 @@ response.google_analytics_id = None
 #########################################################################
 
 response.menu = [
-    (T('Home'), False, URL('default', 'index'), [])
+    (T('Home'), False, URL('BootUP', 'default', 'index'), []),
+    (T('Create Bootable'), False, URL('BootUP', 'default', 'createBootable')),
+
 ]
 
+if auth.user is None:
+    response.menu += [
+        (T('Log in'), False, URL('BootUP', 'default', 'user', args=['login'])),
+        (T('Sign Up'), False, URL('BootUP', 'default', 'user', args=['register']))
+    ]
+else:
+    response.menu += [
+        (T('View Profile'), False, URL('BootUP', 'default', 'user', args=['profile'])),
+        (T('Log out'), False, URL('BootUP', 'default', 'user', args=['logout']))
+    ]
 DEVELOPMENT_MENU = True
 
 #########################################################################
@@ -134,6 +146,6 @@ def _():
                         ])
                 ]
          )]
-if DEVELOPMENT_MENU: _()
+#if DEVELOPMENT_MENU: _()
 
-if "auth" in locals(): auth.wikimenu() 
+#if "auth" in locals(): auth.wikimenu()
