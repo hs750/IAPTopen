@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" hash="1393773697">
+    <data-source source="LOCAL" name="bootUpDB" uuid="854fd4b3-2143-4404-b62a-4bd8a5f585aa">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/web2py/applications/BootUp/databases/bootUpDB.db</jdbc-url>
+      <libraries />
+    </data-source>
+  </component>
+</project>
+
