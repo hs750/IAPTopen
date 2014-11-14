@@ -1,0 +1,12 @@
+{{extend 'bootUpLayout.html'}}
+<div class="content">
+    {{if request.args(0) == 'login':}}
+    <p>
+        Not already signed up? {{=A('Sign Up Here!', callback=URL(args=['register']))}}
+    </p>
+    {{pass}}
+    {{=form}}
+    <p>
+        {{=BEAUTIFY(request.post_vars)}}
+    </p>
+</div>
