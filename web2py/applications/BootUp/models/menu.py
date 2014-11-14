@@ -30,13 +30,13 @@ response.menu = [
 
 if auth.user is None:
     response.menu += [
-        (T('Log in'), False, URL('BootUP', 'default', 'user', args=['login'])),
-        (T('Sign Up'), False, URL('BootUP', 'default', 'user', args=['register']))
+        (T('Log in'), False, URL('BootUP', 'users', 'user', args=['login'])),
+        (T('Sign Up'), False, URL('BootUP', 'users', 'user', args=['register']))
     ]
 else:
     response.menu += [
-        (T('View Profile'), False, URL('BootUP', 'default', 'user', args=['profile'])),
-        (T('Log out'), False, URL('BootUP', 'default', 'user', args=['logout']))
+        (T('View Profile'), False, URL('BootUP', 'users', 'user', args=['profile'])),
+        (T('Log out'), False, URL('BootUP', 'users', 'user', args=['logout']))
     ]
 DEVELOPMENT_MENU = True
 
