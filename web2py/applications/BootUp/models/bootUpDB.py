@@ -12,7 +12,7 @@ db = DAL('sqlite://bootUpDB.db')
 """
 
 db.define_table('Addresses',
-                Field('StreetAddresses', 'text', requires=IS_NOT_EMPTY()),
+                Field('StreetAddress', 'text', requires=IS_NOT_EMPTY()),
                 Field('City', 'string', requires=IS_NOT_EMPTY()),
                 Field('Country', 'string', requires=IS_NOT_EMPTY()),
                 Field('PostCode', 'string', requires=[IS_NOT_EMPTY(), IS_MATCH('[A-Z]{2}[1-9]{2} [1-9][A-Z]{2}',
@@ -22,7 +22,8 @@ db.define_table('Addresses',
 
 db.define_table('CreditCards',
                 Field('CardNumber', 'decimal(12,0)', requires=[IS_NOT_EMPTY(), IS_DECIMAL_IN_RANGE(0, 1e100)]),
-                Field('ExpiryDate', 'date', requires=IS_NOT_EMPTY()),
+                Field('ExpiryDate', 'date',
+                      requires=[IS_NOT_EMPTY(), IS_DATE(format=T('%Y-%m-%d'), error_message='must be YYYY-MM-DD!')]),
                 Field('IDCode', 'decimal(3,0)', requires=[IS_NOT_EMPTY(), IS_DECIMAL_IN_RANGE(0, 1e100)]),
                 Field('addressID', db.Addresses, requires=IS_NOT_EMPTY())
                 )
@@ -38,7 +39,8 @@ auth = Auth(db)
         username, email, name (split into first and last)
 """
 auth.settings.extra_fields['auth_user'] = [
-    Field('DateOfBirth', 'date', requires=IS_NOT_EMPTY()),
+    Field('DateOfBirth', 'date',
+          requires=[IS_NOT_EMPTY(), IS_DATE(format=T('%Y-%m-%d'), error_message='must be YYYY-MM-DD!')]),
     Field('addressID', db.Addresses, requires=IS_NOT_EMPTY()),
     Field('cardID', db.CreditCards, requires=IS_NOT_EMPTY())
 ]
