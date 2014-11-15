@@ -2,21 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cb5070bd-bb64-4466-8777-26586badfa50" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/databases/1f1e1d04d55a366f7f5a27d60614959f_Addresses.table" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/databases/1f1e1d04d55a366f7f5a27d60614959f_Bootables.table" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/databases/1f1e1d04d55a366f7f5a27d60614959f_CreditCards.table" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/databases/1f1e1d04d55a366f7f5a27d60614959f_PledgeRewards.table" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/databases/1f1e1d04d55a366f7f5a27d60614959f_Pledges.table" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/databases/1f1e1d04d55a366f7f5a27d60614959f_Rewards.table" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/databases/1f1e1d04d55a366f7f5a27d60614959f_UserPledges.table" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/databases/1f1e1d04d55a366f7f5a27d60614959f_Users.table" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/databases/bootUpDB.db" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/sessions/0ab/1eb/127.0.0.1-5cbfbe0d-3af1-4577-884c-9a15808f639c" afterPath="$PROJECT_DIR$/web2py/applications/BootUp/sessions/0ab/1eb/127.0.0.1-5cbfbe0d-3af1-4577-884c-9a15808f639c" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/databases/bootUpDB.db" afterPath="$PROJECT_DIR$/web2py/applications/BootUp/databases/bootUpDB.db" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web2py/applications/admin/sessions/127.0.0.1-64027d3c-3c96-4fc2-9711-ced077d2dc8f" afterPath="$PROJECT_DIR$/web2py/applications/admin/sessions/127.0.0.1-64027d3c-3c96-4fc2-9711-ced077d2dc8f" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/models/bootUpDB.py" afterPath="$PROJECT_DIR$/web2py/applications/BootUp/models/bootUpDB.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/controllers/default.py" afterPath="$PROJECT_DIR$/web2py/applications/BootUp/controllers/default.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web2py/parameters_8000.py" afterPath="$PROJECT_DIR$/web2py/parameters_8000.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="IAPTopen.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -55,8 +44,8 @@
       <file leaf-file-name="default.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/web2py/applications/BootUp/controllers/default.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-2.7015438" vertical-offset="1860" max-vertical-offset="3135">
-              <caret line="19" column="83" selection-start-line="19" selection-start-column="83" selection-end-line="19" selection-end-column="83" />
+            <state vertical-scroll-proportion="1.1578045" vertical-offset="1935" max-vertical-offset="3210">
+              <caret line="174" column="83" selection-start-line="174" selection-start-column="83" selection-end-line="174" selection-end-column="83" />
               <folding />
             </state>
           </provider>
@@ -148,8 +137,8 @@
         <option value="$PROJECT_DIR$/web2py/applications/BootUp/views/default/user.html" />
         <option value="$PROJECT_DIR$/web2py/applications/BootUp/models/menu.py" />
         <option value="$PROJECT_DIR$/web2py/applications/BootUp/views/bootUpLayout.html" />
-        <option value="$PROJECT_DIR$/web2py/applications/BootUp/controllers/default.py" />
         <option value="$PROJECT_DIR$/web2py/applications/BootUp/models/bootUpDB.py" />
+        <option value="$PROJECT_DIR$/web2py/applications/BootUp/controllers/default.py" />
       </list>
     </option>
   </component>
@@ -631,9 +620,9 @@
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33021808" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25016245" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21897335" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21897335" sideWeight="0.4992272" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21897335" sideWeight="0.5007728" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3281412" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -846,8 +835,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/web2py/applications/BootUp/controllers/default.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.7015438" vertical-offset="1860" max-vertical-offset="3135">
-          <caret line="19" column="83" selection-start-line="19" selection-start-column="83" selection-end-line="19" selection-end-column="83" />
+        <state vertical-scroll-proportion="1.1578045" vertical-offset="1935" max-vertical-offset="3210">
+          <caret line="174" column="83" selection-start-line="174" selection-start-column="83" selection-end-line="174" selection-end-column="83" />
           <folding />
         </state>
       </provider>

@@ -17,6 +17,7 @@ def user():
         else:
             form = registrationForm(False, dict(request.post_vars))
         if form.accepts(request.post_vars, session):
+            #Check if username is already taken (IS_NOT_IN_DB doesnt seem to work)
             if db(db.Users.Username == request.post_vars.username).select().first() is not None:
                 form.errors.username = 'Username already taken'
                 response.flash = 'Username already taken!'
@@ -36,7 +37,7 @@ def user():
                                              ExpiryDate=request.post_vars.expDate,
                                              IDCode=request.post_vars.cardID,
                                              addressID=ccAddressID)
-                db.Users.insert(FirstName=request.post_vars.fName,
+                userid = db.Users.insert(FirstName=request.post_vars.fName,
                                 LastName=request.post_vars.lName,
                                 Email=request.post_vars.email,
                                 Username=request.post_vars.username,
@@ -45,6 +46,10 @@ def user():
                                 addressID=adrsID,
                                 cardID=ccID)
                 response.flash = 'Successfully Registered'
+
+                #Log user in and redirect to home
+                session.user = userid
+                redirect(URL('default', 'index'))
         elif form.errors:
             response.flash = 'There was a problem with something you entered'
         else:
@@ -168,7 +173,7 @@ def registrationForm(ccAddress, values):
                                   _value=getFieldValue(values, 'ccCountry'))),
                         DIV(LABEL('Post Code:', _for='ccPostCode')),
                         DIV(INPUT(_name='ccPostCode', requires=db.Addresses.PostCode.requires,
-                                  _value=getFieldValue(values, 'ccPostCode'))),
+                                  _value=getFieldValue(values, 'ccPostCode', 'AB01 2CD'))),
                         _class='regForm',
                         _id='regForm4'
                         ))
