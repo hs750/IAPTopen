@@ -12,7 +12,7 @@
       <column name="PostCode" sqlType="CHAR(512)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
       <primary-key columns="id"/>
       <exported-key name="#FAKE_CreditCards_1" table="CreditCards" schema="" catalog="" columns="addressID"/>
-      <exported-key name="#FAKE_auth_user_2" table="auth_user" schema="" catalog="" columns="addressID"/>
+      <exported-key name="#FAKE_Users_2" table="Users" schema="" catalog="" columns="addressID"/>
     </table>
     <table name="Bootables" schema="" catalog="" type="TABLE">
       <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4"/>
@@ -26,7 +26,7 @@
       <column name="State" sqlType="CHAR(512)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
       <column name="userID" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4"/>
       <primary-key columns="id"/>
-      <foreign-key name="#FAKE_Bootables_1" columns="userID" ref-table="auth_user" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="0" deferrability="1"/>
+      <foreign-key name="#FAKE_Bootables_1" columns="userID" ref-table="Users" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="0" deferrability="1"/>
       <exported-key name="#FAKE_Pledges_1" table="Pledges" schema="" catalog="" columns="bootID"/>
       <exported-key name="#FAKE_UserPledges_1" table="UserPledges" schema="" catalog="" columns="bootID"/>
     </table>
@@ -38,7 +38,7 @@
       <column name="addressID" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4"/>
       <primary-key columns="id"/>
       <foreign-key name="#FAKE_CreditCards_1" columns="addressID" ref-table="Addresses" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="0" deferrability="1"/>
-      <exported-key name="#FAKE_auth_user_1" table="auth_user" schema="" catalog="" columns="cardID"/>
+      <exported-key name="#FAKE_Users_1" table="Users" schema="" catalog="" columns="cardID"/>
     </table>
     <table name="PledgeRewards" schema="" catalog="" type="TABLE">
       <column name="pledgeID" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4"/>
@@ -68,74 +68,23 @@
       <column name="Value" sqlType="DOUBLE" precision="2000000000" scale="10" nullable="true" jdbcType="6"/>
       <primary-key columns="userID,bootID"/>
       <foreign-key name="#FAKE_UserPledges_1" columns="bootID" ref-table="Bootables" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="0" deferrability="1"/>
-      <foreign-key name="#FAKE_UserPledges_2" columns="userID" ref-table="auth_user" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="0" deferrability="1"/>
+      <foreign-key name="#FAKE_UserPledges_2" columns="userID" ref-table="Users" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="0" deferrability="1"/>
     </table>
-    <table name="auth_cas" schema="" catalog="" type="TABLE">
+    <table name="Users" schema="" catalog="" type="TABLE">
       <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4"/>
-      <column name="user_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4"/>
-      <column name="created_on" sqlType="TIMESTAMP" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
-      <column name="service" sqlType="CHAR(512)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
-      <column name="ticket" sqlType="CHAR(512)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
-      <column name="renew" sqlType="CHAR(1)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
-      <primary-key columns="id"/>
-      <foreign-key name="#FAKE_auth_cas_1" columns="user_id" ref-table="auth_user" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="0" deferrability="1"/>
-    </table>
-    <table name="auth_event" schema="" catalog="" type="TABLE">
-      <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4"/>
-      <column name="time_stamp" sqlType="TIMESTAMP" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
-      <column name="client_ip" sqlType="CHAR(512)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
-      <column name="user_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4"/>
-      <column name="origin" sqlType="CHAR(512)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
-      <column name="description" sqlType="TEXT" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
-      <primary-key columns="id"/>
-      <foreign-key name="#FAKE_auth_event_1" columns="user_id" ref-table="auth_user" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="0" deferrability="1"/>
-    </table>
-    <table name="auth_group" schema="" catalog="" type="TABLE">
-      <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4"/>
-      <column name="role" sqlType="CHAR(512)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
-      <column name="description" sqlType="TEXT" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
-      <primary-key columns="id"/>
-      <exported-key name="#FAKE_auth_membership_1" table="auth_membership" schema="" catalog="" columns="group_id"/>
-      <exported-key name="#FAKE_auth_permission_1" table="auth_permission" schema="" catalog="" columns="group_id"/>
-    </table>
-    <table name="auth_membership" schema="" catalog="" type="TABLE">
-      <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4"/>
-      <column name="user_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4"/>
-      <column name="group_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4"/>
-      <primary-key columns="id"/>
-      <foreign-key name="#FAKE_auth_membership_1" columns="group_id" ref-table="auth_group" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="0" deferrability="1"/>
-      <foreign-key name="#FAKE_auth_membership_2" columns="user_id" ref-table="auth_user" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="0" deferrability="1"/>
-    </table>
-    <table name="auth_permission" schema="" catalog="" type="TABLE">
-      <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4"/>
-      <column name="group_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4"/>
-      <column name="name" sqlType="CHAR(512)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
-      <column name="table_name" sqlType="CHAR(512)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
-      <column name="record_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4"/>
-      <primary-key columns="id"/>
-      <foreign-key name="#FAKE_auth_permission_1" columns="group_id" ref-table="auth_group" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="0" deferrability="1"/>
-    </table>
-    <table name="auth_user" schema="" catalog="" type="TABLE">
-      <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4"/>
-      <column name="first_name" sqlType="CHAR(128)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
-      <column name="last_name" sqlType="CHAR(128)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
-      <column name="email" sqlType="CHAR(512)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
-      <column name="username" sqlType="CHAR(128)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
-      <column name="password" sqlType="CHAR(512)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
-      <column name="registration_key" sqlType="CHAR(512)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
-      <column name="reset_password_key" sqlType="CHAR(512)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
-      <column name="registration_id" sqlType="CHAR(512)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
+      <column name="FirstName" sqlType="CHAR(512)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
+      <column name="LastName" sqlType="CHAR(512)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
+      <column name="Email" sqlType="CHAR(512)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
+      <column name="Username" sqlType="CHAR(512)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
+      <column name="Password" sqlType="CHAR(512)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
       <column name="DateOfBirth" sqlType="DATE" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
       <column name="addressID" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4"/>
       <column name="cardID" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4"/>
       <primary-key columns="id"/>
-      <foreign-key name="#FAKE_auth_user_1" columns="cardID" ref-table="CreditCards" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="0" deferrability="1"/>
-      <foreign-key name="#FAKE_auth_user_2" columns="addressID" ref-table="Addresses" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="0" deferrability="1"/>
+      <foreign-key name="#FAKE_Users_1" columns="cardID" ref-table="CreditCards" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="0" deferrability="1"/>
+      <foreign-key name="#FAKE_Users_2" columns="addressID" ref-table="Addresses" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="0" deferrability="1"/>
       <exported-key name="#FAKE_Bootables_1" table="Bootables" schema="" catalog="" columns="userID"/>
       <exported-key name="#FAKE_UserPledges_2" table="UserPledges" schema="" catalog="" columns="userID"/>
-      <exported-key name="#FAKE_auth_cas_1" table="auth_cas" schema="" catalog="" columns="user_id"/>
-      <exported-key name="#FAKE_auth_event_1" table="auth_event" schema="" catalog="" columns="user_id"/>
-      <exported-key name="#FAKE_auth_membership_2" table="auth_membership" schema="" catalog="" columns="user_id"/>
     </table>
     <table name="sqlite_sequence" schema="" catalog="" type="TABLE">
       <column name="name" sqlType="" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
