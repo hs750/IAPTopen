@@ -20,10 +20,10 @@ db.define_table('Addresses',
                 )
 
 db.define_table('CreditCards',
-                Field('CardNumber', 'decimal(12,0)', requires=[IS_NOT_EMPTY(), IS_DECIMAL_IN_RANGE(0, 1e100)]),
+                Field('CardNumber', 'string', length=20, requires=[IS_NOT_EMPTY(), IS_MATCH('[0-9]{12}')]),
                 Field('ExpiryDate', 'date',
-                      requires=[IS_NOT_EMPTY(), IS_DATE(format='%d-%m-%Y', error_message='Must be DD-MM-YYYY!')]),
-                Field('IDCode', 'decimal(3,0)', requires=[IS_NOT_EMPTY(), IS_DECIMAL_IN_RANGE(0, 1e100)]),
+                      requires=[IS_NOT_EMPTY(), IS_DATE()]),
+                Field('IDCode', 'string', length=3, requires=[IS_NOT_EMPTY(), IS_MATCH('[0-9]{3}')]),
                 Field('addressID', db.Addresses, requires=IS_NOT_EMPTY())
                 )
 
@@ -31,14 +31,13 @@ db.define_table('Users',
                 Field('FirstName', 'string', requires=IS_NOT_EMPTY()),
                 Field('LastName', 'string', requires=IS_NOT_EMPTY()),
                 Field('Email', 'string', requires=IS_EMAIL()),
-                Field('Username', 'string', requires=[IS_NOT_EMPTY(),
-                                                      IS_NOT_IN_DB(db, 'Users.Username', '%(Username)s')],
-                      unique=True),
+                Field('Username', 'string', unique=True),
                 Field('Password', 'string', requires=IS_NOT_EMPTY()),
                 Field('DateOfBirth', 'date',
-                      requires=[IS_NOT_EMPTY(), IS_DATE(format='%d-%m-%Y', error_message='Must be DD-MM_YYYY!')]),
+                      requires=[IS_NOT_EMPTY(), IS_DATE()]),
                 Field('addressID', db.Addresses, requires=IS_NOT_EMPTY()),
                 Field('cardID', db.CreditCards, requires=IS_NOT_EMPTY()))
+db.Users.Username.requires = [IS_NOT_EMPTY(), IS_NOT_IN_DB(db, db.Users.Username, 'Username already taken')]
 
 db.define_table('Bootables',
                 Field('Title', 'string', requires=IS_NOT_EMPTY()),

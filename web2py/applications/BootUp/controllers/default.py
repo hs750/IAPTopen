@@ -17,30 +17,34 @@ def user():
         else:
             form = registrationForm(False, dict(request.post_vars))
         if form.accepts(request.post_vars, session):
-            adrsID = db.Addresses.insert(StreetAddress=request.post_vars.sAddress,
-                                            City=request.post_vars.city,
-                                            Country=request.post_vars.country,
-                                            PostCode=request.post_vars.postCode)
-            ccAddressID = adrsID
-            if (request.post_vars.ccAddress is not None) & (request.post_vars.ccAddress != ''):
-                ccAddressID = db.Addresses.insert(StreetAddress=request.post_vars.ccAddress,
-                                                  City=request.post_vars.ccCity,
-                                                  Country=request.post_vars.ccCountry,
-                                                  PostCode=request.post_vars.ccPostCode)
+            if db(db.Users.Username == request.post_vars.username).select().first() is not None:
+                form.errors.username = 'Username already taken'
+                response.flash = 'Username already taken!'
+            else:
+                adrsID = db.Addresses.insert(StreetAddress=request.post_vars.sAddress,
+                                                City=request.post_vars.city,
+                                                Country=request.post_vars.country,
+                                                PostCode=request.post_vars.postCode)
+                ccAddressID = adrsID
+                if (request.post_vars.ccAddress is not None) & (request.post_vars.ccAddress != ''):
+                    ccAddressID = db.Addresses.insert(StreetAddress=request.post_vars.ccAddress,
+                                                      City=request.post_vars.ccCity,
+                                                      Country=request.post_vars.ccCountry,
+                                                      PostCode=request.post_vars.ccPostCode)
 
-            ccID = db.CreditCards.insert(CardNumber=request.post_vars.cardNumber,
-                                         ExpiryDate=request.post_vars.expDate,
-                                         IDCode=request.post_vars.cardID,
-                                         addressID=ccAddressID)
-            db.Users.insert(FirstName=request.post_vars.fName,
-                            LastName=request.post_vars.lName,
-                            Email=request.post_vars.email,
-                            Username=request.post_vars.username,
-                            Password=request.post_vars.password,
-                            DateOfBirth=request.post_vars.dob,
-                            addressID=adrsID,
-                            cardID=ccID)
-            response.flash = 'Successfully Registered'
+                ccID = db.CreditCards.insert(CardNumber=request.post_vars.cardNumber,
+                                             ExpiryDate=request.post_vars.expDate,
+                                             IDCode=request.post_vars.cardID,
+                                             addressID=ccAddressID)
+                db.Users.insert(FirstName=request.post_vars.fName,
+                                LastName=request.post_vars.lName,
+                                Email=request.post_vars.email,
+                                Username=request.post_vars.username,
+                                Password=request.post_vars.password,
+                                DateOfBirth=request.post_vars.dob,
+                                addressID=adrsID,
+                                cardID=ccID)
+                response.flash = 'Successfully Registered'
         elif form.errors:
             response.flash = 'There was a problem with something you entered'
         else:
@@ -105,13 +109,13 @@ def registrationForm(ccAddress, values):
                               _value=getFieldValue(values, 'email'))),
                     DIV(LABEL('Date of Birth:', _for='dob')),
                     DIV(INPUT(_name='dob', _type='date', reqires=db.Users.DateOfBirth.requires,
-                              _value=getFieldValue(values, 'dob', 'DD-MM-YYY'))),
+                              _value=getFieldValue(values, 'dob', 'YYYY-MM-DD'))),
                     DIV(LABEL('Username:', _for='username')),
                     DIV(INPUT(_name='username', reqires=db.Users.Username.requires,
                               _value=getFieldValue(values, 'username'))),
                     DIV(LABEL('Password:', _for='password')),
                     DIV(INPUT(_name='password', _type='password', reqires=db.Users.Password.requires,
-                              _value=getFieldValue(values, 'fName'))),
+                              _value=getFieldValue(values, 'password'))),
                     DIV(LABEL('Confirm Password:', _for='password_two')),
                     DIV(INPUT(_name="password_two", _type="password",
                               requires=IS_EXPR('value==%s' % repr(request.vars.password),
@@ -141,7 +145,7 @@ def registrationForm(ccAddress, values):
                               _value=getFieldValue(values, 'cardNumber'))),
                     DIV(LABEL('Expiry Date:', _for='expDate')),
                     DIV(INPUT(_name='expDate', _type='date', requires=db.CreditCards.ExpiryDate.requires,
-                              _value=getFieldValue(values, 'expDate', 'DD-MM-YYYY'))),
+                              _value=getFieldValue(values, 'expDate', 'YYYY-MM-DD'))),
                     DIV(LABEL('Card ID Code:', _for='cardID')),
                     DIV(INPUT(_name='cardID', requires=db.CreditCards.IDCode.requires,
                               _value=getFieldValue(values, 'cardID'))),
