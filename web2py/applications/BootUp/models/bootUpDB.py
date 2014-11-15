@@ -81,3 +81,13 @@ db.define_table('UserPledges',
                 )
 
 
+def getFieldValue(vars, key, default=''):
+    """ Get the value of a field from a dictionary.
+    :param vars: a dictionary of field names to their input values
+    :param key: the key you are looking for in vars
+    :param default: the default to use if not found (default default is ''
+    :return: the value from vars pointed to by key or default
+    """
+    if key in vars:
+        return vars[key]
+    return default

@@ -12,7 +12,7 @@ def user():
     """
     if request.args(0) == 'register':
         #Display the registration form with or without a separate billing address depending on users preferences
-        if (request.post_vars.ccAddress is not None) & (request.post_vars.ccAddress != ''):
+        if (request.post_vars.ccUseAddress is not None) & (request.post_vars.ccUserAddress != ''):
             form = registrationForm(True, request.post_vars)
         else:
             form = registrationForm(False, dict(request.post_vars))
@@ -114,7 +114,8 @@ def registrationForm(ccAddress, values):
                               _value=getFieldValue(values, 'email'))),
                     DIV(LABEL('Date of Birth:', _for='dob')),
                     DIV(INPUT(_name='dob', _type='date', reqires=db.Users.DateOfBirth.requires,
-                              _value=getFieldValue(values, 'dob', 'YYYY-MM-DD'))),
+                              _value=getFieldValue(values, 'dob'),
+                              _placeholder='YYYY-MM-DD')),
                     DIV(LABEL('Username:', _for='username')),
                     DIV(INPUT(_name='username', reqires=db.Users.Username.requires,
                               _value=getFieldValue(values, 'username'))),
@@ -140,26 +141,30 @@ def registrationForm(ccAddress, values):
                               _value=getFieldValue(values, 'country'))),
                     DIV(LABEL('Post Code:', _for='postCode')),
                     DIV(INPUT(_name='postCode', requires=db.Addresses.PostCode.requires,
-                              _value=getFieldValue(values, 'postCode', 'AB01 2CD'))),
+                              _value=getFieldValue(values, 'postCode'),
+                              _placeholder='AB01 2CD')),
                     _class='regForm',
                     _id='regForm2'),
 
                 DIV(DIV(H3('Credit Card Details:')),
                     DIV(LABEL('Card Number:', _for='cardNumber')),
                     DIV(INPUT(_name='cardNumber', requires=db.CreditCards.CardNumber.requires,
-                              _value=getFieldValue(values, 'cardNumber'))),
+                              _value=getFieldValue(values, 'cardNumber'),
+                              _placeholder='012345678901')),
                     DIV(LABEL('Expiry Date:', _for='expDate')),
                     DIV(INPUT(_name='expDate', _type='date', requires=db.CreditCards.ExpiryDate.requires,
-                              _value=getFieldValue(values, 'expDate', 'YYYY-MM-DD'))),
+                              _value=getFieldValue(values, 'expDate'),
+                              _placeholder='YYYY-MM-DD')),
                     DIV(LABEL('Card ID Code:', _for='cardID')),
                     DIV(INPUT(_name='cardID', requires=db.CreditCards.IDCode.requires,
-                              _value=getFieldValue(values, 'cardID'))),
+                              _value=getFieldValue(values, 'cardID'),
+                              _placeholder='012')),
                     _class='regForm',
                     _id='regForm3')
                 )
 
     if not ccAddress:
-        form.append(INPUT(_name='ccAddress', _type='submit', _value='Use Separate Billing Address'))
+        form.append(INPUT(_name='ccUseAddress', _type='submit', _value='Use Separate Billing Address'))
     else:
         form.append(DIV(DIV(H3('Billing Address')),
                         DIV(LABEL('Street Address:', _for='ccAddress')),
@@ -173,7 +178,8 @@ def registrationForm(ccAddress, values):
                                   _value=getFieldValue(values, 'ccCountry'))),
                         DIV(LABEL('Post Code:', _for='ccPostCode')),
                         DIV(INPUT(_name='ccPostCode', requires=db.Addresses.PostCode.requires,
-                                  _value=getFieldValue(values, 'ccPostCode', 'AB01 2CD'))),
+                                  _value=getFieldValue(values, 'ccPostCode'),
+                                  _placeholder='AB01 2CD')),
                         _class='regForm',
                         _id='regForm4'
                         ))
@@ -181,18 +187,6 @@ def registrationForm(ccAddress, values):
 
     form.append(INPUT(_name='submit', _type='submit'))
     return form
-
-
-def getFieldValue(vars, key, default=''):
-    """ Get the value of a field from a dictionary.
-    :param vars: a dictionary of field names to their input values
-    :param key: the key you are looking for in vars
-    :param default: the default to use if not found (default default is ''
-    :return: the value from vars pointed to by key or default
-    """
-    if key in vars:
-        return vars[key]
-    return default
 
 
 def getLoginForm():

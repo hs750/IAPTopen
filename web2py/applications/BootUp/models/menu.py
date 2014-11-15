@@ -24,7 +24,7 @@ response.google_analytics_id = None
 
 response.menu = [
     (T('Home'), False, URL('BootUP', 'default', 'index'), []),
-    (T('Create Bootable'), False, URL('BootUP', 'default', 'createBootable')),
+    (T('Create Bootable'), False, URL('BootUP', 'bootables', 'create')),
 
 ]
 
