@@ -5,6 +5,7 @@
 ## Customize your APP title, subtitle and menus here
 #########################################################################
 
+
 response.logo = A(B('web',SPAN(2),'py'),XML('&trade;&nbsp;'),
                   _class="brand",_href="http://www.web2py.com/")
 response.title = request.application.replace('_',' ').title()
@@ -21,10 +22,15 @@ response.google_analytics_id = None
 #########################################################################
 ## this is the main application menu add/remove items as required
 #########################################################################
+searchForm = FORM(INPUT(_type='search', _placeholder='Search', _name='searchBox'),
+                  SELECT(['All'] + bootableCategories, _name='cat'),
+                  INPUT(_type='submit', _value='Search'))
+searchURL = URL('BootUP', 'search', 'index')
 
 response.menu = [
     (T('Home'), False, URL('BootUP', 'default', 'index'), []),
     (T('Create Bootable'), False, URL('BootUP', 'bootables', 'create')),
+    ('Search:', False, searchForm)
 
 ]
 
@@ -38,7 +44,22 @@ else:
         (T('View Profile'), False, URL('BootUP', 'default', 'user', args=['profile'])),
         (T('Log out'), False, URL('BootUP', 'default', 'user', args=['logout']))
     ]
-DEVELOPMENT_MENU = True
+
+
+response.searchResults = None
+if searchForm.accepts(request.post_vars, session):
+    if request.post_vars.cat == 'All':
+        response.searchResults = db((db.Bootables.Title.contains(request.post_vars.searchBox) or
+                                     db.Bootables.ShortDescription.contains(request.post_vars.searchBox)) and
+                                     db.Bootables.State != bootableStates[0]).select()
+    else:
+        response.searchResults = db((db.Bootables.Title.contains(request.post_vars.searchBox) or
+                                     db.Bootables.ShortDescription.contains(request.post_vars.searchBox)) and
+                                     db.Bootables.State != bootableStates[0] and
+                                     db.Bootables.Category == request.post_vars.cat).select()
+print(response.searchResults)
+
+
 
 #########################################################################
 ## provide shortcuts for development. remove in production

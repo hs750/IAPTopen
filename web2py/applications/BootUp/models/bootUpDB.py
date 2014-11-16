@@ -10,6 +10,9 @@ db = DAL('sqlite://bootUpDB.db')
     The default web2py primary key ID is used in all tabled except where explicitly stated (which has type Long)
 """
 
+bootableCategories = ['Art', 'Comics', 'Crafts', 'Fashion', 'Film', 'Games', 'Music', 'Photography', 'Technology']
+bootableStates = ['Not Available', 'Open for Pledges', 'Funded', 'Not Funded']
+
 db.define_table('Addresses',
                 Field('StreetAddress', 'text', requires=IS_NOT_EMPTY()),
                 Field('City', 'string', requires=IS_NOT_EMPTY()),
@@ -46,13 +49,12 @@ db.define_table('Bootables',
                 #The maximum value a bootable can have as its goal is 999,999,999.99
                 Field('FundingGoal', 'decimal(11,2)', requires=[IS_NOT_EMPTY(), IS_DECIMAL_IN_RANGE(0, 1e100)]),
                 Field('Category', 'string',
-                      requires=IS_IN_SET(['Art', 'Comics', 'Crafts', 'Fashion', 'Film',
-                                          'Games', 'Music', 'Photography', 'Technology'])),
+                      requires=IS_IN_SET(bootableCategories)),
                 Field('Image', 'upload', requires=[IS_IMAGE(), IS_NOT_EMPTY()]),
                 Field('LongDescription', 'text', requires=IS_NOT_EMPTY()),
                 Field('PersonalStory', 'text', requires=IS_NOT_EMPTY()),
                 Field('State', 'string',
-                      requires=IS_IN_SET(['Not Available', 'Open for Pledges', 'Funded', 'Not Funded'])),
+                      requires=IS_IN_SET(bootableStates)),
                 Field('userID', db.Users, requires=IS_NOT_EMPTY())
                 )
 
