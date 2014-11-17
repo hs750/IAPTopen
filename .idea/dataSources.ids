@@ -32,9 +32,9 @@
     </table>
     <table name="CreditCards" schema="" catalog="" type="TABLE">
       <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4"/>
-      <column name="CardNumber" sqlType="DOUBLE" precision="2000000000" scale="10" nullable="true" jdbcType="6"/>
+      <column name="CardNumber" sqlType="CHAR(20)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
       <column name="ExpiryDate" sqlType="DATE" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
-      <column name="IDCode" sqlType="DOUBLE" precision="2000000000" scale="10" nullable="true" jdbcType="6"/>
+      <column name="IDCode" sqlType="CHAR(3)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
       <column name="addressID" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4"/>
       <primary-key columns="id"/>
       <foreign-key name="#FAKE_CreditCards_1" columns="addressID" ref-table="Addresses" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="0" deferrability="1"/>
