@@ -47,7 +47,7 @@ db.define_table('Bootables',
                 Field('ShortDescription', 'string', length=120, comment='120 characters or less',
                       requires=IS_NOT_EMPTY()),
                 #The maximum value a bootable can have as its goal is 999,999,999.99
-                Field('FundingGoal', 'decimal(11,2)', requires=[IS_NOT_EMPTY(), IS_DECIMAL_IN_RANGE(0, 1e100)]),
+                Field('FundingGoal', 'decimal(11,2)', requires=[IS_NOT_EMPTY(), IS_DECIMAL_IN_RANGE(0, 1e9)]),
                 Field('Category', 'string',
                       requires=IS_IN_SET(bootableCategories)),
                 Field('Image', 'upload', requires=[IS_IMAGE(), IS_NOT_EMPTY()]),
@@ -58,10 +58,10 @@ db.define_table('Bootables',
                 Field('userID', db.Users, requires=IS_NOT_EMPTY())
                 )
 
-pledge_value_type = 'decimal(8,2)'  # maximum value of 999,999.99
+pledge_value_type = 'decimal(11,2)'  # maximum value of 999,999,999.99
 db.define_table('Pledges',
                 Field('Name', 'string', requires=IS_NOT_EMPTY()),
-                Field('Value', pledge_value_type, requires=IS_NOT_EMPTY()),
+                Field('Value', pledge_value_type, requires=[IS_NOT_EMPTY(), IS_DECIMAL_IN_RANGE(0, 1e9)]),
                 Field('bootID', db.Bootables, requires=IS_NOT_EMPTY())
                 )
 
@@ -69,17 +69,19 @@ db.define_table('Rewards',
                 Field('description', 'text', requires=IS_NOT_EMPTY())
                 )
 
+#Cant use composite keys as DAL has shaky support for them
+#It is possible to add records but not possible to update / delete them
+#Therefore must use the default id primary key
+#Set what would normally be the composite key fields to notnull=True to give them some constraint
 db.define_table('PledgeRewards',
-                Field('pledgeID', db.Pledges, requires=IS_NOT_EMPTY()),
-                Field('rewardID', db.Rewards, requires=IS_NOT_EMPTY()),
-                primarykey=['pledgeID', 'rewardID']
+                Field('pledgeID', db.Pledges, requires=IS_NOT_EMPTY(), notnull=True),
+                Field('rewardID', db.Rewards, requires=IS_NOT_EMPTY(), notnull=True)
                 )
 
 db.define_table('UserPledges',
-                Field('userID', db.Users, requires=IS_NOT_EMPTY()),
-                Field('bootID', db.Bootables, requires=IS_NOT_EMPTY()),
-                Field('Value', pledge_value_type, requires=IS_IN_DB(db, 'Pledges.Value', '%(Value)s')),
-                primarykey=['userID', 'bootID']
+                Field('userID', db.Users, requires=IS_NOT_EMPTY(), notnull=True),
+                Field('bootID', db.Bootables, requires=IS_NOT_EMPTY(), notnull=True),
+                Field('Value', pledge_value_type, requires=IS_IN_DB(db, 'Pledges.Value'))
                 )
 
 
