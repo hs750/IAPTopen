@@ -15,7 +15,7 @@ def user():
         if (request.post_vars.ccUseAddress is not None) & (request.post_vars.ccUserAddress != ''):
             form = registrationForm(True, request.post_vars)
         else:
-            form = registrationForm(False, dict(request.post_vars))
+            form = registrationForm(False, request.post_vars)
         if form.accepts(request.post_vars, session):
             #Check if username is already taken (IS_NOT_IN_DB doesnt seem to work)
             if db(db.Users.Username == request.post_vars.username).select().first() is not None:
@@ -58,11 +58,8 @@ def user():
         #Display the login form
         form = getLoginForm()
         if form.accepts(request.post_vars, session):
-            print(request.post_vars.username)
             userLogin = db(db.Users.Username == request.post_vars.username).select(db.Users.id, db.Users.Password)
-            print(userLogin)
             userLogin = userLogin[0]
-            print(userLogin)
             if userLogin is not None:
                 if userLogin.Password == request.post_vars.password:
                     #When logged in store user ID and redirect to home page
@@ -132,7 +129,7 @@ def registrationForm(ccAddress, values):
                 DIV(DIV(H3('Address:')),
                     DIV(LABEL('Street Address:', _for='sAddress')),
                     DIV(TEXTAREA(_name='sAddress', requires=db.Addresses.StreetAddress.requires,
-                                 _value=getFieldValue(values, 'sAddress'))),
+                                 value=getFieldValue(values, 'sAddress'))),
                     DIV(LABEL('City:', _for='city')),
                     DIV(INPUT(_name='city', requires=db.Addresses.City.requires,
                               _value=getFieldValue(values, 'city'))),
