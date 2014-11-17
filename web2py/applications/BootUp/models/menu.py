@@ -59,7 +59,6 @@ if searchForm.accepts(request.post_vars, session, formname='searchForm'):
                                      db.Bootables.ShortDescription.contains(request.post_vars.searchBox)) and
                                      db.Bootables.State != bootableStates[0] and
                                      db.Bootables.Category == request.post_vars.cat).select()
-print(response.searchResults)
 
 
 
