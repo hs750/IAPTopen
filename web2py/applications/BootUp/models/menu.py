@@ -24,7 +24,8 @@ response.google_analytics_id = None
 #########################################################################
 searchForm = FORM(INPUT(_type='search', _placeholder='Search', _name='searchBox'),
                   SELECT(['All'] + bootableCategories, _name='cat'),
-                  INPUT(_type='submit', _value='Search'))
+                  INPUT(_type='submit', _value='Search', _name='searchSubmit'),
+                  _name='searchForm')
 searchURL = URL('BootUP', 'search', 'index')
 
 response.menu = [
@@ -47,7 +48,8 @@ else:
 
 
 response.searchResults = None
-if searchForm.accepts(request.post_vars, session):
+if searchForm.accepts(request.post_vars, session, formname='searchForm'):
+    print('search')
     if request.post_vars.cat == 'All':
         response.searchResults = db((db.Bootables.Title.contains(request.post_vars.searchBox) or
                                      db.Bootables.ShortDescription.contains(request.post_vars.searchBox)) and
