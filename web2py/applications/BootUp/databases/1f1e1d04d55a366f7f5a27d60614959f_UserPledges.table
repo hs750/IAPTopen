@@ -1,5 +1,5 @@
 (dp1
-S'bootID'
+S'bootid'
 p2
 (dp3
 S'length'
@@ -10,7 +10,7 @@ p5
 I00
 sS'sortable'
 p6
-I2
+I3
 sS'sql'
 p7
 S'INTEGER REFERENCES Bootables (id) ON DELETE CASCADE'
@@ -22,7 +22,7 @@ sS'type'
 p10
 S'reference Bootables'
 p11
-ssS'userID'
+ssS'userid'
 p12
 (dp13
 g4
@@ -30,7 +30,7 @@ I512
 sg5
 I00
 sg6
-I1
+I2
 sg7
 S'INTEGER REFERENCES Users (id) ON DELETE CASCADE'
 p14
@@ -39,7 +39,7 @@ I01
 sg10
 S'reference Users'
 p15
-ssS'Value'
+ssS'id'
 p16
 (dp17
 g4
@@ -47,13 +47,30 @@ I512
 sg5
 I00
 sg6
-I3
+I1
 sg7
-S'DOUBLE'
+S'INTEGER PRIMARY KEY AUTOINCREMENT'
 p18
 sg9
 I00
 sg10
-S'decimal(8,2)'
+S'id'
 p19
+ssS'value'
+p20
+(dp21
+g4
+I512
+sg5
+I00
+sg6
+I4
+sg7
+S'DOUBLE'
+p22
+sg9
+I00
+sg10
+S'decimal(11,2)'
+p23
 ss.
