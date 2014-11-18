@@ -44,7 +44,7 @@ def createPledges():
     request.args(0) contains the bootID of the bootables these pledges are associated with
     :return: pledge creation form
     """
-
+    session.resubmit = ''
     #Number of rewards a pledge has
     numRewards = request.post_vars.numRewards
     if numRewards is None:
@@ -112,10 +112,14 @@ def createPledges():
         response.flash = 'There was a problem with what you entered.'
     else:
         if request.post_vars.name is not None:
-            #TODO fix this
+            if (request.post_vars.nextPledge is not None) & (request.post_vars.nextPledge != ''):
+                session.resubmit = 'nextPledge'
+            else:
+                session.resubmit = 'doneSubmit'
             #For some reason when the inheritance check boxes are in the form, the form wont be accepted the first time
             #But will also not populate the errors variable so there is no way to know what is wrong.
             #So as a temporary measure added this message so the user has some feedback/forward on what to do.
+            #Some javascript resubmits the form so this message is only needed if javascript is not enabled
             response.flash = 'Please submit the form again.'
         else:
             response.flash = 'Please enter Pledge details'
@@ -190,8 +194,8 @@ def getPledgeForm(values, numRewards, inheritPledges):
 
     form.append(DIV(DIV(INPUT(_name='delReward', _type='submit', _value='Delete last reward')),
                     DIV(INPUT(_name='addReward', _type='submit', _value='Add another reward')),
-                    DIV(INPUT(_name='nextPledge', _type='submit', _value='Add another pledge')),
-                    DIV(INPUT(_name='done', _type='submit', _value='Done'))
+                    DIV(INPUT(_name='nextPledge', _type='submit', _value='Add another pledge', _id='nextPledge')),
+                    DIV(INPUT(_name='done', _type='submit', _value='Done', _id='doneSubmit'))
                     ))
     return form
 
@@ -229,3 +233,28 @@ def getPledgeInheritDiv(values, pledgeValue):
 
 def dash():
     return dict()
+
+
+def view():
+    """
+    View a particular bootable,
+    which bootable is determined by request.args(0) which is the bootID
+    :return: booable information, the percentage complete and the users who pledged with their pledge amount
+    """
+    bootID = request.args(0)
+    bootable = db(db.Bootables.id == bootID).select()
+    usersPledged = db(db.Bootables.id == db.UserPledges.bootID and
+                      db.UserPledges.userID == db.Users.id).select('Users.Username', 'UserPledges.Value')
+    completion = getCompletionPercentage(bootID)
+
+    pledgeValues = db(db.Pledges.bootID == bootID).select('Value')
+    values = []
+    for item in pledgeValues:
+        values += [item.Value]
+
+    print(values)
+    pledgeForm = FORM(SELECT(values, _name='pledgeValues'),
+                      INPUT(_type='submit', _name='pledgeSubmit', _value='Pledge!'),
+                      _name='pledgeForm',
+                      _class='form-inline')
+    return dict(bootable=bootable, percent=completion, users=usersPledged, pledgeForm=pledgeForm)
