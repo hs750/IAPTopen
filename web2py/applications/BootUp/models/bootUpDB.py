@@ -1,4 +1,6 @@
 __author__ = 'Y8191122'
+import operator
+
 
 db = DAL('sqlite://bootUpDB.db')
 
@@ -95,3 +97,35 @@ def getFieldValue(vars, key, default=''):
     if key in vars:
         return vars[key]
     return default
+
+def getTop5():
+    pledges = db(db.UserPledges.bootID == db.Bootables.id).select('Bootables.id',
+                                                                  'UserPledges.Value', 'Bootables.FundingGoal')
+    totals = dict()
+    goals = dict()
+    #Get total of pledges for each bootable
+    for pledge in pledges:
+        total = totals.get(pledge.Bootables.id, 0)
+        total += float(pledge.UserPledges.Value)
+        totals[pledge.Bootables.id] = total
+        goals[pledge.Bootables.id] = pledge.Bootables.FundingGoal
+
+    percent = dict()
+    #Calculate the percent for each bootable
+    for totalID in totals.keys():
+        percent[totalID] = totals[totalID] / float(goals[totalID])
+
+    #list of bootID, percent complete pairs in order, most complete first
+    sortedPercent = sorted(percent.items(), key=operator.itemgetter(1), reverse=True)
+    sortedKeys = []
+
+    #pick out the bootIDs of the top 5 bootables
+    for i in range(0, min(len(sortedPercent), 5)):
+        sortedKeys += [sortedPercent[i][0]]
+
+    top5 = db(db.Bootables.id in sortedKeys).select(db.Bootables.ALL)
+    #Add the percentage to the return
+    for item in top5:
+        item['percent'] = percent[item.id]
+
+    return top5
