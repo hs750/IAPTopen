@@ -1,6 +1,6 @@
 __author__ = 'Y8191122'
 import operator
-
+from decimal import *
 
 db = DAL('sqlite://bootUpDB.db')
 
@@ -98,6 +98,16 @@ def getFieldValue(vars, key, default=''):
         return vars[key]
     return default
 
+def getCompletionPercentage(bootID):
+    pledges = db(db.UserPledges.bootID == bootID).select('UserPledges.Value', 'Bootables.FundingGoal')
+    total = Decimal(0)
+    for item in pledges:
+        total += item.UserPledges.Value
+    print(total)
+    percentageComplete = total / pledges.first().Bootables.FundingGoal
+
+    return percentageComplete
+
 def getTop5():
     pledges = db(db.UserPledges.bootID == db.Bootables.id).select('Bootables.id',
                                                                   'UserPledges.Value', 'Bootables.FundingGoal')
@@ -105,15 +115,15 @@ def getTop5():
     goals = dict()
     #Get total of pledges for each bootable
     for pledge in pledges:
-        total = totals.get(pledge.Bootables.id, 0)
-        total += float(pledge.UserPledges.Value)
+        total = totals.get(pledge.Bootables.id, Decimal(0))
+        total += pledge.UserPledges.Value
         totals[pledge.Bootables.id] = total
         goals[pledge.Bootables.id] = pledge.Bootables.FundingGoal
 
     percent = dict()
     #Calculate the percent for each bootable
     for totalID in totals.keys():
-        percent[totalID] = totals[totalID] / float(goals[totalID])
+        percent[totalID] = totals[totalID] / goals[totalID]
 
     #list of bootID, percent complete pairs in order, most complete first
     sortedPercent = sorted(percent.items(), key=operator.itemgetter(1), reverse=True)
@@ -129,3 +139,4 @@ def getTop5():
         item['percent'] = percent[item.id]
 
     return top5
+
