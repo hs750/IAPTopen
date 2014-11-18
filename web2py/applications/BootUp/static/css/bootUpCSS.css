@@ -5,6 +5,11 @@
     margin-right: 5px;
 }
 
+.form-inline * {
+    margin-top: 5px;
+    margin-right: 5px;
+}
+
 #searchForm {
     margin-bottom: 0px;
 }
