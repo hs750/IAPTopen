@@ -1,0 +1,7 @@
+{{extend 'layout.html'}}
+{{=BEAUTIFY(bootable)}}
+{{=percent}}
+{{=BEAUTIFY(users)}}
+{{if session.user is not None:}}
+    {{=pledgeForm}}
+{{pass}}

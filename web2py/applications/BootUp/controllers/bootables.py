@@ -243,8 +243,7 @@ def view():
     """
     bootID = request.args(0)
     bootable = db(db.Bootables.id == bootID).select()
-    usersPledged = db(db.Bootables.id == db.UserPledges.bootID and
-                      db.UserPledges.userID == db.Users.id).select('Users.Username', 'UserPledges.Value')
+
     completion = getCompletionPercentage(bootID)
 
     pledgeValues = db(db.Pledges.bootID == bootID).select('Value')
@@ -253,8 +252,26 @@ def view():
         values += [item.Value]
 
     print(values)
-    pledgeForm = FORM(SELECT(values, _name='pledgeValues'),
+    pledgeForm = FORM(SELECT(values, _name='pledgeValue'),
                       INPUT(_type='submit', _name='pledgeSubmit', _value='Pledge!'),
                       _name='pledgeForm',
                       _class='form-inline')
+
+    if session.user is not None:
+        #Only do anything with the form if user logged in
+        if pledgeForm.accepts(request.post_vars, session):
+            db.UserPledges.insert(userID=session.user,
+                                  bootID=bootID,
+                                  Value=request.post_vars.pledgeValue)
+            response.flash = 'You have successfully pledged!'
+        elif pledgeForm.errors:
+            response.flash = 'There was a problem with your pledge'
+    else:
+        #Should never get here as form shouldnt be displayed if no user signed in
+        response.flash = 'Must be signed in to pledge!'
+
+    #Get this after submition of form so that screen updated on refresh
+    usersPledged = db(db.Bootables.id == db.UserPledges.bootID and
+                      db.UserPledges.userID == db.Users.id).select('Users.Username', 'UserPledges.Value')
+
     return dict(bootable=bootable, percent=completion, users=usersPledged, pledgeForm=pledgeForm)
