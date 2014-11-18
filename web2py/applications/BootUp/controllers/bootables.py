@@ -99,9 +99,8 @@ def createPledges():
                     db.PledgeRewards.insert(pledgeID=pledgeId,
                                             rewardID=rewardId)
 
-
-        response.flash = 'Pledge ' + request.post_vars.name + ' saved'
-
+        session.flash = 'Pledge ' + request.post_vars.name + ' saved'
+        response.flash = session.flash
         #Continue to the next pledge
         if (request.post_vars.nextPledge is not None) & (request.post_vars.nextPledge != ''):
             redirect(URL(args=request.args))
@@ -211,10 +210,11 @@ def getRewardDiv(values, num):
 
 def getPledgeInheritDiv(values, pledgeValue):
     #Add checkboxes for reward inheritance
-    otherRewards = db((db.Pledges.bootID == request.args(0) & (db.Pledges.Value <= pledgeValue)) &
-                      ((db.Pledges.id == db.PledgeRewards.pledgeID) &
-                      (db.PledgeRewards.rewardID == db.Rewards.id))).select('Rewards.id', 'Rewards.description',
-                                                                            distinct=True)
+    otherRewards = db((db.Pledges.bootID == int(request.args(0))) &
+                      (db.Pledges.Value <= pledgeValue) &
+                      (db.Pledges.id == db.PledgeRewards.pledgeID) &
+                      (db.PledgeRewards.rewardID == db.Rewards.id)
+    ).select('Rewards.id', 'Rewards.description', distinct=True)
 
     count = 0
     rewardInheritanceDiv = DIV(DIV(H4('Inherit Rewards:')))
