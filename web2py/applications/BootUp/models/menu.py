@@ -6,15 +6,15 @@
 #########################################################################
 
 
-response.logo = A(B('web',SPAN(2),'py'),XML('&trade;&nbsp;'),
-                  _class="brand",_href="http://www.web2py.com/")
+response.logo = A(B('boot',SPAN('UP')),XML('&trade;&nbsp;'),
+                  _class="brand",_href=URL('BootUP', 'default', 'index'))
 response.title = request.application.replace('_',' ').title()
 response.subtitle = ''
 
 ## read more at http://dev.w3.org/html5/markup/meta.name.html
-response.meta.author = 'Your Name <you@example.com>'
-response.meta.keywords = 'web2py, python, framework'
-response.meta.generator = 'Web2py Web Framework'
+response.meta.author = 'Y8191122'
+response.meta.keywords = 'web2py, python, framework, bootUP'
+response.meta.generator = 'Web2py Web Framework BootUP'
 
 ## your http://google.com/analytics id
 response.google_analytics_id = None
@@ -25,23 +25,24 @@ response.google_analytics_id = None
 searchForm = FORM(INPUT(_type='search', _placeholder='Search', _name='searchBox'),
                   SELECT(['All'] + bootableCategories, _name='cat'),
                   INPUT(_type='submit', _value='Search', _name='searchSubmit'),
-                  _name='searchForm')
+                  _name='searchForm',
+                  _class='form-inline',
+                  _id='searchForm')
 searchURL = URL('BootUP', 'search', 'index')
 
 response.menu = [
-    (T('Home'), False, URL('BootUP', 'default', 'index'), []),
     (T('Create Bootable'), False, URL('BootUP', 'bootables', 'create')),
     ('Search:', False, searchForm)
 
 ]
 
 if session.user is None:
-    response.menu += [
+    response.user_menu = [
         (T('Log in'), False, URL('BootUP', 'default', 'user', args=['login'])),
         (T('Sign Up'), False, URL('BootUP', 'default', 'user', args=['register']))
     ]
 else:
-    response.menu += [
+    response.user_menu = [
         (T('View Profile'), False, URL('BootUP', 'default', 'user', args=['profile'])),
         (T('Log out'), False, URL('BootUP', 'default', 'user', args=['logout']))
     ]
@@ -60,7 +61,7 @@ if searchForm.accepts(request.post_vars, session, formname='searchForm'):
                                      db.Bootables.State != bootableStates[0] and
                                      db.Bootables.Category == request.post_vars.cat).select()
 
-
+DEVELOPMENT_MENU = True
 
 #########################################################################
 ## provide shortcuts for development. remove in production
@@ -168,6 +169,6 @@ def _():
                         ])
                 ]
          )]
-#if DEVELOPMENT_MENU: _()
+if DEVELOPMENT_MENU: _()
 
 #if "auth" in locals(): auth.wikimenu()
