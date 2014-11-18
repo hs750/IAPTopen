@@ -41,9 +41,10 @@
       <exported-key name="#FAKE_Users_1" table="Users" schema="" catalog="" columns="cardID"/>
     </table>
     <table name="PledgeRewards" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4"/>
       <column name="pledgeID" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4"/>
       <column name="rewardID" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4"/>
-      <primary-key columns="pledgeID,rewardID"/>
+      <primary-key columns="id"/>
       <foreign-key name="#FAKE_PledgeRewards_1" columns="rewardID" ref-table="Rewards" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="0" deferrability="1"/>
       <foreign-key name="#FAKE_PledgeRewards_2" columns="pledgeID" ref-table="Pledges" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="0" deferrability="1"/>
     </table>
@@ -63,10 +64,11 @@
       <exported-key name="#FAKE_PledgeRewards_1" table="PledgeRewards" schema="" catalog="" columns="rewardID"/>
     </table>
     <table name="UserPledges" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4"/>
       <column name="userID" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4"/>
       <column name="bootID" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4"/>
       <column name="Value" sqlType="DOUBLE" precision="2000000000" scale="10" nullable="true" jdbcType="6"/>
-      <primary-key columns="userID,bootID"/>
+      <primary-key columns="id"/>
       <foreign-key name="#FAKE_UserPledges_1" columns="bootID" ref-table="Bootables" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="0" deferrability="1"/>
       <foreign-key name="#FAKE_UserPledges_2" columns="userID" ref-table="Users" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="0" deferrability="1"/>
     </table>
