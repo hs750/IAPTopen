@@ -1,1 +1,9 @@
-{{extend 'bootUpLayout.html'}}
+{{extend 'layout.html'}}
+<div id="top5" class="top5">
+    <h2>TOP5: Closest to reaching goal!</h2>
+    {{=BEAUTIFY(top)}}
+</div>
+<div id="newest" class="top5">
+    <h2>TOP5: Newest Bootables!</h2>
+    {{=BEAUTIFY(newest)}}
+</div>
