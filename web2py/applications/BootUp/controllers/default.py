@@ -14,11 +14,16 @@ def user():
     """
     if request.args(0) == 'register':
         #Display the registration form with or without a separate billing address depending on users preferences
+        formChanged = False
         if (request.post_vars.ccUseAddress is not None) & (request.post_vars.ccUserAddress != ''):
             form = registrationForm(True, request.post_vars)
+            formChanged = True
+        elif (request.post_vars.ccCancel is not None) & (request.post_vars.ccCancel != ''):
+            formChanged = True
+            form = registrationForm(False, request.post_vars)
         else:
             form = registrationForm(False, request.post_vars)
-        if form.accepts(request.post_vars, session):
+        if (not formChanged) and form.accepts(request.post_vars, session):
             #Check if username is already taken (IS_NOT_IN_DB doesnt seem to work)
             if db(db.Users.Username == request.post_vars.username).select().first() is not None:
                 form.errors.username = 'Username already taken'
