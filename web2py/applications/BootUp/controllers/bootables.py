@@ -6,6 +6,11 @@ def index():
 
 
 def create():
+    """
+    Create bootables (the basic bootable information
+    :return: bootable creation form
+    """
+    #User must be logged in
     if session.user is None:
         redirect(URL('default', 'user', args=['login']))
     else:
@@ -23,7 +28,9 @@ def create():
                                              State=bootableStates[0],
                                              userID=session.user
                                              )
-            redirect(URL('bootables', 'createPledges', args=[bootableID, 1]))
+            response.flash = 'Bootable successfully created'
+            #After bootable created proceed to edit it (add pledges and rewards)
+            redirect(URL('bootables', 'createPledges', args=[bootableID]))
         elif form.errors:
             response.flash = 'There was a problem with your entry'
         else:
@@ -32,6 +39,13 @@ def create():
 
 
 def createPledges():
+    """
+    Create pledges to go with a bootable
+    request.args(0) contains the bootID of the bootables these pledges are associated with
+    :return: pledge creation form
+    """
+
+    #Number of rewards a pledge has
     numRewards = request.post_vars.numRewards
     if numRewards is None:
         numRewards = 1
@@ -40,24 +54,29 @@ def createPledges():
         if numRewards < 1:
             numRewards = 0
 
+    #Whether the pledge is inheriting rewards from lesser valued pledges
     inheritRewards = request.post_vars.inheritRewards
     if inheritRewards is None:
         inheritRewards = False
+
     form = getPledgeForm(request.post_vars, numRewards, inheritRewards)
 
     if (request.post_vars.addReward is not None) & (request.post_vars.addReward != ''):
-            numRewards += 1
-            form = getPledgeForm(request.post_vars, numRewards, inheritRewards)
+        #Add a reward to the form
+        numRewards += 1
+        form = getPledgeForm(request.post_vars, numRewards, inheritRewards)
     elif (request.post_vars.delReward is not None) & (request.post_vars.delReward != ''):
-            numRewards -= 1
-            form = getPledgeForm(request.post_vars, numRewards, inheritRewards)
+        #if user added too many rewards can remove the lase one
+        numRewards -= 1
+        form = getPledgeForm(request.post_vars, numRewards, inheritRewards)
     elif (request.post_vars.inheritPledges is not None) & (request.post_vars.inheritPledges != ''):
-            if (request.post_vars.value is None) or (request.post_vars.value == ''):
-                form.errors.value = 'Must enter a value to inherit pledge rewards'
-                response.flash = 'Unable to inherit rewards'
-                form = getPledgeForm(request.post_vars, numRewards, False)
-            else:
-                form = getPledgeForm(request.post_vars, numRewards, True)
+        #Get rewards eligible for inheritance
+        if (request.post_vars.value is None) or (request.post_vars.value == ''):
+            form.errors.value = 'Must enter a value to inherit pledge rewards'
+            response.flash = 'Unable to inherit rewards'
+            form = getPledgeForm(request.post_vars, numRewards, False)
+        else:
+            form = getPledgeForm(request.post_vars, numRewards, True)
     elif form.accepts(request.post_vars, session, formname='pledgeForm'):
         print('accepted')
         pledgeId = db.Pledges.insert(Name=request.post_vars.name,
@@ -83,6 +102,7 @@ def createPledges():
 
         response.flash = 'Pledge ' + request.post_vars.name + ' saved'
 
+        #Continue to the next pledge
         if (request.post_vars.nextPledge is not None) & (request.post_vars.nextPledge != ''):
             redirect(URL(args=request.args))
         else:
@@ -160,10 +180,10 @@ def getPledgeForm(values, numRewards, inheritPledges):
     for i in range(1, int(numRewards)+1):
         form.append(getRewardDiv(values, str(i)))
 
-    form.append(INPUT(_name='numRewards', _value=numRewards,_hidden=True))
+    form.append(INPUT(_name='numRewards', _value=numRewards, _hidden=True, _type='hidden'))
 
     if inheritPledges:
-        form.append(INPUT(_name='inheritRewards', _value='True', _hidden=True))
+        form.append(INPUT(_name='inheritRewards', _value='True', _hidden=True, _type='hidden'))
         form.append(getPledgeInheritDiv(values, values.value or 0))
 
     form.append(INPUT(_name='inheritPledges', _type='submit', _value='Refresh rewards from other pledges'))
@@ -197,10 +217,12 @@ def getPledgeInheritDiv(values, pledgeValue):
     for reward in otherRewards:
         count+=1
         rewardInheritanceDiv.append(DIV(INPUT(_name='reward-' + str(reward.id),
-                                              _type='checkbox', value=getFieldValue(values, 'reward-'+str(reward.id))),
+                                              _type='checkbox', value=getFieldValue(values, 'reward-'+str(reward.id)),
+                                              _class='checkbox-inline'),
                                         LABEL(reward.description, _for='reward-' + str(reward.id)),
-                                        INPUT(_name='rewardID-'+str(count), _value=reward.id, _hidden=True)))
-    rewardInheritanceDiv.append(INPUT(_name='inheritCount', _value=count, _hidden=True))
+                                        INPUT(_name='rewardID-'+str(count), _value=reward.id, _hidden=True, _type='hidden'),
+                                        _class='checkbox'))
+    rewardInheritanceDiv.append(INPUT(_name='inheritCount', _value=count, _hidden=True, _type='hidden'))
     return rewardInheritanceDiv
 
 
