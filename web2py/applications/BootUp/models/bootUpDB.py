@@ -111,6 +111,7 @@ def getCompletionPercentage(bootID):
 def getTop5():
     pledges = db(db.UserPledges.bootID == db.Bootables.id).select('Bootables.id',
                                                                   'UserPledges.Value', 'Bootables.FundingGoal')
+
     totals = dict()
     goals = dict()
     #Get total of pledges for each bootable
@@ -133,7 +134,11 @@ def getTop5():
     for i in range(0, min(len(sortedPercent), 5)):
         sortedKeys += [sortedPercent[i][0]]
 
-    top5 = db(db.Bootables.id in sortedKeys).select(db.Bootables.ALL)
+    query = (db.Bootables.id == sortedKeys[0])
+    for i in range(1, len(sortedKeys)):
+        query |= (db.Bootables.id == sortedKeys[i])
+    top5 = db(query).select(db.Bootables.ALL)
+    print top5
     #Add the percentage to the return
     for item in top5:
         item['percent'] = percent[item.id]
