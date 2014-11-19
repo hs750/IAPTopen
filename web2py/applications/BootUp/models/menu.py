@@ -43,7 +43,7 @@ if session.user is None:
     ]
 else:
     response.user_menu = [
-        (T('View Profile'), False, URL('BootUP', 'default', 'user', args=['profile'])),
+        (T('View Profile'), False, URL('BootUP', 'users', 'profile')),
         (T('Log out'), False, URL('BootUP', 'default', 'user', args=['logout']))
     ]
 
