@@ -1,6 +1,5 @@
 __author__='Y8191122'
 
-
 def index():
     return dict()
 
@@ -87,7 +86,8 @@ def createPledges():
         for i in range(1, numRewards + 1):
             rewardId = db.Rewards.insert(description=request.post_vars['description-' + str(i)])
             db.PledgeRewards.insert(pledgeID=pledgeId,
-                                    rewardID=rewardId)
+                                    rewardID=rewardId,
+                                    Inherited=False)
 
         inheritCount = request.post_vars.inheritCount
         if inheritCount is not None:
@@ -97,7 +97,8 @@ def createPledges():
                 if (request.post_vars['reward-' + str(rewardId)] is not None) and \
                         (request.post_vars['reward-'+str(rewardId)] == 'on'):
                     db.PledgeRewards.insert(pledgeID=pledgeId,
-                                            rewardID=rewardId)
+                                            rewardID=rewardId,
+                                            Inherited=True)
 
         session.flash = 'Pledge ' + request.post_vars.name + ' saved'
         response.flash = session.flash
@@ -159,7 +160,8 @@ def getBootableForm(values, includeImage=True, submitText='Add pledge values'):
 
     return form
 
-def getPledgeForm(values, numRewards, inheritPledges):
+def getPledgeForm(values, numRewards, inheritPledges, inheritLabel='Get inheritable rewards from other pledges',
+                  incNextPledge=True):
     """
     Get the form used for entering pledges into the database
     :param values: the post_vars from the last submission (used for repopulating){
@@ -185,14 +187,18 @@ def getPledgeForm(values, numRewards, inheritPledges):
     if inheritPledges:
         form.append(INPUT(_name='inheritRewards', _value='True', _hidden=True, _type='hidden'))
         form.append(getPledgeInheritDiv(values, values.value or 0))
+        inheritLabel = 'Refresh inheritable rewards'
 
-    form.append(INPUT(_name='inheritPledges', _type='submit', _value='Refresh rewards from other pledges'))
+    form.append(INPUT(_name='inheritPledges', _type='submit', _value=inheritLabel, _id='inheritPledges'))
 
-    form.append(DIV(DIV(INPUT(_name='delReward', _type='submit', _value='Delete last reward')),
-                    DIV(INPUT(_name='addReward', _type='submit', _value='Add another reward')),
-                    DIV(INPUT(_name='nextPledge', _type='submit', _value='Add another pledge', _id='nextPledge')),
-                    DIV(INPUT(_name='done', _type='submit', _value='Done', _id='doneSubmit'))
-                    ))
+    buttonDiv = DIV(DIV(INPUT(_name='delReward', _type='submit', _value='Delete last reward')),
+                    DIV(INPUT(_name='addReward', _type='submit', _value='Add another reward')))
+
+    if incNextPledge:
+        buttonDiv.append(DIV(INPUT(_name='nextPledge', _type='submit', _value='Add another pledge', _id='nextPledge')))
+
+    buttonDiv.append(DIV(INPUT(_name='done', _type='submit', _value='Done', _id='doneSubmit')))
+    form.append(buttonDiv)
     return form
 
 
@@ -338,3 +344,98 @@ def edit():
     else:
         response.flash = 'Edit your bootable'
     return dict(form=form, pledges=pledges)
+
+
+def editPledge():
+    session.resubmit = ''
+    pledgeID = request.args(0)
+    pledge = db((db.Pledges.id == pledgeID) &
+                (db.Pledges.id == db.PledgeRewards.pledgeID) &
+                (db.Rewards.id == db.PledgeRewards.rewardID)).select()
+
+    #Dont allow users to edit pledges that dont belong to them
+    bootable = db(db.Bootables.id == pledge.first().Pledges.bootID).select('userID').first()
+    if bootable.userID != session.user:
+        redirect(URL('default', 'index'))
+
+    values = dict()
+    values['name'] = pledge.first().Pledges.Name
+    values['value'] = pledge.first().Pledges.Value
+
+    #After the initial loading of the form user may have edited fields,
+    # so use the values from post_vars overriding those from db
+    for item in request.post_vars:
+        values[item] = request.post_vars[item]
+
+    count=1
+    rewardIDs = dict()
+    for reward in pledge:
+        if not reward.PledgeRewards.Inherited:
+            values['description-' + str(count)] = reward.Rewards.description
+            rewardIDs[count] = reward.Rewards.id
+            count += 1
+    count -= 1
+
+    numRewards = count
+    if request.post_vars.numRewards is not None:
+        numRewards = int(request.post_vars.numRewards)
+
+    inheritLabel = 'Save and continue to inherit pledges'
+    form = getPledgeForm(values, numRewards, False, inheritLabel, False)
+
+    if (request.post_vars.addReward is not None) & (request.post_vars.addReward != ''):
+        #Add a reward to the form
+        numRewards += 1
+        form = getPledgeForm(request.post_vars, numRewards, False, inheritLabel, False)
+    elif (request.post_vars.delReward is not None) & (request.post_vars.delReward != ''):
+        #if user added too many rewards can remove the lase one
+        numRewards -= 1
+        form = getPledgeForm(request.post_vars, numRewards, False, inheritLabel, False)
+    elif form.accepts(request.post_vars, session, formname='pledgeForm'):
+        db(db.Pledges.id == pledgeID).update(Name=request.post_vars.name)
+        valueChanged = False
+        if pledge.first().Pledges.Value != request.post_vars.value:
+            valueChanged = True
+            db(db.Pledges.id == pledgeID).update(Value=request.post_vars.value)
+
+        print 'count' + str(count)
+        rewardDiff = 0
+        if numRewards < count:
+            rewardDiff = count - numRewards
+            count = numRewards
+
+            #Delete rewards which are no longer wanted
+            for i in range(numRewards + 1, numRewards + rewardDiff + 1):
+                db(db.Rewards.id == rewardIDs[i]).delete()
+
+        #update the existing records
+        for i in range(1, count+1):
+            db(db.Rewards.id == rewardIDs[i]).update(description=request.post_vars['description-' + str(i)])
+
+        for i in range(count + 1, numRewards + 1):
+            rewardID = db.Rewards.insert(description=request.post_vars['description-' + str(i)])
+            db.PledgeRewards.insert(pledgeID=pledgeID,
+                                    rewardID=rewardID,
+                                    Inherited=False)
+
+        if (request.post_vars.inheritPledges is not None) & (request.post_vars.inheritPledges != ''):
+            redirect(URL('selectInheritedRewards', args=[pledgeID]))
+        else:
+            redirect(URL('dash'))
+
+    elif form.errors:
+        response.flash = 'There was a problem with the form'
+    else:
+        if request.post_vars.name is not None:
+            if (request.post_vars.inheritPledges is not None) & (request.post_vars.inheritPledges != ''):
+                session.resubmit = 'inheritPledges'
+            else:
+                session.resubmit = 'doneSubmit'
+            #Need to use the submit hack again
+            response.flash = 'Please submit the form again'
+        else:
+            response.flash = 'Edit the pledge, ' \
+                             'changing the value will require changing the reward inheritance on the next page'
+
+
+    return dict(form=form)

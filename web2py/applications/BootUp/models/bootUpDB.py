@@ -77,7 +77,9 @@ db.define_table('Rewards',
 #Set what would normally be the composite key fields to notnull=True to give them some constraint
 db.define_table('PledgeRewards',
                 Field('pledgeID', db.Pledges, requires=IS_NOT_EMPTY(), notnull=True),
-                Field('rewardID', db.Rewards, requires=IS_NOT_EMPTY(), notnull=True)
+                Field('rewardID', db.Rewards, requires=IS_NOT_EMPTY(), notnull=True),
+                #Indicates whether the relationship defined is the owning relationship or one that has been inherited
+                Field('Inherited', 'boolean', default=False)
                 )
 
 db.define_table('UserPledges',
