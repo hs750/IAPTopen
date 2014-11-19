@@ -1,5 +1,5 @@
 (dp1
-S'pledgeID'
+S'pledgeid'
 p2
 (dp3
 S'length'
@@ -37,10 +37,11 @@ p14
 sg9
 I00
 sg10
-g12
-ssS'rewardID'
+S'id'
 p15
-(dp16
+ssS'rewardid'
+p16
+(dp17
 g4
 I512
 sg5
@@ -49,10 +50,27 @@ sg6
 I3
 sg7
 S'INTEGER REFERENCES Rewards (id) ON DELETE CASCADE'
-p17
+p18
 sg9
 I01
 sg10
 S'reference Rewards'
-p18
+p19
+ssS'inherited'
+p20
+(dp21
+g4
+I512
+sg5
+I00
+sg6
+I4
+sg7
+S'CHAR(1)'
+p22
+sg9
+I00
+sg10
+S'boolean'
+p23
 ss.
