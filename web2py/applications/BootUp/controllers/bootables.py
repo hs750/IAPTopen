@@ -11,7 +11,7 @@ def create():
     """
     #User must be logged in
     if session.user is None:
-        redirect(URL('default', 'user', args=['login']))
+        redirect(response.loginURL)
     else:
         form = getBootableForm(request.post_vars)
 
@@ -205,7 +205,7 @@ def getPledgeForm(values, numRewards, inheritPledges, inheritLabel='Get inherita
 def getRewardDiv(values, num):
     form = DIV(DIV(H4('Reward ' + num + ':')),
                DIV(LABEL('Description:', _for='description-'+num)),
-               DIV(TEXTAREA(_name='description-'+num, requires=db.Rewards.description.requires,
+               DIV(TEXTAREA(_name='description-'+num, requires=db.Rewards.Description.requires,
                             value=getFieldValue(values, 'description-'+num)))
                )
     return form
@@ -217,7 +217,7 @@ def getPledgeInheritDiv(values, pledgeValue, bootID):
                       (db.Pledges.Value < pledgeValue) &
                       (db.Pledges.id == db.PledgeRewards.pledgeID) &
                       (db.PledgeRewards.rewardID == db.Rewards.id)
-    ).select('Rewards.id', 'Rewards.description', distinct=True)
+    ).select('Rewards.id', 'Rewards.Description', distinct=True)
 
     count = 0
     rewardInheritanceDiv = DIV(DIV(H4('Inherit Rewards:')))
@@ -226,7 +226,7 @@ def getPledgeInheritDiv(values, pledgeValue, bootID):
         rewardInheritanceDiv.append(DIV(INPUT(_name='reward-' + str(reward.id),
                                               _type='checkbox', value=getFieldValue(values, 'reward-'+str(reward.id)),
                                               _class='checkbox-inline'),
-                                        LABEL(reward.description, _for='reward-' + str(reward.id)),
+                                        LABEL(reward.Description, _for='reward-' + str(reward.id)),
                                         INPUT(_name='rewardID-'+str(count), _value=reward.id, _hidden=True, _type='hidden'),
                                         _class='checkbox'))
     rewardInheritanceDiv.append(INPUT(_name='inheritCount', _value=count, _hidden=True, _type='hidden'))
@@ -236,7 +236,7 @@ def getPledgeInheritDiv(values, pledgeValue, bootID):
 def dash():
     userID = session.user
     if userID is None:
-        redirect(URL('default', 'user', args=['login']))
+        redirect(response.loginURL)
 
     bootables = db(db.Bootables.userID == userID).select()
     pledges = db((db.Bootables.userID == userID) &
@@ -245,7 +245,7 @@ def dash():
                  (db.Rewards.id == db.PledgeRewards.rewardID)).select('Bootables.id',
                                                                       'Pledges.Name',
                                                                       'Pledges.Value',
-                                                                      'Rewards.description')
+                                                                      'Rewards.Description')
     totalPledged = dict()
     percentComplete = dict()
     forms = dict()
@@ -326,7 +326,7 @@ def edit():
                  (db.Rewards.id == db.PledgeRewards.rewardID)).select('Bootables.id',
                                                                       'Pledges.Name',
                                                                       'Pledges.Value',
-                                                                      'Rewards.description')
+                                                                      'Rewards.Description')
 
     form = getBootableForm(vars, False, 'Save Changes')
     if form.accepts(request.post_vars, session):
@@ -364,7 +364,7 @@ def editPledge():
     rewardIDs = dict()
     for reward in pledge:
         if not reward.PledgeRewards.Inherited:
-            values['description-' + str(count)] = reward.Rewards.description
+            values['description-' + str(count)] = reward.Rewards.Description
             rewardIDs[count] = reward.Rewards.id
             count += 1
     count -= 1

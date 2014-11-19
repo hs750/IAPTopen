@@ -30,6 +30,8 @@ searchForm = FORM(INPUT(_type='search', _placeholder='Search', _name='searchBox'
                   _id='searchForm')
 searchURL = URL('BootUP', 'search', 'index')
 
+response.loginURL = URL('BootUP', 'users', 'user', args=['login'])
+
 response.menu = [
     (T('Create Bootable'), False, URL('BootUP', 'bootables', 'create')),
     ('Search:', False, searchForm)
@@ -38,13 +40,19 @@ response.menu = [
 
 if session.user is None:
     response.user_menu = [
-        (T('Log in'), False, URL('BootUP', 'default', 'user', args=['login'])),
-        (T('Sign Up'), False, URL('BootUP', 'default', 'user', args=['register']))
+        (T('Log in'), False, response.loginURL),
+        (T('Sign Up'), False, URL('BootUP', 'users', 'user', args=['register']))
     ]
 else:
-    response.user_menu = [
+    response.user_menu = []
+    if db(db.Bootables.userID == session.user).count() > 0:
+        response.user_menu += [
+            (T('Bootable Dashboard'), False, URL('BootUp', 'bootables', 'dash'))
+        ]
+
+    response.user_menu += [
         (T('View Profile'), False, URL('BootUP', 'users', 'profile')),
-        (T('Log out'), False, URL('BootUP', 'default', 'user', args=['logout']))
+        (T('Log out'), False, URL('BootUP', 'users', 'user', args=['logout']))
     ]
 
 

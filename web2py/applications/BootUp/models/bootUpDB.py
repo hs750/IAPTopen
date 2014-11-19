@@ -68,7 +68,7 @@ db.define_table('Pledges',
                 )
 
 db.define_table('Rewards',
-                Field('description', 'text', requires=IS_NOT_EMPTY())
+                Field('Description', 'text', requires=IS_NOT_EMPTY())
                 )
 
 #Cant use composite keys as DAL has shaky support for them
