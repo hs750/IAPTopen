@@ -186,7 +186,7 @@ def getPledgeForm(values, numRewards, inheritPledges, inheritLabel='Get inherita
 
     if inheritPledges:
         form.append(INPUT(_name='inheritRewards', _value='True', _hidden=True, _type='hidden'))
-        form.append(getPledgeInheritDiv(values, values.value or 0))
+        form.append(getPledgeInheritDiv(values, values.value or 0, int(request.args(0))))
         inheritLabel = 'Refresh inheritable rewards'
 
     form.append(INPUT(_name='inheritPledges', _type='submit', _value=inheritLabel, _id='inheritPledges'))
@@ -211,10 +211,10 @@ def getRewardDiv(values, num):
     return form
 
 
-def getPledgeInheritDiv(values, pledgeValue):
+def getPledgeInheritDiv(values, pledgeValue, bootID):
     #Add checkboxes for reward inheritance
-    otherRewards = db((db.Pledges.bootID == int(request.args(0))) &
-                      (db.Pledges.Value <= pledgeValue) &
+    otherRewards = db((db.Pledges.bootID == bootID) &
+                      (db.Pledges.Value < pledgeValue) &
                       (db.Pledges.id == db.PledgeRewards.pledgeID) &
                       (db.PledgeRewards.rewardID == db.Rewards.id)
     ).select('Rewards.id', 'Rewards.description', distinct=True)
@@ -349,14 +349,7 @@ def edit():
 def editPledge():
     session.resubmit = ''
     pledgeID = request.args(0)
-    pledge = db((db.Pledges.id == pledgeID) &
-                (db.Pledges.id == db.PledgeRewards.pledgeID) &
-                (db.Rewards.id == db.PledgeRewards.rewardID)).select()
-
-    #Dont allow users to edit pledges that dont belong to them
-    bootable = db(db.Bootables.id == pledge.first().Pledges.bootID).select('userID').first()
-    if bootable.userID != session.user:
-        redirect(URL('default', 'index'))
+    pledge = getPledge(pledgeID)
 
     values = dict()
     values['name'] = pledge.first().Pledges.Name
@@ -439,3 +432,56 @@ def editPledge():
 
 
     return dict(form=form)
+
+def selectInheritedRewards():
+    pledgeID = request.args(0)
+    pledge = getPledge(pledgeID)
+
+    values = dict()
+    rewardIDs = dict()
+    for reward in pledge:
+        if reward.PledgeRewards.Inherited:
+            values['reward-' + str(reward.Rewards.id)] = 'on'
+
+    form = FORM()
+
+    form.append(getPledgeInheritDiv(values, pledge.first().Pledges.Value, pledge.first().Pledges.bootID))
+    form.append(DIV(INPUT(_name='submit', _type='submit')))
+
+    if form.accepts(request.post_vars, session):
+        inheritCount = int(request.post_vars.inheritCount)
+
+        for i in range(1, inheritCount + 1):
+            rewardId = request.post_vars['rewardID-' + str(i)]
+
+            if (values.get('reward-' + str(rewardId), 'off') == 'on') & \
+                    (request.post_vars['reward-' + str(rewardId)] != 'on'):
+                #If gone from checked to not checked, delete relationship from db
+                db((db.PledgeRewards.rewardID == rewardId) &
+                   (db.PledgeRewards.pledgeID == pledgeID)).delete()
+
+            elif request.post_vars['reward-'+str(rewardId)] == 'on':
+                #if gone from off to on insert into db
+                db.PledgeRewards.insert(pledgeID=pledgeID,
+                                        rewardID=rewardId,
+                                        Inherited=True)
+            #Otherwise there was no change so do nothing
+        session.flash = 'Successfully updated pledge inheritance!'
+        redirect(URL('dash'))
+    elif form.errors:
+        response.flash = 'Something went wrong! Please try again'
+    else:
+        response.flash = 'Select rewards you wish this pledge to inherit from other pledges'
+
+    return dict(form=form, pledge=pledge)
+
+def getPledge(pledgeID):
+    pledge = db((db.Pledges.id == pledgeID) &
+                (db.Pledges.id == db.PledgeRewards.pledgeID) &
+                (db.Rewards.id == db.PledgeRewards.rewardID)).select()
+
+    #Dont allow users to edit pledges that dont belong to them
+    bootable = db(db.Bootables.id == pledge.first().Pledges.bootID).select('userID').first()
+    if bootable.userID != session.user:
+        redirect(URL('default', 'index'))
+    return pledge
