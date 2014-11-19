@@ -233,7 +233,13 @@ def dash():
         redirect(URL('default', 'user', args=['login']))
 
     bootables = db(db.Bootables.userID == userID).select()
-    pledges = getPledgesForUsersBootables(userID)
+    pledges = db((db.Bootables.userID == userID) &
+                 (db.Pledges.bootID == db.Bootables.id) &
+                 (db.Pledges.id == db.PledgeRewards.pledgeID) &
+                 (db.Rewards.id == db.PledgeRewards.rewardID)).select('Bootables.id',
+                                                                      'Pledges.Name',
+                                                                      'Pledges.Value',
+                                                                      'Rewards.description')
     totalPledged = dict()
     percentComplete = dict()
     forms = dict()
@@ -246,15 +252,6 @@ def dash():
         forms[bootable.id] = bootStateForm
     return dict(bootables=bootables, pledges=pledges, total=totalPledged, percent=percentComplete, stateForms=forms)
 
-def getPledgesForUsersBootables(userID):
-    pledges = db((db.Bootables.userID == userID) &
-                 (db.Pledges.bootID == db.Bootables.id) &
-                 (db.Pledges.id == db.PledgeRewards.pledgeID) &
-                 (db.Rewards.id == db.PledgeRewards.rewardID)).select('Bootables.id',
-                                                                      'Pledges.Name',
-                                                                      'Pledges.Value',
-                                                                      'Rewards.description')
-    return pledges
 
 def view():
     """
@@ -309,15 +306,23 @@ def edit():
     elif bootable.State == bootableStates[1]:
         #Cannot edit if open
         redirect(URL('bootables', 'dash'))
-    values = dict()
-    values['title'] = bootable.Title;
-    values['shortDesc'] = bootable.ShortDescription
-    values['fundGoal'] = bootable.FundingGoal
-    values['cat'] = bootable.Category
-    values['longDesc'] = bootable.LongDescription
-    values['story'] = bootable.PersonalStory
+    vars = dict()
+    vars['title'] = bootable.Title;
+    vars['shortDesc'] = bootable.ShortDescription
+    vars['fundGoal'] = bootable.FundingGoal
+    vars['cat'] = bootable.Category
+    vars['longDesc'] = bootable.LongDescription
+    vars['story'] = bootable.PersonalStory
 
-    form = getBootableForm(values, False, 'Save Changes')
+    pledges = db((db.Bootables.userID == session.user) &
+                 (db.Pledges.bootID == bootID) &
+                 (db.Pledges.id == db.PledgeRewards.pledgeID) &
+                 (db.Rewards.id == db.PledgeRewards.rewardID)).select('Bootables.id',
+                                                                      'Pledges.Name',
+                                                                      'Pledges.Value',
+                                                                      'Rewards.description')
+
+    form = getBootableForm(vars, False, 'Save Changes')
     if form.accepts(request.post_vars, session):
         session.flash = 'Updated bootable successfully'
         bootable.Title = request.post_vars.title
@@ -332,6 +337,4 @@ def edit():
         response.flash = 'There was a problem with something you entered.'
     else:
         response.flash = 'Edit your bootable'
-
-
-    return dict(form=form)
+    return dict(form=form, pledges=pledges)
