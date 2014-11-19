@@ -125,34 +125,38 @@ def createPledges():
     return dict(form=form)
 
 
-def getBootableForm(values):
+def getBootableForm(values, includeImage=True, submitText='Add pledge values'):
     #The basic bootable form
-    form = FORM(DIV(DIV(H3('Bootable Info:')),
-                    DIV(LABEL('Title:', _for='title')),
-                    DIV(INPUT(_name='title', requires=db.Bootables.Title.requires,
-                              _value=getFieldValue(values, 'title'))),
-                    DIV(LABEL('Short Description:', _for='shortDesc')),
-                    DIV(INPUT(_name='shortDesc', requires=db.Bootables.ShortDescription.requires,
-                              _value=getFieldValue(values, 'shortDesc'),
-                              _placeholder='Max length 120 characters')),
-                    DIV(LABEL('Funding Goal:', _for='fundGoal')),
-                    DIV(INPUT(_name='fundGoal', _type='number', _min='1', requires=db.Bootables.FundingGoal.requires,
-                              _value=getFieldValue(values, 'fundGoal'))),
-                    DIV(LABEL('Category:', _for='cat')),
-                    DIV(SELECT(bootableCategories, _name='cat', requires=db.Bootables.Category.requires,
-                               _value=getFieldValue(values, 'cat'))),
-                    DIV(LABEL('Image:', _for='image')),
-                    DIV(INPUT(_name='image', _type='file', requires=db.Bootables.Image.requires,
-                              _value=getFieldValue(values, 'image'))),
-                    DIV(LABEL('Long Description:', _for='longDesc')),
-                    DIV(TEXTAREA(_name='longDesc', requires=db.Bootables.LongDescription.requires,
-                                 _value=getFieldValue(values, 'longDesc'))),
-                    DIV(LABEL('Personal Story:', _for='story')),
-                    DIV(TEXTAREA(_name='story', requires=db.Bootables.PersonalStory.requires,
-                                 _value=getFieldValue(values, 'story'))),
-                    DIV(INPUT(_type='submit', _value='Add pledge values'))
+    formDiv = DIV(DIV(H3('Bootable Info:')),
+                  DIV(LABEL('Title:', _for='title')),
+                  DIV(INPUT(_name='title', requires=db.Bootables.Title.requires,
+                            _value=getFieldValue(values, 'title'))),
+                  DIV(LABEL('Short Description:', _for='shortDesc')),
+                  DIV(INPUT(_name='shortDesc', requires=db.Bootables.ShortDescription.requires,
+                            _value=getFieldValue(values, 'shortDesc'),
+                            _placeholder='Max length 120 characters')),
+                  DIV(LABEL('Funding Goal:', _for='fundGoal')),
+                  DIV(INPUT(_name='fundGoal', _type='number', _min='1', requires=db.Bootables.FundingGoal.requires,
+                            _value=getFieldValue(values, 'fundGoal'))),
+                  DIV(LABEL('Category:', _for='cat')),
+                  DIV(SELECT(bootableCategories, _name='cat', requires=db.Bootables.Category.requires,
+                            _value=getFieldValue(values, 'cat'))),
+                  DIV(LABEL('Long Description:', _for='longDesc')),
+                  DIV(TEXTAREA(_name='longDesc', requires=db.Bootables.LongDescription.requires,
+                               value=getFieldValue(values, 'longDesc'))),
+                  DIV(LABEL('Personal Story:', _for='story')),
+                  DIV(TEXTAREA(_name='story', requires=db.Bootables.PersonalStory.requires,
+                               value=getFieldValue(values, 'story'))),
+                  DIV(INPUT(_type='submit', _value=submitText))
+                  )
 
-                    ))
+    if includeImage:
+        formDiv.append(DIV(LABEL('Image:', _for='image')))
+        formDiv.append(DIV(INPUT(_name='image', _type='file', requires=db.Bootables.Image.requires,
+                                 _value=getFieldValue(values, 'image'))))
+
+    form = FORM(formDiv)
+
     return form
 
 def getPledgeForm(values, numRewards, inheritPledges):
@@ -229,13 +233,7 @@ def dash():
         redirect(URL('default', 'user', args=['login']))
 
     bootables = db(db.Bootables.userID == userID).select()
-    pledges = db((db.Bootables.userID == userID) &
-                 (db.Pledges.bootID == db.Bootables.id) &
-                 (db.Pledges.id == db.PledgeRewards.pledgeID) &
-                 (db.Rewards.id == db.PledgeRewards.rewardID)).select('Bootables.id',
-                                                                      'Pledges.Name',
-                                                                      'Pledges.Value',
-                                                                      'Rewards.description')
+    pledges = getPledgesForUsersBootables(userID)
     totalPledged = dict()
     percentComplete = dict()
     forms = dict()
@@ -248,6 +246,15 @@ def dash():
         forms[bootable.id] = bootStateForm
     return dict(bootables=bootables, pledges=pledges, total=totalPledged, percent=percentComplete, stateForms=forms)
 
+def getPledgesForUsersBootables(userID):
+    pledges = db((db.Bootables.userID == userID) &
+                 (db.Pledges.bootID == db.Bootables.id) &
+                 (db.Pledges.id == db.PledgeRewards.pledgeID) &
+                 (db.Rewards.id == db.PledgeRewards.rewardID)).select('Bootables.id',
+                                                                      'Pledges.Name',
+                                                                      'Pledges.Value',
+                                                                      'Rewards.description')
+    return pledges
 
 def view():
     """
@@ -291,3 +298,40 @@ def view():
                       (db.UserPledges.userID == db.Users.id)).select('Users.Username', 'UserPledges.Value')
 
     return dict(bootable=bootable, total=total, percent=completion, users=usersPledged, pledgeForm=pledgeForm)
+
+
+def edit():
+    bootID = request.args(0)
+    bootable = db(db.Bootables.id == bootID).select().first()
+    #Only the owner of a bootable can edit it.
+    if (session.user is None) or (session.user != bootable.userID):
+        redirect(URL('default', 'index'))
+    elif bootable.State == bootableStates[1]:
+        #Cannot edit if open
+        redirect(URL('bootables', 'dash'))
+    values = dict()
+    values['title'] = bootable.Title;
+    values['shortDesc'] = bootable.ShortDescription
+    values['fundGoal'] = bootable.FundingGoal
+    values['cat'] = bootable.Category
+    values['longDesc'] = bootable.LongDescription
+    values['story'] = bootable.PersonalStory
+
+    form = getBootableForm(values, False, 'Save Changes')
+    if form.accepts(request.post_vars, session):
+        session.flash = 'Updated bootable successfully'
+        bootable.Title = request.post_vars.title
+        bootable.ShortDescription = request.post_vars.shortDesc
+        bootable.FundingGoal = request.post_vars.fundGoal
+        bootable.Category = request.post_vars.cat
+        bootable.LongDescription = request.post_vars.longDesc
+        bootable.PersonalStory = request.post_vars.story
+        bootable.update_record()
+        redirect(URL('bootables', 'dash'))
+    elif form.errors:
+        response.flash = 'There was a problem with something you entered.'
+    else:
+        response.flash = 'Edit your bootable'
+
+
+    return dict(form=form)
