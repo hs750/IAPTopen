@@ -98,12 +98,16 @@ def getFieldValue(vars, key, default=''):
         return vars[key]
     return default
 
-def getCompletionPercentage(bootID):
+def getTotalPledged(bootID):
     pledges = db(db.UserPledges.bootID == bootID).select('UserPledges.Value', 'Bootables.FundingGoal')
     total = Decimal(0)
     for item in pledges:
         total += item.UserPledges.Value
-    print(total)
+    return total
+
+def getCompletionPercentage(bootID):
+    pledges = db(db.UserPledges.bootID == bootID).select('UserPledges.Value', 'Bootables.FundingGoal')
+    total = getTotalPledged(bootID)
     percentageComplete = 0
     if pledges.first() is not None:
         percentageComplete = total / pledges.first().Bootables.FundingGoal
