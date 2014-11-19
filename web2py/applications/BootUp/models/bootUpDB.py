@@ -104,7 +104,9 @@ def getCompletionPercentage(bootID):
     for item in pledges:
         total += item.UserPledges.Value
     print(total)
-    percentageComplete = total / pledges.first().Bootables.FundingGoal
+    percentageComplete = 0
+    if pledges.first() is not None:
+        percentageComplete = total / pledges.first().Bootables.FundingGoal
 
     return percentageComplete
 

@@ -230,8 +230,12 @@ def getPledgeInheritDiv(values, pledgeValue):
     return rewardInheritanceDiv
 
 
-
 def dash():
+    userID = session.user
+    if userID is None:
+        redirect(URL('default', 'user', args=['login']))
+
+    bootables = db(db.Bootables.userID == userID).select()
     return dict()
 
 
@@ -271,7 +275,8 @@ def view():
         response.flash = 'Must be signed in to pledge!'
 
     #Get this after submition of form so that screen updated on refresh
-    usersPledged = db(db.Bootables.id == db.UserPledges.bootID and
-                      db.UserPledges.userID == db.Users.id).select('Users.Username', 'UserPledges.Value')
+    usersPledged = db((db.Bootables.id == bootID) &
+                      (db.Bootables.id == db.UserPledges.bootID) &
+                      (db.UserPledges.userID == db.Users.id)).select('Users.Username', 'UserPledges.Value')
 
     return dict(bootable=bootable, percent=completion, users=usersPledged, pledgeForm=pledgeForm)
