@@ -125,11 +125,6 @@ def createPledges():
     return dict(form=form)
 
 
-def createRewards():
-    form=FORM()
-    return dict(form=form)
-
-
 def getBootableForm(values):
     #The basic bootable form
     form = FORM(DIV(DIV(H3('Bootable Info:')),
@@ -158,8 +153,6 @@ def getBootableForm(values):
                     DIV(INPUT(_type='submit', _value='Add pledge values'))
 
                     ))
-
-
     return form
 
 def getPledgeForm(values, numRewards, inheritPledges):
@@ -236,7 +229,24 @@ def dash():
         redirect(URL('default', 'user', args=['login']))
 
     bootables = db(db.Bootables.userID == userID).select()
-    return dict()
+    pledges = db((db.Bootables.userID == userID) &
+                 (db.Pledges.bootID == db.Bootables.id) &
+                 (db.Pledges.id == db.PledgeRewards.pledgeID) &
+                 (db.Rewards.id == db.PledgeRewards.rewardID)).select('Bootables.id',
+                                                                      'Pledges.Name',
+                                                                      'Pledges.Value',
+                                                                      'Rewards.description')
+    totalPledged = dict()
+    percentComplete = dict()
+    forms = dict()
+    for bootable in bootables:
+        totalPledged[bootable.id] = getTotalPledged(bootable.id)
+        percentComplete[bootable.id] = getCompletionPercentage(bootable.id)
+        bootStateForm = FORM(SELECT(bootableStates, _name='state-'+str(bootable.id), _value=bootable.State),
+                             INPUT(_name='bootID', _value=bootable.id, _hidden=True, _type='hidden'),
+                             INPUT(_name='submit-'+str(bootable.id), _type='submit'))
+        forms[bootable.id] = bootStateForm
+    return dict(bootables=bootables, pledges=pledges, total=totalPledged, percent=percentComplete, stateForms=forms)
 
 
 def view():
@@ -248,6 +258,7 @@ def view():
     bootID = request.args(0)
     bootable = db(db.Bootables.id == bootID).select()
 
+    total = getTotalPledged(bootID)
     completion = getCompletionPercentage(bootID)
 
     pledgeValues = db(db.Pledges.bootID == bootID).select('Value')
@@ -279,4 +290,4 @@ def view():
                       (db.Bootables.id == db.UserPledges.bootID) &
                       (db.UserPledges.userID == db.Users.id)).select('Users.Username', 'UserPledges.Value')
 
-    return dict(bootable=bootable, percent=completion, users=usersPledged, pledgeForm=pledgeForm)
+    return dict(bootable=bootable, total=total, percent=completion, users=usersPledged, pledgeForm=pledgeForm)
