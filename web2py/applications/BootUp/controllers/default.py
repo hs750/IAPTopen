@@ -7,7 +7,9 @@ def index():
     :return: the 5 newest bootables and the top5 closest to completion
     """
     response.subtitle = 'Home'
-    newest = db(db.Bootables.id>0).select(orderby=~db.Bootables.id, limitby=(0, 5))
+    #The newest bootables assumes higher id = newer, bootable cant be not available
+    newest = db((db.Bootables.id>0) &
+                (db.Bootables.State != bootableStates[0])).select(orderby=~db.Bootables.id, limitby=(0, 5))
     top5 = getTop5()
     return dict(newest=newest, top=top5)
 
@@ -103,5 +105,52 @@ def bootableImage():
     :return: the bootable image
     """
     return response.download(request, db)
+
+
+def getTop5():
+    """
+    Get the top 5 bootable closest to completion, in the order of most complete first
+    :return: the top 5 bootables
+    """
+    # Get the pledges for each bootable, but only the bootables that are not not open
+    pledges = db((db.UserPledges.bootID == db.Bootables.id) &
+                 (db.Bootables.State != bootableStates[0])).select('Bootables.id',
+                                                                  'UserPledges.Value', 'Bootables.FundingGoal')
+
+    totals = dict()
+    goals = dict()
+    #Get total of pledges for each bootable
+    for pledge in pledges:
+        total = totals.get(pledge.Bootables.id, Decimal(0))
+        total += pledge.UserPledges.Value
+        totals[pledge.Bootables.id] = total
+        goals[pledge.Bootables.id] = pledge.Bootables.FundingGoal
+
+    percent = dict()
+    #Calculate the percent for each bootable
+    for totalID in totals.keys():
+        percent[totalID] = totals[totalID] / goals[totalID]
+
+    #list of bootID, percent complete pairs in order, most complete first
+    sortedPercent = sorted(percent.items(), key=operator.itemgetter(1), reverse=True)
+    sortedKeys = []
+
+    #pick out the bootIDs of the top 5 bootables
+    for i in range(0, min(len(sortedPercent), 5)):
+        sortedKeys += [sortedPercent[i][0]]
+
+    query = (db.Bootables.id == sortedKeys[0])
+    for i in range(1, len(sortedKeys)):
+        query |= (db.Bootables.id == sortedKeys[i])
+
+    top5 = db(query).select(db.Bootables.ALL)
+    
+    #Add the percentage to the return
+    for item in top5:
+        item['percent'] = percent[item.id]
+
+    return top5
+
+
 
 
