@@ -50,4 +50,20 @@ def view():
 
     return dict(bootable=bootable, total=total, percent=completion, users=usersPledged, pledgeForm=pledgeForm)
 
+def search():
+    search = request.vars.search
+    cat = request.vars.cat
+    if cat == 'All':
+        searchResults = db(((db.Bootables.Title.contains(search)) |
+                            (db.Bootables.ShortDescription.contains(search))) &
+                            #Cant be not available
+                           (db.Bootables.State != bootableStates[0])).select()
+    else:
+        searchResults = db(((db.Bootables.Title.contains(search)) |
+                            (db.Bootables.ShortDescription.contains(search))) &
+                           (db.Bootables.State != bootableStates[0]) &
+                            #Cant be not available
+                           (db.Bootables.Category == cat)).select()
+    return dict(searchResults=searchResults)
+
 

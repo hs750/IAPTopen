@@ -19,25 +19,25 @@ response.meta.generator = 'Web2py Web Framework BootUP'
 ## your http://google.com/analytics id
 response.google_analytics_id = None
 
-#########################################################################
-## this is the main application menu add/remove items as required
-#########################################################################
+#The search form to be put on every page
 searchForm = FORM(INPUT(_type='search', _placeholder='Search', _name='searchBox'),
                   SELECT(['All'] + bootableCategories, _name='cat'),
                   INPUT(_type='submit', _value='Search', _name='searchSubmit'),
                   _name='searchForm',
                   _class='form-inline',
                   _id='searchForm')
-searchURL = URL('BootUP', 'search', 'index')
 
+#URL of login page, this is used in multiple places, hence why it is defined here
 response.loginURL = URL('BootUP', 'users', 'user', args=['login'])
 
+#The main application menu
 response.menu = [
     (T('Create Bootable'), False, URL('BootUP', 'bootables', 'create')),
     ('Search:', False, searchForm)
 
 ]
 
+#User menu, changes depending on user status
 if session.user is None:
     response.user_menu = [
         (T('Log in'), False, response.loginURL),
@@ -45,6 +45,7 @@ if session.user is None:
     ]
 else:
     response.user_menu = []
+    #If user owns bootables, give link to boot manager dashboard
     if db(db.Bootables.userID == session.user).count() > 0:
         response.user_menu += [
             (T('Bootable Dashboard'), False, URL('BootUp', 'bootables', 'dash'))
@@ -56,19 +57,12 @@ else:
     ]
 
 
-response.searchResults = None
+#If search has been preformed redirect to search page
 if searchForm.accepts(request.post_vars, session, formname='searchForm'):
-    print('search')
-    if request.post_vars.cat == 'All':
-        response.searchResults = db((db.Bootables.Title.contains(request.post_vars.searchBox) or
-                                     db.Bootables.ShortDescription.contains(request.post_vars.searchBox)) and
-                                     db.Bootables.State != bootableStates[0]).select()
-    else:
-        response.searchResults = db((db.Bootables.Title.contains(request.post_vars.searchBox) or
-                                     db.Bootables.ShortDescription.contains(request.post_vars.searchBox)) and
-                                     db.Bootables.State != bootableStates[0] and
-                                     db.Bootables.Category == request.post_vars.cat).select()
+    redirect(URL('default', 'search', vars=dict(search=request.post_vars.searchBox,
+                                                cat=request.post_vars.cat)))
 
+#Include dev menues
 DEVELOPMENT_MENU = True
 
 #########################################################################
@@ -179,4 +173,3 @@ def _():
          )]
 if DEVELOPMENT_MENU: _()
 
-#if "auth" in locals(): auth.wikimenu()
