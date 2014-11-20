@@ -1,6 +1,6 @@
 *.log
 **/errors
-**/session
+**/sessions
 
 .idea/workspace.xml
 web2py/httpserver.pid
