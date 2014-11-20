@@ -3,8 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="cb5070bd-bb64-4466-8777-26586badfa50" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/sessions/1f8/05a/127.0.0.1-834e5a1a-19a4-4211-94b0-5c13e407e288" afterPath="$PROJECT_DIR$/web2py/applications/BootUp/sessions/1f8/05a/127.0.0.1-834e5a1a-19a4-4211-94b0-5c13e407e288" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/controllers/default.py" afterPath="$PROJECT_DIR$/web2py/applications/BootUp/controllers/default.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/models/menu.py" afterPath="$PROJECT_DIR$/web2py/applications/BootUp/models/menu.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/databases/bootUpDB.db" afterPath="$PROJECT_DIR$/web2py/applications/BootUp/databases/bootUpDB.db" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/controllers/bootables.py" afterPath="$PROJECT_DIR$/web2py/applications/BootUp/controllers/bootables.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="IAPTopen.iws" />
@@ -41,11 +42,33 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="default.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="default.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/web2py/applications/BootUp/controllers/default.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.80613893" vertical-offset="461" max-vertical-offset="1125">
-              <caret line="64" column="28" selection-start-line="64" selection-start-column="28" selection-end-line="64" selection-end-column="28" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="105" max-vertical-offset="1125">
+              <caret line="30" column="42" selection-start-line="30" selection-start-column="22" selection-end-line="30" selection-end-column="42" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="bootables.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/web2py/applications/BootUp/controllers/bootables.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.679868" vertical-offset="3503" max-vertical-offset="6750">
+              <caret line="261" column="27" selection-start-line="261" selection-start-column="27" selection-end-line="261" selection-end-column="27" />
+              <folding>
+                <marker date="1416491045000" expanded="true" signature="19774:19839" placeholder="Select rewar..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="dash.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web2py/applications/BootUp/views/bootables/dash.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-2.5" vertical-offset="0" max-vertical-offset="180">
+              <caret line="4" column="20" selection-start-line="4" selection-start-column="20" selection-end-line="4" selection-end-column="20" />
               <folding />
             </state>
           </provider>
@@ -96,13 +119,13 @@
         <option value="$PROJECT_DIR$/web2py/applications/BootUp/views/bootables/selectInheritedRewards.html" />
         <option value="$PROJECT_DIR$/web2py/applications/BootUp/models/bootUpDB.py" />
         <option value="$PROJECT_DIR$/web2py/applications/BootUp/views/users/editProfile.html" />
-        <option value="$PROJECT_DIR$/web2py/applications/BootUp/controllers/bootables.py" />
         <option value="$PROJECT_DIR$/web2py/applications/BootUp/views/bootables/createPledges.html" />
         <option value="$PROJECT_DIR$/web2py/applications/BootUp/views/bootables/editPledge.html" />
         <option value="$PROJECT_DIR$/web2py/applications/BootUp/controllers/users.py" />
         <option value="$PROJECT_DIR$/web2py/applications/BootUp/views/default/search.html" />
         <option value="$PROJECT_DIR$/web2py/applications/BootUp/models/menu.py" />
         <option value="$PROJECT_DIR$/web2py/applications/BootUp/controllers/default.py" />
+        <option value="$PROJECT_DIR$/web2py/applications/BootUp/controllers/bootables.py" />
       </list>
     </option>
   </component>
@@ -611,7 +634,7 @@
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3997923" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21897335" sideWeight="0.5007728" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3281412" sideWeight="0.5003249" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3281412" sideWeight="0.49967512" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3281412" sideWeight="0.49967512" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -856,14 +879,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web2py/applications/BootUp/views/bootables/dash.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.5" vertical-offset="0" max-vertical-offset="180">
-          <caret line="4" column="20" selection-start-line="4" selection-start-column="20" selection-end-line="4" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="dbDummy://dbtable:/3099673/854fd4b3-2143-4404-b62a-4bd8a5f585aa/..PledgeRewards">
       <provider selected="true" editor-type-id="com.intellij.persistence.database.editor.DatabaseTableFileEditorProvider">
         <state />
@@ -1002,16 +1017,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web2py/applications/BootUp/controllers/bootables.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-73.46154" vertical-offset="3610" max-vertical-offset="6525">
-          <caret line="368" column="0" selection-start-line="368" selection-start-column="0" selection-end-line="368" selection-end-column="0" />
-          <folding>
-            <marker date="1416476239000" expanded="true" signature="-1:-1" placeholder="Select rewar..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web2py/applications/BootUp/views/bootables/createPledges.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-0.625" vertical-offset="0" max-vertical-offset="150">
@@ -1070,9 +1075,27 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/web2py/applications/BootUp/controllers/default.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.80613893" vertical-offset="461" max-vertical-offset="1125">
-          <caret line="64" column="28" selection-start-line="64" selection-start-column="28" selection-end-line="64" selection-end-column="28" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="105" max-vertical-offset="1125">
+          <caret line="30" column="42" selection-start-line="30" selection-start-column="22" selection-end-line="30" selection-end-column="42" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web2py/applications/BootUp/views/bootables/dash.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-2.5" vertical-offset="0" max-vertical-offset="180">
+          <caret line="4" column="20" selection-start-line="4" selection-start-column="20" selection-end-line="4" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web2py/applications/BootUp/controllers/bootables.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.679868" vertical-offset="3503" max-vertical-offset="6750">
+          <caret line="261" column="27" selection-start-line="261" selection-start-column="27" selection-end-line="261" selection-end-column="27" />
+          <folding>
+            <marker date="1416491045000" expanded="true" signature="19774:19839" placeholder="Select rewar..." />
+          </folding>
         </state>
       </provider>
     </entry>
