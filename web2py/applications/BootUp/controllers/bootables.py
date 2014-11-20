@@ -1,15 +1,12 @@
 __author__='Y8191122'
 
-def index():
-    return dict()
-
-
 def create():
     """
     Create bootables (the basic bootable information
     :return: bootable creation form
     """
     #User must be logged in
+    response.subtitle = 'Create new Bootable.'
     if session.user is None:
         redirect(response.loginURL)
     else:
@@ -43,7 +40,8 @@ def createPledges():
     request.args(0) contains the bootID of the bootables these pledges are associated with
     :return: pledge creation form
     """
-    session.resubmit = ''
+    bootable = db(db.Bootables.id == request.args(0)).select().first()
+    response.subtitle = 'Create pledge for Bootable: ' + bootable.Title
     #Number of rewards a pledge has
     numRewards = request.post_vars.numRewards
     if numRewards is None:
@@ -84,8 +82,6 @@ def createPledges():
                                      )
 
         for i in range(1, numRewards + 1):
-            print 'num rewards' + str(i)
-            print request.post_vars
             rewardId = db.Rewards.insert(Description=request.post_vars['description-' + str(i)])
             db.PledgeRewards.insert(pledgeID=pledgeId,
                                     rewardID=rewardId,
@@ -108,8 +104,7 @@ def createPledges():
         if (request.post_vars.nextPledge is not None) & (request.post_vars.nextPledge != ''):
             redirect(URL(args=request.args))
         else:
-            redirect(URL('default', 'index'))
-            #TODO redirect to bootable edit page
+            redirect(URL('dash'))
     elif form.errors:
         response.flash = 'There was a problem with what you entered.'
     else:
@@ -227,6 +222,7 @@ def getPledgeInheritDiv(values, pledgeValue, bootID):
 
 
 def dash():
+    response.subtitle = 'Bootable Dashboard'
     userID = session.user
     if userID is None:
         redirect(response.loginURL)
@@ -282,6 +278,7 @@ def dash():
 
 
 def edit():
+    response.subtitle = 'Edit Bootable'
     bootID = request.args(0)
     bootable = db(db.Bootables.id == bootID).select().first()
     #Only the owner of a bootable can edit it.
@@ -325,6 +322,7 @@ def edit():
 
 
 def editPledge():
+    response.subtitle = 'Edit Pledge'
     session.resubmit = ''
     pledgeID = request.args(0)
     pledge = getPledge(pledgeID)
@@ -404,6 +402,7 @@ def editPledge():
     return dict(form=form)
 
 def selectInheritedRewards():
+    response.subtitle = 'Select Inherited Rewards'
     pledgeID = request.args(0)
     pledge = getPledge(pledgeID)
 
@@ -457,6 +456,7 @@ def getPledge(pledgeID):
     return pledge
 
 def upload():
+    response.subtitle = 'Upload new Bootable image'
     bootID = request.args(0)
     bootable = db(db.Bootables.id == bootID).select().first()
     if bootable.userID != session.user:

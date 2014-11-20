@@ -2,6 +2,7 @@ __author__ = 'Y8191122'
 
 
 def profile():
+    response.subtitle = 'User Profile'
     userID = session.user
     #If user manually types url and is not loged in redirect to login
     if userID is None:
@@ -38,6 +39,7 @@ def getCardAddress(userID):
 
 
 def editProfile():
+    response.subtitle = 'Edit Profile'
     userID = session.user
     #If user manually types url and is not loged in redirect to login
     if userID is None:
@@ -149,6 +151,7 @@ def user():
     :return: a dict containing: the form for the required operation
     """
     if request.args(0) == 'register':
+        response.subtitle = 'Register with BootUP'
         #Display the registration form with or without a separate billing address depending on users preferences
         formChanged = False
         if (request.post_vars.ccUseAddress is not None) & (request.post_vars.ccUserAddress != ''):
@@ -198,6 +201,7 @@ def user():
         else:
             response.flash = 'Please enter your details bellow:'
     elif request.args(0) == 'login':
+        response.subtitle = 'Login to BootUP'
         #Display the login form
         form = getLoginForm()
         if form.accepts(request.post_vars, session, formname='login'):

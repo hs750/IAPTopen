@@ -2,6 +2,7 @@ __author__ = "Y8191122"
 
 
 def index():
+    response.subtitle = 'Home'
     newest = db(db.Bootables.id>0).select(orderby=~db.Bootables.id, limitby=(0, 5))
     top5 = getTop5()
     return dict(newest=newest, top=top5)
@@ -14,9 +15,10 @@ def view():
     :return: booable information, the percentage complete and the users who pledged with their pledge amount
     """
     bootID = request.args(0)
-    bootable = db(db.Bootables.id == bootID).select()
+    bootable = db(db.Bootables.id == bootID).select().first()
+    response.subtitle = bootable.Title
 
-    image = IMG(_src=URL('bootableImage', args=[bootable.first().Image]))
+    image = IMG(_src=URL('bootableImage', args=[bootable.Image]))
 
     total = getTotalPledged(bootID)
     completion = getCompletionPercentage(bootID)
@@ -58,6 +60,7 @@ def view():
                 image=image)
 
 def search():
+    response.subtitle = 'Search Results'
     search = request.vars.search
     cat = request.vars.cat
     if cat == 'All':
