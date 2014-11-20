@@ -48,8 +48,10 @@ def editProfile():
 
 
     cardAddressSame = (user.CreditCards.addressID == user.Users.addressID)
-
-    print cardAddressSame
+    cardAddressSameOriginal = cardAddressSame
+    #Use the new value of using the same address if the user has changed thr form
+    if (session.useSameAddress is not None) and (request.post_vars.fName is not None):
+        cardAddressSame = session.useSameAddress
 
     values = dict()
     values['fName'] = user.Users.FirstName
@@ -80,13 +82,16 @@ def editProfile():
     if (request.post_vars.ccUseAddress is not None) & (request.post_vars.ccUserAddress != ''):
         form = getRegistrationForm(True, values, False)
         formChanged = True
+        session.useSameAddress = False
     elif (request.post_vars.ccCancel is not None) & (request.post_vars.ccCancel != ''):
         formChanged = True
         form = getRegistrationForm(False, values, False)
+        session.useSameAddress = True
     else:
         form = getRegistrationForm(not cardAddressSame, values, False)
 
     if (not formChanged) and form.accepts(request.post_vars, session, formname='regForm'):
+        session.useSameAddress = None
 
         user.Users.FirstName = request.post_vars.fName
         user.Users.LastName = request.post_vars.lName
@@ -107,12 +112,10 @@ def editProfile():
 
         useSameCCAddress = (request.post_vars.ccAddress is None)
 
-        if cardAddressSame and useSameCCAddress:
-            print 'same same'
+        if cardAddressSameOriginal and useSameCCAddress:
             #Still using the same - Do Nothing
             pass
-        elif cardAddressSame and (not useSameCCAddress):
-            print 'same not same'
+        elif cardAddressSameOriginal and (not useSameCCAddress):
             #Gone from using same to not
             ccAddressID = db.Addresses.insert(StreetAddress=request.post_vars.ccAddress,
                                               City=request.post_vars.ccCity,
@@ -120,14 +123,13 @@ def editProfile():
                                               PostCode=request.post_vars.ccPostCode)
             user.CreditCards.addressID = ccAddressID
             user.CreditCards.update_record()
-        elif (not cardAddressSame) and useSameCCAddress:
-            print 'not same same'
+        elif (not cardAddressSameOriginal) and useSameCCAddress:
             #Gone from using different to same addresses
+            oldCCAddressID = user.CreditCards.addressID
             user.CreditCards.addressID = user.Users.addressID
             user.CreditCards.update_record()
-            cardAddress.delete()
+            db(db.Addresses.id == oldCCAddressID).delete()
         else:
-            print 'not not same'
             #Still using different
             cardAddress.StreetAddress = request.post_vars.ccAddress
             cardAddress.City = request.post_vars.ccCity
@@ -139,9 +141,6 @@ def editProfile():
     else:
         response.flash = 'Change your details below'
 
-
-
-    print(request.post_vars)
     return dict(form=form)
 
 def user():
