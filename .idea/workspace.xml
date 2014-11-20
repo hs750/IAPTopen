@@ -3,9 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="cb5070bd-bb64-4466-8777-26586badfa50" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/sessions/1f8/05a/127.0.0.1-834e5a1a-19a4-4211-94b0-5c13e407e288" afterPath="$PROJECT_DIR$/web2py/applications/BootUp/sessions/1f8/05a/127.0.0.1-834e5a1a-19a4-4211-94b0-5c13e407e288" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web2py/applications/admin/sessions/127.0.0.1-2ad994dc-d740-4b9c-a56d-3160f097ea78" afterPath="$PROJECT_DIR$/web2py/applications/admin/sessions/127.0.0.1-2ad994dc-d740-4b9c-a56d-3160f097ea78" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/controllers/bootables.py" afterPath="$PROJECT_DIR$/web2py/applications/BootUp/controllers/bootables.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/controllers/default.py" afterPath="$PROJECT_DIR$/web2py/applications/BootUp/controllers/default.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/controllers/users.py" afterPath="$PROJECT_DIR$/web2py/applications/BootUp/controllers/users.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="IAPTopen.iws" />
@@ -45,18 +44,18 @@
       <file leaf-file-name="default.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/web2py/applications/BootUp/controllers/default.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="724" max-vertical-offset="1320">
-              <caret line="78" column="20" selection-start-line="78" selection-start-column="20" selection-end-line="78" selection-end-column="20" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1695">
+              <caret line="101" column="98" selection-start-line="101" selection-start-column="98" selection-end-line="101" selection-end-column="98" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="users.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="users.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/web2py/applications/BootUp/controllers/users.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-2.9879932" vertical-offset="4787" max-vertical-offset="5370">
-              <caret line="203" column="44" selection-start-line="203" selection-start-column="44" selection-end-line="203" selection-end-column="44" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="5865">
+              <caret line="373" column="26" selection-start-line="373" selection-start-column="26" selection-end-line="373" selection-end-column="26" />
               <folding />
             </state>
           </provider>
@@ -72,13 +71,13 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="bootables.py" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="bootables.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/web2py/applications/BootUp/controllers/bootables.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="6752" max-vertical-offset="7455">
-              <caret line="458" column="45" selection-start-line="458" selection-start-column="45" selection-end-line="458" selection-end-column="45" />
+            <state vertical-scroll-proportion="0.71649486" vertical-offset="7863" max-vertical-offset="8445">
+              <caret line="552" column="20" selection-start-line="552" selection-start-column="20" selection-end-line="552" selection-end-column="20" />
               <folding>
-                <marker date="1416503682000" expanded="true" signature="20350:20415" placeholder="Select rewar..." />
+                <marker date="1416506969000" expanded="true" signature="22558:22623" placeholder="Select rewar..." />
               </folding>
             </state>
           </provider>
@@ -165,9 +164,9 @@
         <option value="$PROJECT_DIR$/web2py/applications/BootUp/views/bootables/dash.html" />
         <option value="$PROJECT_DIR$/web2py/applications/BootUp/static/css/bootUpCSS.css" />
         <option value="$PROJECT_DIR$/web2py/applications/BootUp/views/bootables/upload.html" />
-        <option value="$PROJECT_DIR$/web2py/applications/BootUp/controllers/bootables.py" />
-        <option value="$PROJECT_DIR$/web2py/applications/BootUp/controllers/default.py" />
         <option value="$PROJECT_DIR$/web2py/applications/BootUp/controllers/users.py" />
+        <option value="$PROJECT_DIR$/web2py/applications/BootUp/controllers/default.py" />
+        <option value="$PROJECT_DIR$/web2py/applications/BootUp/controllers/bootables.py" />
       </list>
     </option>
   </component>
@@ -641,7 +640,7 @@
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32917964" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32917964" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32917964" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32917964" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33021808" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21962313" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -650,7 +649,7 @@
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3997923" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21897335" sideWeight="0.5007728" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3281412" sideWeight="0.5003249" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3281412" sideWeight="0.49967512" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3281412" sideWeight="0.49967512" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -1089,29 +1088,29 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web2py/applications/BootUp/controllers/bootables.py">
+    <entry file="file://$PROJECT_DIR$/web2py/applications/BootUp/controllers/users.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="6752" max-vertical-offset="7455">
-          <caret line="458" column="45" selection-start-line="458" selection-start-column="45" selection-end-line="458" selection-end-column="45" />
-          <folding>
-            <marker date="1416503682000" expanded="true" signature="20350:20415" placeholder="Select rewar..." />
-          </folding>
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="5865">
+          <caret line="373" column="26" selection-start-line="373" selection-start-column="26" selection-end-line="373" selection-end-column="26" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/web2py/applications/BootUp/controllers/default.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="724" max-vertical-offset="1320">
-          <caret line="78" column="20" selection-start-line="78" selection-start-column="20" selection-end-line="78" selection-end-column="20" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1695">
+          <caret line="101" column="98" selection-start-line="101" selection-start-column="98" selection-end-line="101" selection-end-column="98" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web2py/applications/BootUp/controllers/users.py">
+    <entry file="file://$PROJECT_DIR$/web2py/applications/BootUp/controllers/bootables.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.9879932" vertical-offset="4787" max-vertical-offset="5370">
-          <caret line="203" column="44" selection-start-line="203" selection-start-column="44" selection-end-line="203" selection-end-column="44" />
-          <folding />
+        <state vertical-scroll-proportion="0.71649486" vertical-offset="7863" max-vertical-offset="8445">
+          <caret line="552" column="20" selection-start-line="552" selection-start-column="20" selection-end-line="552" selection-end-column="20" />
+          <folding>
+            <marker date="1416506969000" expanded="true" signature="22558:22623" placeholder="Select rewar..." />
+          </folding>
         </state>
       </provider>
     </entry>
