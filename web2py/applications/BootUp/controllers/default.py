@@ -25,7 +25,8 @@ def view():
             the form allowing users to pledge,
             and the image of the bootable,
             the rewards for this bootable,
-            the username of the bootble owner
+            the username of the bootble owner,
+            the rewards for each user
     """
     bootID = request.args(0)
     bootable = db(db.Bootables.id == bootID).select().first()
@@ -43,13 +44,22 @@ def view():
     total = getTotalPledged(bootID)
     completion = getCompletionPercentage(bootID)
 
-    rewards = db((db.Pledges.bootID == bootID) &
-                 (db.Pledges.id == db.PledgeRewards.pledgeID) &
-                 (db.Rewards.id == db.PledgeRewards.rewardID)).select('Pledges.id',
-                                                                      'Pledges.Name',
-                                                                      'Pledges.Value',
-                                                                      'Rewards.Description',
-                                                                      orderby=db.Pledges.Value)
+    rewardQuery = (db.Pledges.bootID == bootID) & \
+                    (db.Pledges.id == db.PledgeRewards.pledgeID) & \
+                    (db.Rewards.id == db.PledgeRewards.rewardID)
+    rewards = db(rewardQuery).select('Pledges.id',
+                                      'Pledges.Name',
+                                      'Pledges.Value',
+                                      'Rewards.Description',
+                                      orderby=db.Pledges.Value)
+
+    usersPledgedQuery = (db.Bootables.id == bootID) & \
+                        (db.Bootables.id == db.UserPledges.bootID) & \
+                        (db.UserPledges.userID == db.Users.id)
+
+    userRewards = db((db.UserPledges.Value == db.Pledges.Value) &
+                     usersPledgedQuery &
+                     rewardQuery).select('Users.id', 'Rewards.Description')
 
     #Collect the values of pledges available for this bootable
     pledgeValues = db(db.Pledges.bootID == bootID).select('Value')
@@ -80,9 +90,9 @@ def view():
         response.flash = 'Must be signed in to pledge!'
 
     #Get this after submition of form so that screen updated on refresh
-    usersPledged = db((db.Bootables.id == bootID) &
-                      (db.Bootables.id == db.UserPledges.bootID) &
-                      (db.UserPledges.userID == db.Users.id)).select('Users.Username', 'UserPledges.Value')
+    usersPledged = db(usersPledgedQuery).select('Users.id',
+                                                                     'Users.Username',
+                                                                     'UserPledges.Value')
 
     return dict(bootable=bootable,
                 total=total,
@@ -91,7 +101,8 @@ def view():
                 pledgeForm=pledgeForm,
                 image=image,
                 rewards=rewards,
-                owner=owner)
+                owner=owner,
+                userRewards=userRewards)
 
 
 def search():

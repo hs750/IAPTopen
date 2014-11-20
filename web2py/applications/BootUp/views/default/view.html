@@ -54,14 +54,24 @@
     </div>
     <div class="users">
         {{=LEGEND('Users already pledging')}}
-        <dl class="dl-horizontal">
-            <dt>{{=H4('Username')}}</dt>
-            <dd>{{=H4('Pledge Amount')}}</dd>
-            {{for user in users:}}
-                <dt>{{=user.Users.Username}}</dt>
+        {{uRewards = dict()}}
+        {{for reward in userRewards:}}
+            {{ur = uRewards.get(reward.Users.id, [])}}
+            {{ur += [reward.Rewards.Description]}}
+            {{uRewards[reward.Users.id] = ur}}
+        {{pass}}
+        {{for user in users:}}
+            {{=H4(user.Users.Username)}}
+            <dl class="dl-horizontal">
+                <dt>Amount Pledged</dt>
                 <dd>{{='£' + str(user.UserPledges.Value)}}</dd>
-            {{pass}}
-        </dl>
+                <dt>Expected Rewards</dt>
+                {{for reward in uRewards[user.Users.id]:}}
+                    <dd>{{=reward}}</dd>
+                {{pass}}
+            </dl>
+
+        {{pass}}
     </div>
 </div>
 
@@ -76,3 +86,5 @@
     {{=DIV(LEGEND('Description'), DIV(bootable.LongDescription), _class='longDesc')}}
     {{=DIV(LEGEND('My Story'), DIV(bootable.PersonalStory), _class='longDesc')}}
 </div>
+
+        {{=BEAUTIFY(userRewards)}}
