@@ -23,7 +23,8 @@ def view():
             to total pledged,
             the users who pledged with their pledge amount,
             the form allowing users to pledge,
-            and the image of the bootable
+            and the image of the bootable,
+            the rewards for this bootable
     """
     bootID = request.args(0)
     bootable = db(db.Bootables.id == bootID).select().first()
@@ -34,6 +35,14 @@ def view():
 
     total = getTotalPledged(bootID)
     completion = getCompletionPercentage(bootID)
+
+    rewards = db((db.Pledges.bootID == bootID) &
+                 (db.Pledges.id == db.PledgeRewards.pledgeID) &
+                 (db.Rewards.id == db.PledgeRewards.rewardID)).select('Pledges.id',
+                                                                      'Pledges.Name',
+                                                                      'Pledges.Value',
+                                                                      'Rewards.Description',
+                                                                      orderby=db.Pledges.Value)
 
     #Collect the values of pledges available for this bootable
     pledgeValues = db(db.Pledges.bootID == bootID).select('Value')
@@ -73,7 +82,8 @@ def view():
                 percent=completion,
                 users=usersPledged,
                 pledgeForm=pledgeForm,
-                image=image)
+                image=image,
+                rewards=rewards)
 
 
 def search():
@@ -144,7 +154,7 @@ def getTop5():
         query |= (db.Bootables.id == sortedKeys[i])
 
     top5 = db(query).select(db.Bootables.ALL)
-    
+
     #Add the percentage to the return
     for item in top5:
         item['percent'] = percent[item.id]

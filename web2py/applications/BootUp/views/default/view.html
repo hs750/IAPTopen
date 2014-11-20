@@ -1,9 +1,78 @@
+<!-- Y8191122 -->
 {{extend 'layout.html'}}
-{{=image}}
-{{=BEAUTIFY(bootable)}}
-{{=total}}
-{{=percent}}
-{{=BEAUTIFY(users)}}
+{{=H1(bootable.Title)}}
+{{=DIV(image)}}
+<div class="details">
+    {{=LEGEND('Bootable Details')}}
+    <dl class="dl-horizontal">
+        <dt>Category</dt>
+        <dd>{{=bootable.Category}}</dd>
+        <dt>Short Description</dt>
+        <dd>{{=bootable.ShortDescription}}</dd>
+        <dt>Finding Goal</dt>
+        <dd>{{='£' + str(bootable.FundingGoal)}}</dd>
+        <dt>Total Pledges Relieved</dt>
+        <dd>{{='£' + str(total)}}</dd>
+        <dt>Percentage Complete</dt>
+        <dd>{{=str(percent) + '%'}}</dd>
+    </dl>
+    <div class="rewards">
+        {{=LEGEND('Pledges & Rewards')}}
+        {{order=dict()}}
+        {{pledges=dict()}}
+        {{i=1}}
+        <!-- Accociate rewards with pledges-->
+        {{for pledge in rewards:}}
+            {{p = pledges.get(pledge.Pledges.id, [pledge.Pledges.Name,pledge.Pledges.Value,[]])}}
+            {{p[2] = p[2] + [pledge.Rewards.Description]}}
+            {{pledges[pledge.Pledges.id] = p}}
+            {{order[pledge.Pledges.id] = i}}
+            {{i +=1}}
+        {{pass}}
+        <!-- Dict doesnt keep order so need to reorder pledges in value order low to high-->
+        {{sortedOrder = sorted(order.items(), key=operator.itemgetter(1))}}
+
+        <!-- Serialise the pledges-->
+        {{for orderID in sortedOrder:}}
+            {{pID = orderID[0]}}
+            {{i = 1}}
+            {{p = pledges[pID]}}
+            {{=H4(p[0])}}
+            <dl class="dl-horizontal">
+                <dt>Value</dt>
+                <dd>{{='£' + str(p[1])}}</dd>
+                {{if i == 1:}}
+                    <dt>Rewards</dt>
+                    {{i += 1}}
+                {{pass}}
+                {{for desc in p[2]:}}
+                    <dd>{{=desc}}</dd>
+                {{pass}}
+            </dl>
+        {{pass}}
+
+    </div>
+    <div class="users">
+        {{=LEGEND('Users already pledging')}}
+        <dl class="dl-horizontal">
+            <dt>{{=H4('Username')}}</dt>
+            <dd>{{=H4('Pledge Amount')}}</dd>
+            {{for user in users:}}
+                <dt>{{=user.Users.Username}}</dt>
+                <dd>{{='£' + str(user.UserPledges.Value)}}</dd>
+            {{pass}}
+        </dl>
+    </div>
+</div>
+
 {{if session.user is not None:}}
-    {{=pledgeForm}}
+    <div class="details">
+        {{=LEGEND('PLEDGE!')}}
+        {{=pledgeForm}}
+    </div>
 {{pass}}
+
+<div class="details">
+    {{=DIV(LEGEND('Description'), DIV(bootable.LongDescription), _class='longDesc')}}
+    {{=DIV(LEGEND('My Story'), DIV(bootable.PersonalStory), _class='longDesc')}}
+</div>

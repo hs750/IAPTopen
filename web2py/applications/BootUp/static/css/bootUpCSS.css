@@ -34,3 +34,14 @@
     margin:0 auto;
     text-align:center;
 }
+
+.details {
+    float: left;
+    width: 50%;
+}
+
+.details form {
+    text-align: center;
+    width: 100%;
+}
+
