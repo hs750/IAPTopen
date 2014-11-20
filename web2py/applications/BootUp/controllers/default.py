@@ -24,11 +24,17 @@ def view():
             the users who pledged with their pledge amount,
             the form allowing users to pledge,
             and the image of the bootable,
-            the rewards for this bootable
+            the rewards for this bootable,
+            the username of the bootble owner
     """
     bootID = request.args(0)
     bootable = db(db.Bootables.id == bootID).select().first()
+    #Cant view if not available, owning user can see for 'preview'
+    if (bootable.State == bootableStates[0]) & (bootable.userID != session.user):
+        redirect(URL('index'))
     response.subtitle = bootable.Title
+    owner = db(db.Users.id == bootable.userID).select('Username').first().Username
+
 
     #The bootable image
     image = IMG(_src=URL('bootableImage', args=[bootable.Image]))
@@ -83,7 +89,8 @@ def view():
                 users=usersPledged,
                 pledgeForm=pledgeForm,
                 image=image,
-                rewards=rewards)
+                rewards=rewards,
+                owner=owner)
 
 
 def search():
