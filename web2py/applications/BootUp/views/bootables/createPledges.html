@@ -1,19 +1,4 @@
 {{extend 'layout.html'}}
-<!-- A hack to make the form submission work,
-the returned value from session.resubmit is '' if no resubmission wanted,
-or the id of the submit button to click-->
-<script>
-    $( document ).ready(function() {
-        var autoSubmit = "{{=session.resubmit}}";
-        if (autoSubmit) {
-            console.log('submitted' + autoSubmit);
-            document.getElementById(autoSubmit).click();
-
-        } else {
-            console.log('not sub');
-        }
-    });
-</script>
 <div class="content">
     {{=P(response.flash)}}
     {{=form}}

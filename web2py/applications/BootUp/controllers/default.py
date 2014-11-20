@@ -27,12 +27,12 @@ def view():
     print(values)
     pledgeForm = FORM(SELECT(values, _name='pledgeValue'),
                       INPUT(_type='submit', _name='pledgeSubmit', _value='Pledge!'),
-                      _name='pledgeForm',
+                      _name='userPledgeForm',
                       _class='form-inline')
 
     if session.user is not None:
         #Only do anything with the form if user logged in
-        if pledgeForm.accepts(request.post_vars, session):
+        if pledgeForm.accepts(request.post_vars, session, formname='userPledgeForm'):
             db.UserPledges.insert(userID=session.user,
                                   bootID=bootID,
                                   Value=request.post_vars.pledgeValue)

@@ -7,11 +7,8 @@ def profile():
     if userID is None:
         redirect(response.loginURL)
 
-    user = db((db.Users.cardID == db.CreditCards.id) &
-              (db.CreditCards.addressID == db.Addresses.id) &
-              (db.Users.id == userID)).select().first()
-
-    cardAddress = db(db.Addresses.id == user.CreditCards.addressID).select().first()
+    user = getUser(userID)
+    cardAddress = getCardAddress(userID)
 
     pledges = db((db.Users.id == db.UserPledges.userID) &
                  (db.Bootables.id == db.UserPledges.bootID) &
@@ -23,17 +20,129 @@ def profile():
                                                  'Pledges.Name',
                                                  'Pledges.Value',
                                                  'Rewards.Description',
-
                                                  distinct=True)
 
     return dict(user=user, cardAddress=cardAddress, pledges=pledges)
+
+def getUser(userID):
+    user = db((db.Users.cardID == db.CreditCards.id) &
+              (db.Users.addressID == db.Addresses.id) &
+              (db.Users.id == userID)).select().first()
+    return user
+
+
+def getCardAddress(userID):
+    user = getUser(userID)
+    cardAddress = db(db.Addresses.id == user.CreditCards.addressID).select().first()
+    return cardAddress
+
 
 def editProfile():
     userID = session.user
     #If user manually types url and is not loged in redirect to login
     if userID is None:
         redirect(response.loginURL)
-    return dict()
+
+    user = getUser(userID)
+    cardAddress = getCardAddress(userID)
+
+
+    cardAddressSame = (user.CreditCards.addressID == user.Users.addressID)
+
+    print cardAddressSame
+
+    values = dict()
+    values['fName'] = user.Users.FirstName
+    values['lName'] = user.Users.LastName
+    values['email'] = user.Users.Email
+    values['dob'] = user.Users.DateOfBirth
+
+    values['sAddress'] = user.Addresses.StreetAddress
+    values['city'] = user.Addresses.City
+    values['country'] = user.Addresses.Country
+    values['postCode'] = user.Addresses.PostCode
+
+    values['cardNumber'] = user.CreditCards.CardNumber
+    values['expDate'] = user.CreditCards.ExpiryDate
+    values['cardID'] = user.CreditCards.IDCode
+
+    values['ccAddress'] = cardAddress.StreetAddress
+    values['ccCity'] = cardAddress.City
+    values['ccCountry'] = cardAddress.Country
+    values['ccPostCode'] = cardAddress.PostCode
+
+    #Overide DB with user entry
+    for item in request.post_vars:
+        values[item] = request.post_vars[item]
+
+    #Display the registration form with or without a separate billing address depending on users preferences
+    formChanged = False
+    if (request.post_vars.ccUseAddress is not None) & (request.post_vars.ccUserAddress != ''):
+        form = getRegistrationForm(True, values, False)
+        formChanged = True
+    elif (request.post_vars.ccCancel is not None) & (request.post_vars.ccCancel != ''):
+        formChanged = True
+        form = getRegistrationForm(False, values, False)
+    else:
+        form = getRegistrationForm(not cardAddressSame, values, False)
+
+    if (not formChanged) and form.accepts(request.post_vars, session, formname='regForm'):
+
+        user.Users.FirstName = request.post_vars.fName
+        user.Users.LastName = request.post_vars.lName
+        user.Users.Email = request.post_vars.email
+        user.Users.DateOfBirth = request.post_vars.dob
+
+        user.Addresses.StreetAddress = request.post_vars.sAddress
+        user.Addresses.City = request.post_vars.city
+        user.Addresses.Country = request.post_vars.country
+        user.Addresses.PostCode = request.post_vars.postCode
+
+        user.CreditCards.CardNumber = request.post_vars.cardNumber
+        user.CreditCards.ExpiryDate = request.post_vars.expDate
+        user.CreditCards.IDCode = request.post_vars.cardID
+        user.Users.update_record()
+        user.Addresses.update_record()
+        user.CreditCards.update_record()
+
+        useSameCCAddress = (request.post_vars.ccAddress is None)
+
+        if cardAddressSame and useSameCCAddress:
+            print 'same same'
+            #Still using the same - Do Nothing
+            pass
+        elif cardAddressSame and (not useSameCCAddress):
+            print 'same not same'
+            #Gone from using same to not
+            ccAddressID = db.Addresses.insert(StreetAddress=request.post_vars.ccAddress,
+                                              City=request.post_vars.ccCity,
+                                              Country=request.post_vars.ccCountry,
+                                              PostCode=request.post_vars.ccPostCode)
+            user.CreditCards.addressID = ccAddressID
+            user.CreditCards.update_record()
+        elif (not cardAddressSame) and useSameCCAddress:
+            print 'not same same'
+            #Gone from using different to same addresses
+            user.CreditCards.addressID = user.Users.addressID
+            user.CreditCards.update_record()
+            cardAddress.delete()
+        else:
+            print 'not not same'
+            #Still using different
+            cardAddress.StreetAddress = request.post_vars.ccAddress
+            cardAddress.City = request.post_vars.ccCity
+            cardAddress.Country = request.post_vars.ccCountry
+            cardAddress.PostCode = request.post_vars.ccPostCode
+            cardAddress.update_record()
+    elif form.errors:
+        response.flash = 'There was something wrong with what you entered'
+    else:
+        response.flash = 'Change your details below'
+
+
+
+    print(request.post_vars)
+    return dict(form=form)
 
 def user():
     """
@@ -44,14 +153,14 @@ def user():
         #Display the registration form with or without a separate billing address depending on users preferences
         formChanged = False
         if (request.post_vars.ccUseAddress is not None) & (request.post_vars.ccUserAddress != ''):
-            form = registrationForm(True, request.post_vars)
+            form = getRegistrationForm(True, request.post_vars)
             formChanged = True
         elif (request.post_vars.ccCancel is not None) & (request.post_vars.ccCancel != ''):
             formChanged = True
-            form = registrationForm(False, request.post_vars)
+            form = getRegistrationForm(False, request.post_vars)
         else:
-            form = registrationForm(False, request.post_vars)
-        if (not formChanged) and form.accepts(request.post_vars, session):
+            form = getRegistrationForm(False, request.post_vars)
+        if (not formChanged) and form.accepts(request.post_vars, session, formname='regForm'):
             #Check if username is already taken (IS_NOT_IN_DB doesnt seem to work)
             if db(db.Users.Username == request.post_vars.username).select().first() is not None:
                 form.errors.username = 'Username already taken'
@@ -92,7 +201,7 @@ def user():
     elif request.args(0) == 'login':
         #Display the login form
         form = getLoginForm()
-        if form.accepts(request.post_vars, session):
+        if form.accepts(request.post_vars, session, formname='login'):
             userLogin = db(db.Users.Username == request.post_vars.username).select(db.Users.id, db.Users.Password)
             userLogin = userLogin[0]
             if userLogin is not None:
@@ -111,14 +220,12 @@ def user():
     elif request.args(0) == 'logout':
         #Log the user out and redirect home
         session.user = None
+        session.clear()
         redirect(URL('default', 'index'))
-        form=FORM()
-    else:
-        form=FORM()
     return dict(form=form)
 
 
-def registrationForm(ccAddress, values):
+def getRegistrationForm(ccAddress, values, incUsernameAndPassword=True):
     """Returns a form for user registration
 
     :param ccAddress: Include a seperate address as billing address
@@ -134,33 +241,35 @@ def registrationForm(ccAddress, values):
     #   Address
     #   Credit Card
     #   Then optionally the address of the credit card (if different from the main address)
-    form = FORM(DIV(DIV(H3('General Details:')),
-                    DIV(LABEL('First Name:', _for='fName')),
-                    DIV(INPUT(_name='fName', requires=db.Users.FirstName.requires,
-                              _value=getFieldValue(values, 'fName'))),
-                    DIV(LABEL('Last Name:', _for='lName')),
-                    DIV(INPUT(_name='lName', reqires=db.Users.LastName.requires,
-                              _value=getFieldValue(values, 'lName'))),
-                    DIV(LABEL('Email:', _for='email')),
-                    DIV(INPUT(_name='email', _type='email', reqires=db.Users.Email.requires,
-                              _value=getFieldValue(values, 'email'))),
-                    DIV(LABEL('Date of Birth:', _for='dob')),
-                    DIV(INPUT(_name='dob', _type='date', reqires=db.Users.DateOfBirth.requires,
-                              _value=getFieldValue(values, 'dob'),
-                              _placeholder='YYYY-MM-DD')),
-                    DIV(LABEL('Username:', _for='username')),
-                    DIV(INPUT(_name='username', reqires=db.Users.Username.requires,
-                              _value=getFieldValue(values, 'username'))),
-                    DIV(LABEL('Password:', _for='password')),
-                    DIV(INPUT(_name='password', _type='password', reqires=db.Users.Password.requires,
-                              _value=getFieldValue(values, 'password'))),
-                    DIV(LABEL('Confirm Password:', _for='password_two')),
-                    DIV(INPUT(_name="password_two", _type="password",
-                              requires=IS_EXPR('value==%s' % repr(request.vars.password),
-                                               error_message='Passwords do not match'),
-                              _value=getFieldValue(values, 'password_two'))),
-                    _class='regForm',
-                    _id='regForm1'),
+    generalDiv = DIV(DIV(H3('General Details:')),
+                     DIV(LABEL('First Name:', _for='fName')),
+                     DIV(INPUT(_name='fName', requires=db.Users.FirstName.requires,
+                               _value=getFieldValue(values, 'fName'))),
+                     DIV(LABEL('Last Name:', _for='lName')),
+                     DIV(INPUT(_name='lName', reqires=db.Users.LastName.requires,
+                               _value=getFieldValue(values, 'lName'))),
+                     DIV(LABEL('Email:', _for='email')),
+                     DIV(INPUT(_name='email', _type='email', reqires=db.Users.Email.requires,
+                               _value=getFieldValue(values, 'email'))),
+                     DIV(LABEL('Date of Birth:', _for='dob')),
+                     DIV(INPUT(_name='dob', _type='date', reqires=db.Users.DateOfBirth.requires,
+                               _value=getFieldValue(values, 'dob'),
+                               _placeholder='YYYY-MM-DD')),
+                     _class='regForm',
+                     _id='regForm1')
+    if incUsernameAndPassword:
+        generalDiv.append(DIV(DIV(LABEL('Username:', _for='username')),
+                              DIV(INPUT(_name='username', reqires=db.Users.Username.requires,
+                                        _value=getFieldValue(values, 'username'))),
+                              DIV(LABEL('Password:', _for='password')),
+                              DIV(INPUT(_name='password', _type='password', reqires=db.Users.Password.requires,
+                                        _value=getFieldValue(values, 'password'))),
+                              DIV(LABEL('Confirm Password:', _for='password_two')),
+                              DIV(INPUT(_name="password_two", _type="password",
+                                        requires=IS_EXPR('value==%s' % repr(request.vars.password),
+                                                         error_message='Passwords do not match'),
+                                        _value=getFieldValue(values, 'password_two')))))
+    form = FORM(generalDiv,
                 DIV(DIV(H3('Address:')),
                     DIV(LABEL('Street Address:', _for='sAddress')),
                     DIV(TEXTAREA(_name='sAddress', requires=db.Addresses.StreetAddress.requires,
@@ -192,7 +301,8 @@ def registrationForm(ccAddress, values):
                               _value=getFieldValue(values, 'cardID'),
                               _placeholder='012')),
                     _class='regForm',
-                    _id='regForm3')
+                    _id='regForm3'),
+                formname='regForm'
                 )
 
     if not ccAddress:
@@ -201,7 +311,7 @@ def registrationForm(ccAddress, values):
         form.append(DIV(DIV(H3('Billing Address')),
                         DIV(LABEL('Street Address:', _for='ccAddress')),
                         DIV(TEXTAREA(_name='ccAddress', requires=db.Addresses.StreetAddress.requires,
-                                     _value=getFieldValue(values, 'ccAddress'))),
+                                     value=getFieldValue(values, 'ccAddress'))),
                         DIV(LABEL('City:', _for='ccCity')),
                         DIV(INPUT(_name='ccCity', requires=db.Addresses.City.requires,
                                   _value=getFieldValue(values, 'ccCity'))),
@@ -218,6 +328,9 @@ def registrationForm(ccAddress, values):
         form.append(INPUT(_name='ccCancel', _type='submit', _value='Cancel billing address'))
 
     form.append(INPUT(_name='submit', _type='submit'))
+
+    #Must preform accepts do that in all paths formkey in form and session get set to tbe the same
+    form.accepts(dict(), session, 'regForm')
     return form
 
 
@@ -227,7 +340,8 @@ def getLoginForm():
                 DIV(INPUT(_name='username', requires=IS_NOT_EMPTY())),
                 DIV(LABEL('Password:', _for='password')),
                 DIV(INPUT(_name='password', _type='password', requires=IS_NOT_EMPTY())),
-                DIV(INPUT(_name='login', _type='submit'))
+                DIV(INPUT(_name='login', _type='submit')),
+                name='loginForm'
                 )
     return form
 

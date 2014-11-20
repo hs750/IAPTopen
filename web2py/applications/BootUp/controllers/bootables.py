@@ -15,7 +15,7 @@ def create():
     else:
         form = getBootableForm(request.post_vars)
 
-        if form.accepts(request.post_vars, session):
+        if form.accepts(request.post_vars, session, formname='bootableForm'):
             image = db.Bootables.Image.store(request.post_vars.image.file, request.post_vars.image.filename)
             bootableID = db.Bootables.insert(Title=request.post_vars.title,
                                              ShortDescription=request.post_vars.shortDesc,
@@ -84,7 +84,9 @@ def createPledges():
                                      )
 
         for i in range(1, numRewards + 1):
-            rewardId = db.Rewards.insert(description=request.post_vars['description-' + str(i)])
+            print 'num rewards' + str(i)
+            print request.post_vars
+            rewardId = db.Rewards.insert(Description=request.post_vars['description-' + str(i)])
             db.PledgeRewards.insert(pledgeID=pledgeId,
                                     rewardID=rewardId,
                                     Inherited=False)
@@ -111,18 +113,7 @@ def createPledges():
     elif form.errors:
         response.flash = 'There was a problem with what you entered.'
     else:
-        if request.post_vars.name is not None:
-            if (request.post_vars.nextPledge is not None) & (request.post_vars.nextPledge != ''):
-                session.resubmit = 'nextPledge'
-            else:
-                session.resubmit = 'doneSubmit'
-            #For some reason when the inheritance check boxes are in the form, the form wont be accepted the first time
-            #But will also not populate the errors variable so there is no way to know what is wrong.
-            #So as a temporary measure added this message so the user has some feedback/forward on what to do.
-            #Some javascript resubmits the form so this message is only needed if javascript is not enabled
-            response.flash = 'Please submit the form again.'
-        else:
-            response.flash = 'Please enter Pledge details'
+        response.flash = 'Please enter Pledge details'
     return dict(form=form)
 
 
@@ -156,7 +147,7 @@ def getBootableForm(values, includeImage=True, submitText='Add pledge values'):
         formDiv.append(DIV(INPUT(_name='image', _type='file', requires=db.Bootables.Image.requires,
                                  _value=getFieldValue(values, 'image'))))
 
-    form = FORM(formDiv)
+    form = FORM(formDiv, formname='bootableForm')
 
     return form
 
@@ -199,6 +190,9 @@ def getPledgeForm(values, numRewards, inheritPledges, inheritLabel='Get inherita
 
     buttonDiv.append(DIV(INPUT(_name='done', _type='submit', _value='Done', _id='doneSubmit')))
     form.append(buttonDiv)
+
+    #Must set formkey in all paths
+    form.accepts(dict(), session, 'pledgeForm')
     return form
 
 
@@ -254,7 +248,8 @@ def dash():
         percentComplete[bootable.id] = getCompletionPercentage(bootable.id)
         bootStateForm = FORM(SELECT(bootableStates, _name='state-'+str(bootable.id), _value=bootable.State),
                              INPUT(_name='bootID', _value=bootable.id, _hidden=True, _type='hidden'),
-                             INPUT(_name='submit-'+str(bootable.id), _type='submit'))
+                             INPUT(_name='submit-'+str(bootable.id), _type='submit'),
+                             formname='stateForm-' + str(bootable.id))
         forms[bootable.id] = bootStateForm
     return dict(bootables=bootables, pledges=pledges, total=totalPledged, percent=percentComplete, stateForms=forms)
 
@@ -285,7 +280,7 @@ def edit():
                                                                       'Rewards.Description')
 
     form = getBootableForm(vars, False, 'Save Changes')
-    if form.accepts(request.post_vars, session):
+    if form.accepts(request.post_vars, session, formname='bootableForm'):
         session.flash = 'Updated bootable successfully'
         bootable.Title = request.post_vars.title
         bootable.ShortDescription = request.post_vars.shortDesc
@@ -375,16 +370,8 @@ def editPledge():
     elif form.errors:
         response.flash = 'There was a problem with the form'
     else:
-        if request.post_vars.name is not None:
-            if (request.post_vars.inheritPledges is not None) & (request.post_vars.inheritPledges != ''):
-                session.resubmit = 'inheritPledges'
-            else:
-                session.resubmit = 'doneSubmit'
-            #Need to use the submit hack again
-            response.flash = 'Please submit the form again'
-        else:
-            response.flash = 'Edit the pledge, ' \
-                             'changing the value will require changing the reward inheritance on the next page'
+        response.flash = 'Edit the pledge, ' \
+                         'changing the value will require changing the reward inheritance on the next page'
 
 
     return dict(form=form)
@@ -399,12 +386,12 @@ def selectInheritedRewards():
         if reward.PledgeRewards.Inherited:
             values['reward-' + str(reward.Rewards.id)] = 'on'
 
-    form = FORM()
+    form = FORM(formname='inheritForm')
 
     form.append(getPledgeInheritDiv(values, pledge.first().Pledges.Value, pledge.first().Pledges.bootID))
     form.append(DIV(INPUT(_name='submit', _type='submit')))
 
-    if form.accepts(request.post_vars, session):
+    if form.accepts(request.post_vars, session, formname='inheritForm'):
         inheritCount = int(request.post_vars.inheritCount)
 
         for i in range(1, inheritCount + 1):
