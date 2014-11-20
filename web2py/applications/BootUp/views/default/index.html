@@ -1,9 +1,25 @@
 {{extend 'layout.html'}}
 <div id="top5" class="top5">
-    <h2>TOP5: Closest to reaching goal!</h2>
-    {{=BEAUTIFY(top)}}
+    {{=LEGEND(H2('TOP5: Closest to reaching goal!'))}}
+    <div class="">
+        {{for bootable in top:}}
+        <div class="col-sm-1">
+            {{=H3(A(bootable.Title, _href=URL('view', args=[bootable.id])))}}
+            {{=DIV(H4('Description'), DIV(bootable.ShortDescription))}}
+            {{=DIV(H4('Category'), DIV(bootable.Category))}}
+        </div>
+        {{pass}}
+    </div>
 </div>
 <div id="newest" class="top5">
-    <h2>TOP5: Newest Bootables!</h2>
-    {{=BEAUTIFY(newest)}}
+    {{=LEGEND(H2('TOP5: Newest Bootables!'))}}
+    <div class="">
+        {{for bootable in newest:}}
+        <div class="col-sm-1">
+            {{=H3(A(bootable.Title, _href=URL('view', args=[bootable.id])))}}
+            {{=DIV(H4('Description'), DIV(bootable.ShortDescription))}}
+            {{=DIV(H4('Category'), DIV(bootable.Category))}}
+        </div>
+        {{pass}}
+    </div>
 </div>
