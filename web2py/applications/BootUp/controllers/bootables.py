@@ -2,7 +2,7 @@ __author__='Y8191122'
 
 def create():
     """
-    Create bootables (the basic bootable information
+    Create bootables (the basic bootable information)
     :return: bootable creation form
     """
     #User must be logged in
@@ -24,7 +24,7 @@ def create():
                                              State=bootableStates[0],
                                              userID=session.user
                                              )
-            response.flash = 'Bootable successfully created'
+            session.flash = 'Bootable successfully created'
             #After bootable created proceed to edit it (add pledges and rewards)
             redirect(URL('bootables', 'createPledges', args=[bootableID]))
         elif form.errors:
@@ -41,6 +41,13 @@ def createPledges():
     :return: pledge creation form
     """
     bootable = db(db.Bootables.id == request.args(0)).select().first()
+    if bootable is None:
+        #Can only edit existing bootables
+        redirect(URL('default', 'index'))
+    elif bootable.userID != session.user:
+        #Can only edit if loged in as owning user
+        redirect(loginURL)
+
     response.subtitle = 'Create pledge for Bootable: ' + bootable.Title
     #Number of rewards a pledge has
     numRewards = request.post_vars.numRewards
@@ -75,7 +82,6 @@ def createPledges():
         else:
             form = getPledgeForm(request.post_vars, numRewards, True)
     elif form.accepts(request.post_vars, session, formname='pledgeForm'):
-        print('accepted')
         pledgeId = db.Pledges.insert(Name=request.post_vars.name,
                                      Value=request.post_vars.value,
                                      bootID=request.args(0)
@@ -113,6 +119,13 @@ def createPledges():
 
 
 def getBootableForm(values, includeImage=True, submitText='Add pledge values'):
+    """
+    Get the bootable creation/edit form
+    :param values: pre population values
+    :param includeImage: include image upload input (for editing bootable)
+    :param submitText: The text of the submit button
+    :return: A form for creating/editing bootables
+    """
     #The basic bootable form
     formDiv = DIV(DIV(H3('Bootable Info:')),
                   DIV(LABEL('Title:', _for='title')),
@@ -149,11 +162,13 @@ def getPledgeForm(values, numRewards, inheritPledges, inheritLabel='Get inherita
                   incNextPledge=True):
     """
     Get the form used for entering pledges into the database
-    :param values: the post_vars from the last submission (used for repopulating){
-    :param numRewards: the number of reward slots to have in the form
-    :return: The pledge entry form
+    :param values: the values of the fields for repopulation
+    :param numRewards: the number of reward input for the form to ahve
+    :param inheritPledges: whether to include inheritance checkboxes
+    :param inheritLabel: the label for the inheritance button
+    :param incNextPledge: whether to unclude next pledge button (for editing)
+    :return: the pledge creation / edit form
     """
-
     form = FORM(DIV(DIV(H3('Pledge:')),
                     DIV(LABEL('Name:', _for='name')),
                     DIV(INPUT(_name='name', requires=db.Pledges.Name.requires,
@@ -191,6 +206,12 @@ def getPledgeForm(values, numRewards, inheritPledges, inheritLabel='Get inherita
 
 
 def getRewardDiv(values, num):
+    """
+    Get a div containing reward input fields for a form
+    :param values: pre population values
+    :param num: the number of reward inputs
+    :return: div containing reward input fields
+    """
     form = DIV(DIV(H4('Reward ' + num + ':')),
                DIV(LABEL('Description:', _for='description-'+num)),
                DIV(TEXTAREA(_name='description-'+num, requires=db.Rewards.Description.requires,
@@ -200,6 +221,13 @@ def getRewardDiv(values, num):
 
 
 def getPledgeInheritDiv(values, pledgeValue, bootID):
+    """
+    A Div containing pledge inheritance inputs
+    :param values: pre population values
+    :param pledgeValue: the value of the pledge (only inherit from lower valued pledges)
+    :param bootID: the id of the bootable these pledges are for
+    :return: div containing inheritance inputs
+    """
     #Add checkboxes for reward inheritance
     otherRewards = db((db.Pledges.bootID == bootID) &
                       (db.Pledges.Value < pledgeValue) &
@@ -222,6 +250,16 @@ def getPledgeInheritDiv(values, pledgeValue, bootID):
 
 
 def dash():
+    """
+    The bootable dashboard for a user
+    :return: a set of bootables owned by the user,
+            a set of pledges and their rewards for each bootable owned by the user,
+            a dict of percentages complete for each bootable indexed by bootID,
+            a dict of total pledge values for each bootable index by bootID,
+            a dict of forms, one for each bootable, for selecting the bootables state,
+            a dict of images one for each bootable
+
+    """
     response.subtitle = 'Bootable Dashboard'
     userID = session.user
     if userID is None:
@@ -240,6 +278,7 @@ def dash():
     forms = dict()
     images = dict()
     count = 0
+    #Build the list of totals, percentages, state forms and images for each bootable owned by user
     for bootable in bootables:
         totalPledged[bootable.id] = getTotalPledged(bootable.id)
         percentComplete[bootable.id] = getCompletionPercentage(bootable.id)
@@ -266,9 +305,6 @@ def dash():
             session.flash = 'Updated ' + bootable.Title + ' to ' + newState
             redirect(URL())
 
-
-
-
     return dict(bootables=bootables,
                 pledges=pledges,
                 totals=totalPledged,
@@ -278,15 +314,22 @@ def dash():
 
 
 def edit():
+    """
+    A page for editing bootables
+    :return: a form for editing bootable, a list of pledges for the bootable
+    """
     response.subtitle = 'Edit Bootable'
     bootID = request.args(0)
     bootable = db(db.Bootables.id == bootID).select().first()
+
     #Only the owner of a bootable can edit it.
     if (session.user is None) or (session.user != bootable.userID):
         redirect(URL('default', 'index'))
     elif bootable.State == bootableStates[1]:
         #Cannot edit if open
+        session.flash = 'Bootable Open so cannot edit'
         redirect(URL('bootables', 'dash'))
+
     vars = dict()
     vars['title'] = bootable.Title;
     vars['shortDesc'] = bootable.ShortDescription
@@ -305,7 +348,7 @@ def edit():
 
     form = getBootableForm(vars, False, 'Save Changes')
     if form.accepts(request.post_vars, session, formname='bootableForm'):
-        session.flash = 'Updated bootable successfully'
+        session.flash = 'Updated Bootable successfully'
         bootable.Title = request.post_vars.title
         bootable.ShortDescription = request.post_vars.shortDesc
         bootable.FundingGoal = request.post_vars.fundGoal
@@ -317,11 +360,15 @@ def edit():
     elif form.errors:
         response.flash = 'There was a problem with something you entered.'
     else:
-        response.flash = 'Edit your bootable'
+        response.flash = 'Edit your Bootable'
     return dict(form=form, pledges=pledges)
 
 
 def editPledge():
+    """
+    A page for editing pledges
+    :return: a form
+    """
     response.subtitle = 'Edit Pledge'
     session.resubmit = ''
     pledgeID = request.args(0)
@@ -387,6 +434,7 @@ def editPledge():
                                     rewardID=rewardID,
                                     Inherited=False)
 
+        session.flash = 'Pledge successfully saved'
         if (request.post_vars.inheritPledges is not None) & (request.post_vars.inheritPledges != ''):
             redirect(URL('selectInheritedRewards', args=[pledgeID]))
         else:
@@ -402,6 +450,10 @@ def editPledge():
     return dict(form=form)
 
 def selectInheritedRewards():
+    """
+    Select the reward inheritance of a pledge page
+    :return: form for selecting pledges, the pledge that you are editing
+    """
     response.subtitle = 'Select Inherited Rewards'
     pledgeID = request.args(0)
     pledge = getPledge(pledgeID)
@@ -444,7 +496,13 @@ def selectInheritedRewards():
 
     return dict(form=form, pledge=pledge)
 
+
 def getPledge(pledgeID):
+    """
+    Get a pledge
+    :param pledgeID: the id of the pledge to get
+    :return: the pledge with all its rewards
+    """
     pledge = db((db.Pledges.id == pledgeID) &
                 (db.Pledges.id == db.PledgeRewards.pledgeID) &
                 (db.Rewards.id == db.PledgeRewards.rewardID)).select()
@@ -456,12 +514,17 @@ def getPledge(pledgeID):
     return pledge
 
 def upload():
+    """
+    Page for uploading a new bootable image
+    :return: the form for uploading an image, the current image
+    """
     response.subtitle = 'Upload new Bootable image'
     bootID = request.args(0)
     bootable = db(db.Bootables.id == bootID).select().first()
     if bootable.userID != session.user:
         redirect(loginURL)
 
+    #Current image
     image = DIV(LEGEND('Current Image'),
                 IMG(_src=URL('default', 'bootableImage', args=[bootable.Image]), _alt='Current Image'))
 
@@ -484,8 +547,11 @@ def upload():
     return dict(form=form, currentImage=image)
 
 
-def getImageUploadDiv(values=dict()):
+def getImageUploadDiv():
+    """
+    Get a Div with input for uploading image
+    :return: the div
+    """
     div = DIV(DIV(LABEL('Image:', _for='image')),
-              DIV(INPUT(_name='image', _type='file', requires=db.Bootables.Image.requires,
-                        _value=getFieldValue(values, 'image'))))
+              DIV(INPUT(_name='image', _type='file', requires=db.Bootables.Image.requires)))
     return div
