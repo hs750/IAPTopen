@@ -243,14 +243,29 @@ def dash():
     totalPledged = dict()
     percentComplete = dict()
     forms = dict()
+    count = 0
     for bootable in bootables:
         totalPledged[bootable.id] = getTotalPledged(bootable.id)
         percentComplete[bootable.id] = getCompletionPercentage(bootable.id)
-        bootStateForm = FORM(SELECT(bootableStates, _name='state-'+str(bootable.id), _value=bootable.State),
-                             INPUT(_name='bootID', _value=bootable.id, _hidden=True, _type='hidden'),
+        formname = 'stateForm-' + str(bootable.id)
+        bootStateForm = FORM(LABEL('State:', _for='state-'+str(bootable.id)),
+                             SELECT(bootableStates, _name='state-'+str(bootable.id), value=bootable.State),
+                             INPUT(_name='bootID-' + str(count), _value=bootable.id, _hidden=True, _type='hidden'),
                              INPUT(_name='submit-'+str(bootable.id), _type='submit'),
-                             formname='stateForm-' + str(bootable.id))
+                             formname=formname,
+                             _class='form-inline')
+        count += 1
         forms[bootable.id] = bootStateForm
+        if bootStateForm.accepts(request.post_vars, session, formname):
+            newState = request.post_vars['state-' + str(bootable.id)]
+            bootable.State = newState
+            bootable.update_record()
+            session.flash = 'Updated ' + bootable.Title + ' to ' + newState
+            redirect(URL())
+
+
+
+
     return dict(bootables=bootables, pledges=pledges, total=totalPledged, percent=percentComplete, stateForms=forms)
 
 
