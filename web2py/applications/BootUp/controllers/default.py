@@ -30,7 +30,8 @@ def view():
     bootID = request.args(0)
     bootable = db(db.Bootables.id == bootID).select().first()
     #Cant view if not available, owning user can see for 'preview'
-    if (bootable.State == bootableStates[0]) & (bootable.userID != session.user):
+
+    if (bootable is None) or ((bootable.State == bootableStates[0]) & (bootable.userID != session.user)):
         redirect(URL('index'))
     response.subtitle = bootable.Title
     owner = db(db.Users.id == bootable.userID).select('Username').first().Username
