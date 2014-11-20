@@ -2,6 +2,10 @@ __author__ = 'Y8191122'
 
 
 def profile():
+    """
+    A page for viewing a user profile
+    :return: the user db rector, the card address record for the users card and a table of the users pledges
+    """
     response.subtitle = 'User Profile'
     userID = session.user
     #If user manually types url and is not loged in redirect to login
@@ -26,6 +30,11 @@ def profile():
     return dict(user=user, cardAddress=cardAddress, pledges=pledges)
 
 def getUser(userID):
+    """
+    Get a user record from the db
+    :param userID: the user id of the record to get
+    :return: the user record
+    """
     user = db((db.Users.cardID == db.CreditCards.id) &
               (db.Users.addressID == db.Addresses.id) &
               (db.Users.id == userID)).select().first()
@@ -33,12 +42,21 @@ def getUser(userID):
 
 
 def getCardAddress(userID):
+    """
+    Get the credit card address for a users credit card
+    :param userID: the user to get the record for
+    :return: the credit card address record
+    """
     user = getUser(userID)
     cardAddress = db(db.Addresses.id == user.CreditCards.addressID).select().first()
     return cardAddress
 
 
 def editProfile():
+    """
+    A page for a user to edit their profile on
+    :return: profile editing form
+    """
     response.subtitle = 'Edit Profile'
     userID = session.user
     #If user manually types url and is not loged in redirect to login
@@ -55,6 +73,7 @@ def editProfile():
     if (session.useSameAddress is not None) and (request.post_vars.fName is not None):
         cardAddressSame = session.useSameAddress
 
+    #For pre population of the form
     values = dict()
     values['fName'] = user.Users.FirstName
     values['lName'] = user.Users.LastName
@@ -168,6 +187,7 @@ def user():
                 form.errors.username = 'Username already taken'
                 response.flash = 'Username already taken!'
             else:
+                #Insert data if username is not taken
                 adrsID = db.Addresses.insert(StreetAddress=request.post_vars.sAddress,
                                                 City=request.post_vars.city,
                                                 Country=request.post_vars.country,
@@ -195,6 +215,7 @@ def user():
 
                 #Log user in and redirect to home
                 session.user = userid
+                session.flash = 'Logged in as ' + request.post_vars.username
                 redirect(URL('default', 'index'))
         elif form.errors:
             response.flash = 'There was a problem with something you entered'
@@ -205,12 +226,17 @@ def user():
         #Display the login form
         form = getLoginForm()
         if form.accepts(request.post_vars, session, formname='login'):
-            userLogin = db(db.Users.Username == request.post_vars.username).select(db.Users.id, db.Users.Password)
-            userLogin = userLogin[0]
+            #Find user
+            userLogin = db(db.Users.Username == request.post_vars.username).select(db.Users.id,
+                                                                                   db.Users.Password,
+                                                                                   db.Users.Username).first()
             if userLogin is not None:
+                #if user found check password
                 if userLogin.Password == request.post_vars.password:
+                    #password check passed, login
                     #When logged in store user ID and redirect to home page
                     session.user = userLogin.id
+                    session.flash = 'Logged in as ' + userLogin.Username
                     redirect(URL('default', 'index'))
                 else:
                     response.flash = 'Incorrect Password'
@@ -223,7 +249,7 @@ def user():
     elif request.args(0) == 'logout':
         #Log the user out and redirect home
         session.user = None
-        session.clear()
+        session.flash = 'Successfully logged out'
         redirect(URL('default', 'index'))
     return dict(form=form)
 
@@ -233,6 +259,7 @@ def getRegistrationForm(ccAddress, values, incUsernameAndPassword=True):
 
     :param ccAddress: Include a seperate address as billing address
     :param values: input values taken from form (for re-population)
+    :param incUsernameAndPassword: include the username and password entry fields (for user profile editing)
     :return: The form to be displayed
     """
 
@@ -244,7 +271,7 @@ def getRegistrationForm(ccAddress, values, incUsernameAndPassword=True):
     #   Address
     #   Credit Card
     #   Then optionally the address of the credit card (if different from the main address)
-    generalDiv = DIV(DIV(H3('General Details:')),
+    generalDiv = DIV(DIV(LEGEND('General Details:')),
                      DIV(LABEL('First Name:', _for='fName')),
                      DIV(INPUT(_name='fName', requires=db.Users.FirstName.requires,
                                _value=getFieldValue(values, 'fName'))),
@@ -260,6 +287,7 @@ def getRegistrationForm(ccAddress, values, incUsernameAndPassword=True):
                                _placeholder='YYYY-MM-DD')),
                      _class='regForm',
                      _id='regForm1')
+    #optionally include password and username fields
     if incUsernameAndPassword:
         generalDiv.append(DIV(DIV(LABEL('Username:', _for='username')),
                               DIV(INPUT(_name='username', reqires=db.Users.Username.requires,
@@ -273,7 +301,7 @@ def getRegistrationForm(ccAddress, values, incUsernameAndPassword=True):
                                                          error_message='Passwords do not match'),
                                         _value=getFieldValue(values, 'password_two')))))
     form = FORM(generalDiv,
-                DIV(DIV(H3('Address:')),
+                DIV(DIV(LEGEND('Address:')),
                     DIV(LABEL('Street Address:', _for='sAddress')),
                     DIV(TEXTAREA(_name='sAddress', requires=db.Addresses.StreetAddress.requires,
                                  value=getFieldValue(values, 'sAddress'))),
@@ -290,7 +318,7 @@ def getRegistrationForm(ccAddress, values, incUsernameAndPassword=True):
                     _class='regForm',
                     _id='regForm2'),
 
-                DIV(DIV(H3('Credit Card Details:')),
+                DIV(DIV(LEGEND('Credit Card Details:')),
                     DIV(LABEL('Card Number:', _for='cardNumber')),
                     DIV(INPUT(_name='cardNumber', requires=db.CreditCards.CardNumber.requires,
                               _value=getFieldValue(values, 'cardNumber'),
@@ -308,10 +336,11 @@ def getRegistrationForm(ccAddress, values, incUsernameAndPassword=True):
                 formname='regForm'
                 )
 
+    #optionally inclide card address fields
     if not ccAddress:
         form.append(INPUT(_name='ccUseAddress', _type='submit', _value='Use Separate Billing Address'))
     else:
-        form.append(DIV(DIV(H3('Billing Address')),
+        form.append(DIV(DIV(LEGEND('Billing Address')),
                         DIV(LABEL('Street Address:', _for='ccAddress')),
                         DIV(TEXTAREA(_name='ccAddress', requires=db.Addresses.StreetAddress.requires,
                                      value=getFieldValue(values, 'ccAddress'))),
@@ -338,7 +367,11 @@ def getRegistrationForm(ccAddress, values, incUsernameAndPassword=True):
 
 
 def getLoginForm():
-    form = FORM(DIV(H3('Login:')),
+    """
+    Create the login form
+    :return: the login form
+    """
+    form = FORM(DIV(LEGEND('Login:')),
                 DIV(LABEL('Username:', _for='username')),
                 DIV(INPUT(_name='username', requires=IS_NOT_EMPTY())),
                 DIV(LABEL('Password:', _for='password')),
