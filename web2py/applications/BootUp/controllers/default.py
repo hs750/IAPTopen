@@ -16,6 +16,8 @@ def view():
     bootID = request.args(0)
     bootable = db(db.Bootables.id == bootID).select()
 
+    image = IMG(_src=URL('bootableImage', args=[bootable.first().Image]))
+
     total = getTotalPledged(bootID)
     completion = getCompletionPercentage(bootID)
 
@@ -48,7 +50,12 @@ def view():
                       (db.Bootables.id == db.UserPledges.bootID) &
                       (db.UserPledges.userID == db.Users.id)).select('Users.Username', 'UserPledges.Value')
 
-    return dict(bootable=bootable, total=total, percent=completion, users=usersPledged, pledgeForm=pledgeForm)
+    return dict(bootable=bootable,
+                total=total,
+                percent=completion,
+                users=usersPledged,
+                pledgeForm=pledgeForm,
+                image=image)
 
 def search():
     search = request.vars.search
@@ -65,5 +72,8 @@ def search():
                             #Cant be not available
                            (db.Bootables.Category == cat)).select()
     return dict(searchResults=searchResults)
+
+def bootableImage():
+    return response.download(request, db)
 
 

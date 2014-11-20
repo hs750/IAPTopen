@@ -2,6 +2,10 @@
 
 {{=BEAUTIFY(bootables)}}
 {{=BEAUTIFY(pledges)}}
-{{=BEAUTIFY(total)}}
-{{=BEAUTIFY(percent)}}
+{{=BEAUTIFY(totals)}}
+{{=BEAUTIFY(percents)}}
 {{=BEAUTIFY(stateForms)}}
+        {{for image in images:}}
+            {{=image}}
+            {{=images[image]}}
+        {{pass}}

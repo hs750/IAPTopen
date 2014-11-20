@@ -243,6 +243,7 @@ def dash():
     totalPledged = dict()
     percentComplete = dict()
     forms = dict()
+    images = dict()
     count = 0
     for bootable in bootables:
         totalPledged[bootable.id] = getTotalPledged(bootable.id)
@@ -256,6 +257,13 @@ def dash():
                              _class='form-inline')
         count += 1
         forms[bootable.id] = bootStateForm
+        images[bootable.id] = DIV(A(IMG(_src=URL('default', 'bootableImage', args=[bootable.Image]),
+                                        _alt='bootable image',
+                                        _title='Click to upload new image'),
+                                    _href=URL('upload', args=[bootable.id])),
+                                  DIV(H3('Click to upload new image'), _class='dashImageCaption'),
+                                  _class='dashImage')
+
         if bootStateForm.accepts(request.post_vars, session, formname):
             newState = request.post_vars['state-' + str(bootable.id)]
             bootable.State = newState
@@ -266,7 +274,12 @@ def dash():
 
 
 
-    return dict(bootables=bootables, pledges=pledges, total=totalPledged, percent=percentComplete, stateForms=forms)
+    return dict(bootables=bootables,
+                pledges=pledges,
+                totals=totalPledged,
+                percents=percentComplete,
+                stateForms=forms,
+                images=images)
 
 
 def edit():
