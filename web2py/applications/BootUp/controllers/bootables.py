@@ -138,14 +138,13 @@ def getBootableForm(values, includeImage=True, submitText='Add pledge values'):
                                value=getFieldValue(values, 'longDesc'))),
                   DIV(LABEL('Personal Story:', _for='story')),
                   DIV(TEXTAREA(_name='story', requires=db.Bootables.PersonalStory.requires,
-                               value=getFieldValue(values, 'story'))),
-                  DIV(INPUT(_type='submit', _value=submitText))
+                               value=getFieldValue(values, 'story')))
                   )
 
     if includeImage:
-        formDiv.append(DIV(LABEL('Image:', _for='image')))
-        formDiv.append(DIV(INPUT(_name='image', _type='file', requires=db.Bootables.Image.requires,
-                                 _value=getFieldValue(values, 'image'))))
+        formDiv.append(getImageUploadDiv(values))
+
+    formDiv.append(DIV(INPUT(_type='submit', _value=submitText)))
 
     form = FORM(formDiv, formname='bootableForm')
 
@@ -456,3 +455,37 @@ def getPledge(pledgeID):
     if bootable.userID != session.user:
         redirect(URL('default', 'index'))
     return pledge
+
+def upload():
+    bootID = request.args(0)
+    bootable = db(db.Bootables.id == bootID).select().first()
+    if bootable.userID != session.user:
+        redirect(loginURL)
+
+    image = DIV(LEGEND('Current Image'),
+                IMG(_src=URL('default', 'bootableImage', args=[bootable.Image]), _alt='Current Image'))
+
+    form = FORM(LEGEND('New Image'),
+                getImageUploadDiv(),
+                INPUT(_name='submit', _type='submit'),
+                formname='imageForm')
+
+    if form.accepts(request.post_vars, session, 'imageForm'):
+        image = db.Bootables.Image.store(request.post_vars.image.file, request.post_vars.image.filename)
+        bootable.Image = image
+        bootable.update_record()
+        session.flash = 'Image updated'
+        redirect(URL('dash'))
+    elif form.errors:
+        response.flash = 'There was something wrong with your selection'
+    else:
+        response.flash = 'Upload your new image below'
+
+    return dict(form=form, currentImage=image)
+
+
+def getImageUploadDiv(values=dict()):
+    div = DIV(DIV(LABEL('Image:', _for='image')),
+              DIV(INPUT(_name='image', _type='file', requires=db.Bootables.Image.requires,
+                        _value=getFieldValue(values, 'image'))))
+    return div
