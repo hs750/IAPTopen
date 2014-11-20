@@ -3,10 +3,14 @@
     {{=LEGEND(H2('TOP5: Closest to reaching goal!'))}}
     <div class="">
         {{for bootable in top:}}
-        <div class="col-sm-1">
-            {{=H3(A(bootable.Title, _href=URL('view', args=[bootable.id])))}}
-            {{=DIV(H4('Description'), DIV(bootable.ShortDescription))}}
-            {{=DIV(H4('Category'), DIV(bootable.Category))}}
+        <div class="details home">
+            {{=LEGEND(A(bootable.Title, _href=URL('view', args=[bootable.id])))}}
+            <dl class="dl-horizontal">
+                <dt>Description</dt>
+                <dd>{{=bootable.ShortDescription}}</dd>
+                <dt>Category</dt>
+                <dd>{{=bootable.Category}}</dd>
+            </dl>
         </div>
         {{pass}}
     </div>
@@ -15,10 +19,14 @@
     {{=LEGEND(H2('TOP5: Newest Bootables!'))}}
     <div class="">
         {{for bootable in newest:}}
-        <div class="col-sm-1">
-            {{=H3(A(bootable.Title, _href=URL('view', args=[bootable.id])))}}
-            {{=DIV(H4('Description'), DIV(bootable.ShortDescription))}}
-            {{=DIV(H4('Category'), DIV(bootable.Category))}}
+        <div class="details home">
+            {{=LEGEND(A(bootable.Title, _href=URL('view', args=[bootable.id])))}}
+            <dl class="dl-horizontal">
+                <dt>Description</dt>
+                <dd>{{=bootable.ShortDescription}}</dd>
+                <dt>Category</dt>
+                <dd>{{=bootable.Category}}</dd>
+            </dl>
         </div>
         {{pass}}
     </div>

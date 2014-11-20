@@ -135,7 +135,7 @@ def getBootableForm(values, includeImage=True, submitText='Add pledge values'):
                   DIV(LABEL('Short Description:', _for='shortDesc')),
                   DIV(INPUT(_name='shortDesc', requires=db.Bootables.ShortDescription.requires,
                             _value=getFieldValue(values, 'shortDesc'),
-                            _placeholder='Max length 120 characters')),
+                            _placeholder='Max length 120 characters', _maxlength=120)),
                   DIV(LABEL('Funding Goal:', _for='fundGoal')),
                   DIV(INPUT(_name='fundGoal', _type='number', _min='1', requires=db.Bootables.FundingGoal.requires,
                             _value=getFieldValue(values, 'fundGoal'))),

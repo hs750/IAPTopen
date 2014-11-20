@@ -47,7 +47,7 @@ db.Users.Username.requires = [IS_NOT_EMPTY(), IS_NOT_IN_DB(db, db.Users.Username
 db.define_table('Bootables',
                 Field('Title', 'string', requires=IS_NOT_EMPTY()),
                 Field('ShortDescription', 'string', length=120, comment='120 characters or less',
-                      requires=IS_NOT_EMPTY()),
+                      requires=[IS_NOT_EMPTY(), IS_MATCH('.{,120}', error_message='Must be 120 characters of less')]),
                 #The maximum value a bootable can have as its goal is 999,999,999.99
                 Field('FundingGoal', 'decimal(11,2)', requires=[IS_NOT_EMPTY(), IS_DECIMAL_IN_RANGE(0, 1e9)]),
                 Field('Category', 'string',
