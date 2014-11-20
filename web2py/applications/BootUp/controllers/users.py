@@ -1,5 +1,5 @@
 __author__ = 'Y8191122'
-
+# This controller handles user manipulation
 
 def profile():
     """

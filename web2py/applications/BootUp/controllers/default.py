@@ -1,5 +1,5 @@
 __author__ = "Y8191122"
-
+# This default is for general site functionality, not requiring user login for the most part
 
 def index():
     """
