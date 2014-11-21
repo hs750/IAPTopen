@@ -14,11 +14,11 @@
 {{for bootable in bootables:}}
     <div class="bootable">
         {{if bootable.State == bootableStates[0]:}}
-            {{edit = '<small>' + A('Edit.', _href=URL('edit', args=[bootable.id])).xml() + '</small>'}}
+            {{edit = A('Edit', _href=URL('edit', args=[bootable.id]), _type='button', _class='btn btn-primary pull-right')}}
         {{else:}}
             {{edit = ''}}
         {{pass}}
-        {{=LEGEND(H2(A(bootable.Title, _href=URL('default', 'view', args=[bootable.id])), XML(edit)))}}
+        {{=LEGEND(H2(A(bootable.Title, _href=URL('default', 'view', args=[bootable.id])), edit))}}
         <div class="dashImage">
             {{if bootable.State == bootableStates[0]:}}
                 {{=A(images[bootable.id], _href=URL('upload', args=[bootable.id]))}}
@@ -63,11 +63,11 @@
                 {{item = rewardsForPledge[pledgeID]}}
                 <div class="details">
                     {{if bootable.State == bootableStates[0]:}}
-                        {{edit = ' <small>' + A('Edit.', _href=URL('editPledge', args=[pledgeID])).xml() + '</small>'}}
+                        {{edit = A('Edit', _href=URL('editPledge', args=[pledgeID]), _type='button', _class='btn btn-primary pull-right')}}
                     {{else:}}
                          {{edit = ''}}
                     {{pass}}
-                    {{=H4(item[0], XML(edit))}}
+                    {{=H4(item[0], edit)}}
                     <dl class="dl-horizontal">
                         <dt>Pledge Value</dt>
                         <dd>£{{=item[1]}}</dd>
