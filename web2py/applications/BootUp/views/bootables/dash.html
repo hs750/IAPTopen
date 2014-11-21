@@ -16,7 +16,7 @@
         {{if bootable.State == bootableStates[0]:}}
             {{edit = A('Edit', _href=URL('edit', args=[bootable.id]), _type='button', _class='btn btn-primary pull-right bootButton')}}
             {{delete = A('Delete', _href=URL('delete', args=[bootable.id]), _type='button', _class='btn btn-danger pull-right bootButton')}}
-            {{addPledge = A('Add Pledge', _href=URL('createPledge', args=[bootable.id]), _class='btn btn-primary pull-right bootButton')}}
+            {{addPledge = A('Add Pledge', _href=URL('createPledges', args=[bootable.id]), _class='btn btn-primary pull-right bootButton')}}
         {{else:}}
             {{edit = ''}}
             {{delete = ''}}
