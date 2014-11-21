@@ -2,10 +2,14 @@
 {{extend 'layout.html'}}
 {{pledgeForBoot = dict()}}
 {{bootTitleForID = dict()}}
+{{bootTotalForID = dict()}}
+{{bootPercentForID = dict()}}
 {{for item in pledges:}}
     <!-- Build up pledges for each bootable-->
     {{pledgeIDs = pledgeForBoot.get(item.Bootables.id, [])}}
     {{bootTitleForID[item.Bootables.id] = item.Bootables.Title}}
+    {{bootTotalForID[item.Bootables.id] = totals[item.Bootables.id]}}
+    {{bootPercentForID[item.Bootables.id] = percents[item.Bootables.id]}}
     {{pledgeIDs += [item]}}
     {{pledgeForBoot[item.Bootables.id] = pledgeIDs}}
 {{pass}}
@@ -82,6 +86,12 @@
             {{pass}}
 
             {{=LEGEND(A(bootTitleForID[item], _href=URL('default', 'view', args=[item])))}}
+            <dl class="dl-horizontal">
+                <dt>Total Pledged</dt>
+                <dd>£{{=bootTotalForID[item]}}</dd>
+                <dt>Percentage Complete</dt>
+                <dd>{{=bootPercentForID[item]}}%</dd>
+            </dl>
             {{for pledgeID in rewardsForPledge:}}
                 {{item = rewardsForPledge[pledgeID]}}
                     <dl class="dl-horizontal">

@@ -4,7 +4,8 @@ __author__ = 'Y8191122'
 def profile():
     """
     A page for viewing a user profile
-    :return: the user db rector, the card address record for the users card and a table of the users pledges
+    :return: the user db rector, the card address record for the users card, a table of the users pledges,
+            the total pledged to each bootable the user has pledged too and its completion percentage
     """
     response.subtitle = 'User Profile'
     userID = session.user
@@ -28,8 +29,17 @@ def profile():
                                                  'Pledges.Value',
                                                  'Rewards.Description',
                                                  distinct=True)
+    bootIDs = set()
+    for pledge in pledges:
+        bootIDs.add(pledge.Bootables.id)
 
-    return dict(user=user, cardAddress=cardAddress, pledges=pledges)
+    bootTotals = dict()
+    bootPercentages = dict()
+    for id in bootIDs:
+        bootTotals[id] = getTotalPledged(id)
+        bootPercentages[id] = getCompletionPercentage(id)
+
+    return dict(user=user, cardAddress=cardAddress, pledges=pledges, totals=bootTotals, percents=bootPercentages)
 
 def getUser(userID):
     """
