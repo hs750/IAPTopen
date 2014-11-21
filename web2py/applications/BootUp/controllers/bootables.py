@@ -424,10 +424,10 @@ def editPledge():
 
         #update the existing records
         for i in range(1, count+1):
-            db(db.Rewards.id == rewardIDs[i]).update(description=request.post_vars['description-' + str(i)])
+            db(db.Rewards.id == rewardIDs[i]).update(Description=request.post_vars['description-' + str(i)])
 
         for i in range(count + 1, numRewards + 1):
-            rewardID = db.Rewards.insert(description=request.post_vars['description-' + str(i)])
+            rewardID = db.Rewards.insert(Description=request.post_vars['description-' + str(i)])
             db.PledgeRewards.insert(pledgeID=pledgeID,
                                     rewardID=rewardID,
                                     Inherited=False)
