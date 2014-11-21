@@ -608,3 +608,38 @@ def delete():
         redirect(URL('dash'))
 
     return dict(bootable=bootable, form=form)
+
+def deletePledge():
+    pledgeID = request.args(0)
+    if pledgeID is None:
+        redirect(URL('default', 'index'))
+
+    pledgeSet = db(db.Pledges.id == pledgeID)
+    pledge = pledgeSet.select().first()
+    boot = db(db.Bootables.id == pledge.bootID).select().first()
+
+    #Only allow owning user to delete
+    if boot.userID != session.user:
+        redirect(URL('default', 'index'))
+
+    pledgeRewards = db((db.PledgeRewards.Inherited == False) &
+                       (db.PledgeRewards.pledgeID == pledgeID)).select()
+
+    # Build up a list of rewards we want to delete
+    # (rewards owned by the pledge we are deleting)
+    # Must do this as cant do delete on multiple table query
+    nonInheritedRewardIDs = set()
+    for item in pledgeRewards:
+        nonInheritedRewardIDs.add(item.rewardID)
+
+    if len(nonInheritedRewardIDs) > 0:
+        nIRids = list(nonInheritedRewardIDs)
+        query = (db.Rewards.id == nIRids[0])
+        for i in range(1, len(nIRids)):
+            query |= (db.Rewards.id == nIRids[i])
+
+        #Delete
+        db(query).delete()
+    pledgeSet.delete()
+
+    redirect(URL('dash'))

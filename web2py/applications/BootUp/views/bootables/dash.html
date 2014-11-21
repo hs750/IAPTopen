@@ -80,10 +80,12 @@
                     <div class="details">
                         {{if bootable.State == bootableStates[0]:}}
                             {{edit = A('Edit', _href=URL('editPledge', args=[pledgeID]), _type='button', _class='btn btn-primary pull-right')}}
+                            {{delete = A('Delete', _href=URL('deletePledge', args=[pledgeID]), _type='button', _class='btn btn-danger pull-right')}}
                         {{else:}}
                              {{edit = ''}}
+                             {{delete = ''}}
                         {{pass}}
-                        {{=H4(item[0], edit)}}
+                        {{=H4(item[0], edit, delete)}}
                         <dl class="dl-horizontal">
                             <dt>Pledge Value</dt>
                             <dd>£{{=item[1]}}</dd>
