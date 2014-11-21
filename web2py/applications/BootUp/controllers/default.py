@@ -58,10 +58,6 @@ def view():
                         (db.Bootables.id == db.UserPledges.bootID) & \
                         (db.UserPledges.userID == db.Users.id)
 
-    userRewards = db((db.UserPledges.Value == db.Pledges.Value) &
-                     usersPledgedQuery &
-                     rewardQuery).select('Users.id', 'Rewards.Description')
-
     #Collect the values of pledges available for this bootable
     pledgeValues = db(db.Pledges.bootID == bootID).select('Value')
     values = []
@@ -69,7 +65,7 @@ def view():
         values += [item.Value]
 
     pledgeForm = FORM(SELECT(values, _name='pledgeValue'),
-                      INPUT(_type='submit', _name='pledgeSubmit', _value='Pledge!'),
+                      INPUT(_type='submit', _name='pledgeSubmit', _value='Pledge!', _class='btn btn-success'),
                       _name='userPledgeForm',
                       _class='form-inline')
     #must to a form.accepts on every path though the code to make sure form.form key and session.formkey[formname]
@@ -91,6 +87,10 @@ def view():
             response.flash = 'You have successfully pledged!'
         elif pledgeForm.errors:
             response.flash = 'There was a problem with your pledge'
+
+    userRewards = db((db.UserPledges.Value == db.Pledges.Value) &
+                     usersPledgedQuery &
+                     rewardQuery).select('Users.id', 'Rewards.Description')
 
     #Get this after submition of form so that screen updated on refresh
     usersPledged = db(usersPledgedQuery).select('Users.id', 'Users.Username',
