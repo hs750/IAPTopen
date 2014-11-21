@@ -79,7 +79,18 @@
     <div class="details">
         {{=LEGEND('PLEDGE!')}}
         <div class="center">
-            {{=pledgeForm}}
+            {{if bootable.State == bootableStates[1]:}}
+                {{=pledgeForm}}
+            {{else:}}
+                {{if bootable.State == bootableStates[2]:}}
+                    {{=H2('Project is Funded!')}}
+                {{elif bootable.State == bootableStates[3]:}}
+                    {{=H2('Not Funded')}}
+                {{else:}}
+                    <!-- Only get here if owning user visits page-->
+                    {{=H3('Project Not Open')}}
+                {{pass}}
+            {{pass}}
         </div>
     </div>
 {{pass}}
