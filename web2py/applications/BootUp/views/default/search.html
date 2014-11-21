@@ -1,12 +1,4 @@
 {{extend 'layout.html'}}
 {{for bootable in searchResults:}}
-    <div class="details home">
-        {{=LEGEND(A(bootable.Title, _href=URL('view', args=[bootable.id])))}}
-        <dl class="dl-horizontal">
-            <dt>Description</dt>
-            <dd>{{=bootable.ShortDescription}}</dd>
-            <dt>Category</dt>
-            <dd>{{=bootable.Category}}</dd>
-        </dl>
-    </div>
+    {{include "subviews/bootableTile.html"}}
 {{pass}}
