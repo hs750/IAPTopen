@@ -131,7 +131,7 @@ def getBootableForm(values, includeImage=True, submitText='Add pledge values'):
     :return: A form for creating/editing bootables
     """
     #The basic bootable form
-    formDiv = DIV(DIV(H3('Bootable Info:')),
+    formDiv = DIV(DIV(LEGEND('Bootable Info:')),
                   DIV(LABEL('Title:', _for='title')),
                   DIV(INPUT(_name='title', requires=db.Bootables.Title.requires,
                             _value=getFieldValue(values, 'title'))),
