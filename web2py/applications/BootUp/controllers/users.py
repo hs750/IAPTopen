@@ -21,7 +21,9 @@ def profile():
                  (db.Pledges.id == db.PledgeRewards.pledgeID) &
                  (db.Pledges.Value == db.UserPledges.Value) &
                  (db.Rewards.id == db.PledgeRewards.rewardID) &
-                 (db.Users.id == userID)).select('Bootables.Title',
+                 (db.Users.id == userID)).select('Bootables.id',
+                                                 'Bootables.Title',
+                                                 'Pledges.id',
                                                  'Pledges.Name',
                                                  'Pledges.Value',
                                                  'Rewards.Description',

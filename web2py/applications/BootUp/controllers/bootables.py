@@ -275,7 +275,6 @@ def dash():
                                                                       'Pledges.Name',
                                                                       'Pledges.Value',
                                                                       'Rewards.Description',
-                                                                      'Rewards.id',
                                                                       orderby=db.Pledges.Value)
     totalPledged = dict()
     percentComplete = dict()
