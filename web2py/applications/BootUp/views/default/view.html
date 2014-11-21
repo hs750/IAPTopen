@@ -2,6 +2,11 @@
 {{extend 'layout.html'}}
 <h1>{{=bootable.Title}} <small>By {{=owner}}</small></h1>
 {{=DIV(image)}}
+{{if currentUserPledged:}}
+    <div class="center pledged">
+        <h3>You have already pledged to this project!</h3>
+    </div>
+{{pass}}
 <div class="details">
     {{=LEGEND('Bootable Details')}}
     <dl class="dl-horizontal">

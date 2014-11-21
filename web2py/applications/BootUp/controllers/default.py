@@ -26,7 +26,8 @@ def view():
             and the image of the bootable,
             the rewards for this bootable,
             the username of the bootble owner,
-            the rewards for each user
+            the rewards for each user,
+            whether the current logged in user has pledged to this bootble
     """
     bootID = request.args(0)
     bootable = db(db.Bootables.id == bootID).select().first()
@@ -97,9 +98,12 @@ def view():
         response.flash = 'Must be signed in to pledge!'
 
     #Get this after submition of form so that screen updated on refresh
-    usersPledged = db(usersPledgedQuery).select('Users.id',
-                                                                     'Users.Username',
-                                                                     'UserPledges.Value')
+    usersPledged = db(usersPledgedQuery).select('Users.id', 'Users.Username',
+                                                            'UserPledges.Value')
+
+    currentUserPledged = False
+    for up in usersPledged:
+        currentUserPledged = currentUserPledged or (up.Users.id == session.user)
 
     return dict(bootable=bootable,
                 total=total,
@@ -109,7 +113,8 @@ def view():
                 image=image,
                 rewards=rewards,
                 owner=owner,
-                userRewards=userRewards)
+                userRewards=userRewards,
+                currentUserPledged=currentUserPledged)
 
 
 def search():

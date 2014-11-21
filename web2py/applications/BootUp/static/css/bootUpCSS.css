@@ -67,3 +67,9 @@
     background-color: lightgrey;
 }
 
+.pledged {
+    background-color: lightgreen;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
