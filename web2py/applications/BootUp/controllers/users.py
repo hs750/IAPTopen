@@ -174,6 +174,7 @@ def editProfile():
             cardAddress.Country = request.post_vars.ccCountry
             cardAddress.PostCode = request.post_vars.ccPostCode
             cardAddress.update_record()
+        redirect(URL('profile'))
     elif form.errors:
         response.flash = 'There was something wrong with what you entered'
     else:
