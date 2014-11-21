@@ -64,29 +64,6 @@
         {{pass}}
 
     </div>
-
-    {{#Display the users who have pledged and their expected rewards}}
-    <div class="users">
-        {{=LEGEND('Users already pledging')}}
-        {{uRewards = dict()}}
-        {{for reward in userRewards:}}
-            {{ur = uRewards.get(reward.Users.id, [])}}
-            {{ur += [reward.Rewards.Description]}}
-            {{uRewards[reward.Users.id] = ur}}
-        {{pass}}
-        {{for user in users:}}
-            {{=H4(user.Users.Username)}}
-            <dl class="dl-horizontal">
-                <dt>Amount Pledged</dt>
-                <dd>{{='£' + str(user.UserPledges.Value)}}</dd>
-                <dt>Expected Rewards</dt>
-                {{for reward in uRewards[user.Users.id]:}}
-                    <dd>{{=reward}}</dd>
-                {{pass}}
-            </dl>
-
-        {{pass}}
-    </div>
 </div>
 <div class="details">
     {{#Display pledge button or message if pledgin not available}}
@@ -97,7 +74,7 @@
             {{if session.user is not None:}}
                 {{=pledgeForm}}
             {{else:}}
-                {{=H3(A('Sign in', _href=URL(response.loginURL)), ' to Pledge')}}
+                {{=H3(A('Sign in', _href=response.loginURL), ' to Pledge')}}
             {{pass}}
         {{else:}}
             {{if bootable.State == bootableStates[2]:}}
@@ -112,9 +89,29 @@
 
     </div>
 </div>
-
-
 <div class="details">
     {{=DIV(LEGEND('Description'), DIV(bootable.LongDescription), _class='longDesc')}}
     {{=DIV(LEGEND('My Story'), DIV(bootable.PersonalStory), _class='longDesc')}}
+</div>
+{{#Display the users who have pledged and their expected rewards}}
+<div class="details">
+    {{=LEGEND('Users already pledging')}}
+    {{uRewards = dict()}}
+    {{for reward in userRewards:}}
+        {{ur = uRewards.get(reward.Users.id, [])}}
+        {{ur += [reward.Rewards.Description]}}
+        {{uRewards[reward.Users.id] = ur}}
+    {{pass}}
+    {{for user in users:}}
+        {{=H4(user.Users.Username)}}
+        <dl class="dl-horizontal">
+            <dt>Amount Pledged</dt>
+            <dd>{{='£' + str(user.UserPledges.Value)}}</dd>
+            <dt>Expected Rewards</dt>
+            {{for reward in uRewards[user.Users.id]:}}
+                <dd>{{=reward}}</dd>
+            {{pass}}
+        </dl>
+
+    {{pass}}
 </div>
