@@ -142,7 +142,7 @@ def editProfile():
         user.Addresses.PostCode = request.post_vars.postCode
 
         user.CreditCards.CardNumber = request.post_vars.cardNumber
-        user.CreditCards.ExpiryDate = expDate = formatExpDate(request.post_vars.expDate)
+        user.CreditCards.ExpiryDate = formatExpDate(request.post_vars.expDate)
         user.CreditCards.IDCode = request.post_vars.cardID
         user.Users.update_record()
         user.Addresses.update_record()
