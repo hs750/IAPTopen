@@ -46,7 +46,7 @@
                 <dt>State</dt>
                 <dd>{{=bootable.State}}</dd>
             </dl>
-            {{if bootable.State == bootableStates[0]:}}
+            {{if bootable.State in bootableStates[:2]:}}
                 <div class="center">
                     {{=stateForms[bootable.id]}}
                 </div>

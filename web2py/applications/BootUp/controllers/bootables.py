@@ -292,12 +292,23 @@ def dash():
         totalPledged[bootable.id] = getTotalPledged(bootable.id)
         percentComplete[bootable.id] = getCompletionPercentage(bootable.id)
         formname = 'stateForm-' + str(bootable.id)
+
+        if bootable.State == bootableStates[0]:
+            btnValue = 'Open Bootable to Pledges'
+            btnClass = 'btn btn-success btn-lg'
+        elif bootable.State == bootableStates[1]:
+            btnValue = 'Close Bootable'
+            btnClass = 'btn btn-danger btn-lg'
+        else:
+            btnValue = ''
+            btnClass = 'hidden'
+
         #A bootmanager can only change the state between open and not available (closed)
         bootStateForm = FORM(INPUT(_name='bootID-' + str(count), _value=bootable.id, _hidden=True, _type='hidden'),
                              INPUT(_name='submit-'+str(bootable.id),
                                    _type='submit',
-                                   _value='Open Bootable to Pledges!',
-                                   _class='btn btn-success'),
+                                   _value=btnValue,
+                                   _class=btnClass),
                              formname=formname,
                              _class='form-inline')
         count += 1
@@ -306,11 +317,15 @@ def dash():
                                   _alt='bootable image')
 
         if bootStateForm.accepts(request.post_vars, session, formname):
-            #Change state to open for pledges
-            bootable.State = bootableStates[1]
-            bootable.update_record()
-            session.flash = bootable.Title + ' to now open for pleges!'
-            redirect(URL())
+            if bootable.State == bootableStates[0]:
+                #Change state to open for pledges
+                bootable.State = bootableStates[1]
+                bootable.update_record()
+                response.flash = bootable.Title + ' to now open for pleges!'
+            elif bootable.State == bootableStates[1]:
+                bootable.State = bootableStates[3]
+                response.flash = bootable.Title + ' has now been closed'
+                bootable.update_record()
 
     return dict(bootables=bootables,
                 pledges=pledges,
