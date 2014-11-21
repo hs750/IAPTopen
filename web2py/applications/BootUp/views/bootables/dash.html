@@ -18,7 +18,7 @@
         {{else:}}
             {{edit = ''}}
         {{pass}}
-        {{=LEGEND(H2(bootable.Title, XML(edit)))}}
+        {{=LEGEND(H2(A(bootable.Title, _href=URL('default', 'view', args=[bootable.id])), XML(edit)))}}
         <div class="dashImage">
             {{if bootable.State == bootableStates[0]:}}
                 {{=A(images[bootable.id], _href=URL('upload', args=[bootable.id]))}}
