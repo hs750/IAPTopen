@@ -14,13 +14,15 @@
 {{for bootable in bootables:}}
     <div class="bootable">
         {{if bootable.State == bootableStates[0]:}}
-            {{edit = A('Edit', _href=URL('edit', args=[bootable.id]), _type='button', _class='btn btn-primary pull-right')}}
-            {{delete = A('Delete', _href=URL('delete', args=[bootable.id]), _type='button', _class='btn btn-danger pull-right')}}
+            {{edit = A('Edit', _href=URL('edit', args=[bootable.id]), _type='button', _class='btn btn-primary pull-right bootButton')}}
+            {{delete = A('Delete', _href=URL('delete', args=[bootable.id]), _type='button', _class='btn btn-danger pull-right bootButton')}}
+            {{addPledge = A('Add Pledge', _href=URL('createPledge', args=[bootable.id]), _class='btn btn-primary pull-right bootButton')}}
         {{else:}}
             {{edit = ''}}
             {{delete = ''}}
+            {{addPledge = ''}}
         {{pass}}
-        {{=LEGEND(H2(A(bootable.Title, _href=URL('default', 'view', args=[bootable.id])), edit, delete))}}
+        {{=LEGEND(H2(A(bootable.Title, _href=URL('default', 'view', args=[bootable.id])), addPledge, edit, delete))}}
         <div class="dashImage">
             {{if bootable.State == bootableStates[0]:}}
                 {{=A(images[bootable.id], _href=URL('upload', args=[bootable.id]))}}
@@ -47,43 +49,47 @@
                 <dd>{{=bootable.PersonalStory}}</dd>
                 <dt>State</dt>
                 <dd>{{=bootable.State}}</dd>
-                <dd>{{=stateForms[bootable.id]}}</dd>
             </dl>
-
+            {{if bootable.State == bootableStates[0]:}}
+                <div class="center">
+                    {{=stateForms[bootable.id]}}
+                </div>
+            {{pass}}
         </div>
         <div class="rewards">
-            {{ps = pledgeForBoot[bootable.id]}}
-            {{rewardsForPledge = dict()}}
-            {{for pledge in ps:}}
-                {{reward = rewardsForPledge.get(pledge.Pledges.id, [pledge.Pledges.Name, pledge.Pledges.Value, []])}}
-                {{reward[2] = reward[2] + [pledge.Rewards.Description]}}
-                {{rewardsForPledge[pledge.Pledges.id] = reward}}
-            {{pass}}
+            {{ps = pledgeForBoot.get(bootable.id)}}
+            {{if ps is not None:}}
+                {{rewardsForPledge = dict()}}
+                {{for pledge in ps:}}
+                    {{reward = rewardsForPledge.get(pledge.Pledges.id, [pledge.Pledges.Name, pledge.Pledges.Value, []])}}
+                    {{reward[2] = reward[2] + [pledge.Rewards.Description]}}
+                    {{rewardsForPledge[pledge.Pledges.id] = reward}}
+                {{pass}}
 
-            {{=LEGEND('Pledges')}}
-            {{for pledgeID in rewardsForPledge:}}
-                {{item = rewardsForPledge[pledgeID]}}
-                <div class="details">
-                    {{if bootable.State == bootableStates[0]:}}
-                        {{edit = A('Edit', _href=URL('editPledge', args=[pledgeID]), _type='button', _class='btn btn-primary pull-right')}}
-                    {{else:}}
-                         {{edit = ''}}
-                    {{pass}}
-                    {{=H4(item[0], edit)}}
-                    <dl class="dl-horizontal">
-                        <dt>Pledge Value</dt>
-                        <dd>£{{=item[1]}}</dd>
-                        {{i = 1}}
-                        {{for reward in item[2]:}}
-                            {{if i == 1:}}
-                                <dt>Rewards</dt>
-                                {{i += 1}}
-                            {{pass}}
-                            <dd>{{=reward}}</dd>
+                {{=LEGEND('Pledges')}}
+                {{for pledgeID in rewardsForPledge:}}
+                    {{item = rewardsForPledge[pledgeID]}}
+                    <div class="details">
+                        {{if bootable.State == bootableStates[0]:}}
+                            {{edit = A('Edit', _href=URL('editPledge', args=[pledgeID]), _type='button', _class='btn btn-primary pull-right')}}
+                        {{else:}}
+                             {{edit = ''}}
                         {{pass}}
-                    </dl>
-
-                </div>
+                        {{=H4(item[0], edit)}}
+                        <dl class="dl-horizontal">
+                            <dt>Pledge Value</dt>
+                            <dd>£{{=item[1]}}</dd>
+                            {{i = 1}}
+                            {{for reward in item[2]:}}
+                                {{if i == 1:}}
+                                    <dt>Rewards</dt>
+                                    {{i += 1}}
+                                {{pass}}
+                                <dd>{{=reward}}</dd>
+                            {{pass}}
+                        </dl>
+                    </div>
+                {{pass}}
             {{pass}}
         </div>
 

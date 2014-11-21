@@ -50,7 +50,7 @@ def createPledges():
     elif bootable.userID != session.user:
         #Can only edit if loged in as owning user
         redirect(loginURL)
-    elif bootable.State == bootableStates[0]:
+    elif bootable.State != bootableStates[0]:
         #Cant create pledge for bootable that is not not available
         redirect(URL('dash'))
 
@@ -293,9 +293,11 @@ def dash():
         percentComplete[bootable.id] = getCompletionPercentage(bootable.id)
         formname = 'stateForm-' + str(bootable.id)
         #A bootmanager can only change the state between open and not available (closed)
-        bootStateForm = FORM(SELECT(bootableStates[0:2], _name='state-'+str(bootable.id), value=bootable.State),
-                             INPUT(_name='bootID-' + str(count), _value=bootable.id, _hidden=True, _type='hidden'),
-                             INPUT(_name='submit-'+str(bootable.id), _type='submit'),
+        bootStateForm = FORM(INPUT(_name='bootID-' + str(count), _value=bootable.id, _hidden=True, _type='hidden'),
+                             INPUT(_name='submit-'+str(bootable.id),
+                                   _type='submit',
+                                   _value='Open Bootable to Pledges!',
+                                   _class='btn btn-success'),
                              formname=formname,
                              _class='form-inline')
         count += 1
@@ -304,10 +306,10 @@ def dash():
                                   _alt='bootable image')
 
         if bootStateForm.accepts(request.post_vars, session, formname):
-            newState = request.post_vars['state-' + str(bootable.id)]
-            bootable.State = newState
+            #Change state to open for pledges
+            bootable.State = bootableStates[1]
             bootable.update_record()
-            session.flash = 'Updated ' + bootable.Title + ' to ' + newState
+            session.flash = bootable.Title + ' to now open for pleges!'
             redirect(URL())
 
     return dict(bootables=bootables,
