@@ -293,12 +293,8 @@ def dash():
                              _class='form-inline')
         count += 1
         forms[bootable.id] = bootStateForm
-        images[bootable.id] = DIV(A(IMG(_src=URL('default', 'bootableImage', args=[bootable.Image]),
-                                        _alt='bootable image',
-                                        _title='Click to upload new image'),
-                                    _href=URL('upload', args=[bootable.id])),
-                                  DIV(H3('Click to upload new image'), _class='dashImageCaption'),
-                                  _class='dashImage')
+        images[bootable.id] = IMG(_src=URL('default', 'bootableImage', args=[bootable.Image]),
+                                  _alt='bootable image')
 
         if bootStateForm.accepts(request.post_vars, session, formname):
             newState = request.post_vars['state-' + str(bootable.id)]

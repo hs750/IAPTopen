@@ -19,7 +19,14 @@
             {{edit = ''}}
         {{pass}}
         {{=LEGEND(H2(bootable.Title, XML(edit)))}}
-        {{=images[bootable.id]}}
+        <div class="dashImage">
+            {{if bootable.State == bootableStates[0]:}}
+                {{=A(images[bootable.id], _href=URL('upload', args=[bootable.id]))}}
+                {{=DIV(H3('Click to upload new image'), _class='dashImageCaption')}}
+            {{else:}}
+                {{=images[bootable.id]}}
+            {{pass}}
+        </div>
         <div class="details">
             <dl class="dl-horizontal">
                 <dt>Short Description</dt>
