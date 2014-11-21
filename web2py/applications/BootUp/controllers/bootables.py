@@ -290,7 +290,8 @@ def dash():
         totalPledged[bootable.id] = getTotalPledged(bootable.id)
         percentComplete[bootable.id] = getCompletionPercentage(bootable.id)
         formname = 'stateForm-' + str(bootable.id)
-        bootStateForm = FORM(SELECT(bootableStates, _name='state-'+str(bootable.id), value=bootable.State),
+        #A bootmanager can only change the state between open and not available (closed)
+        bootStateForm = FORM(SELECT(bootableStates[0:2], _name='state-'+str(bootable.id), value=bootable.State),
                              INPUT(_name='bootID-' + str(count), _value=bootable.id, _hidden=True, _type='hidden'),
                              INPUT(_name='submit-'+str(bootable.id), _type='submit'),
                              formname=formname,
