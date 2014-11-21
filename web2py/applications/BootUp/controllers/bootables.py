@@ -547,8 +547,7 @@ def upload():
         redirect(loginURL)
 
     #Current image
-    image = DIV(LEGEND('Current Image'),
-                IMG(_src=URL('default', 'bootableImage', args=[bootable.Image]), _alt='Current Image'))
+    image = IMG(_src=URL('default', 'bootableImage', args=[bootable.Image]), _alt='Current Image')
 
     form = FORM(LEGEND('New Image'),
                 getImageUploadDiv(),
