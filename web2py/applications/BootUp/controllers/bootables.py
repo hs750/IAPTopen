@@ -610,6 +610,10 @@ def delete():
     return dict(bootable=bootable, form=form)
 
 def deletePledge():
+    """
+    Delete a pledge
+    :return: None
+    """
     pledgeID = request.args(0)
     if pledgeID is None:
         redirect(URL('default', 'index'))

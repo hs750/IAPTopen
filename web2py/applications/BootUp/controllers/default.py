@@ -117,9 +117,9 @@ def search():
     The search page for BootUP
     :return: the search results
     """
-    response.subtitle = 'Search Results'
     search = request.vars.search
     cat = request.vars.cat
+    response.subtitle = 'Search Results: ' + search + ' in ' + cat
     #Search in all categories, or a specific one
     if cat == 'All':
         searchResults = db(((db.Bootables.Title.contains(search)) |

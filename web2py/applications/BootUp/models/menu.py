@@ -30,9 +30,15 @@ searchForm = FORM(INPUT(_type='search', _placeholder='Search', _name='searchBox'
 #URL of login page, this is used in multiple places, hence why it is defined here
 response.loginURL = URL('BootUP', 'users', 'user', args=['login'])
 
+browseMenu = []
+for cat in bootableCategories:
+    browseMenu += [(T(cat), False, URL('BootUP', 'default', 'search', vars=dict(cat=cat, search='')))]
+
+
 #The main application menu
 response.menu = [
     (T('Create Bootable'), False, URL('BootUP', 'bootables', 'create')),
+    (T('Browse Bootables'), False, URL('BootUP', 'default', 'search', vars=dict(cat='All', search='')), browseMenu),
     ('Search:', False, searchForm)
 
 ]
