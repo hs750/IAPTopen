@@ -74,26 +74,30 @@
         {{pass}}
     </div>
 </div>
+<div class="details">
+    {{=LEGEND('PLEDGE!')}}
+    <div class="center">
 
-{{if session.user is not None:}}
-    <div class="details">
-        {{=LEGEND('PLEDGE!')}}
-        <div class="center">
-            {{if bootable.State == bootableStates[1]:}}
+        {{if bootable.State == bootableStates[1]:}}
+            {{if session.user is not None:}}
                 {{=pledgeForm}}
             {{else:}}
-                {{if bootable.State == bootableStates[2]:}}
-                    {{=H2('Project is Funded!')}}
-                {{elif bootable.State == bootableStates[3]:}}
-                    {{=H2('Not Funded')}}
-                {{else:}}
-                    <!-- Only get here if owning user visits page-->
-                    {{=H3('Project Not Open')}}
-                {{pass}}
+                {{=H3(A('Sign in', _href=URL(response.loginURL)), ' to Pledge')}}
             {{pass}}
-        </div>
+        {{else:}}
+            {{if bootable.State == bootableStates[2]:}}
+                {{=H2('Project is Funded!')}}
+            {{elif bootable.State == bootableStates[3]:}}
+                {{=H2('Not Funded')}}
+            {{else:}}
+                <!-- Only get here if owning user visits page-->
+                {{=H3('Project Not Open')}}
+            {{pass}}
+        {{pass}}
+
     </div>
-{{pass}}
+</div>
+
 
 <div class="details">
     {{=DIV(LEGEND('Description'), DIV(bootable.LongDescription), _class='longDesc')}}
