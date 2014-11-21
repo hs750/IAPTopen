@@ -296,7 +296,8 @@ def getRegistrationForm(ccAddress, values, incUsernameAndPassword=True):
                      DIV(LABEL('Date of Birth:', _for='dob')),
                      DIV(INPUT(_name='dob', _type='date', reqires=db.Users.DateOfBirth.requires,
                                _value=getFieldValue(values, 'dob'),
-                               _placeholder='YYYY-MM-DD')),
+                               _placeholder='YYYY-MM-DD',
+                               _class='date')),
                      _class='regForm',
                      _id='regForm1')
     #optionally include password and username fields
