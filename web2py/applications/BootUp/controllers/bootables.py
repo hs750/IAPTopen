@@ -549,11 +549,12 @@ def upload():
     return dict(form=form, currentImage=image)
 
 
-def getImageUploadDiv():
+def getImageUploadDiv(values=dict()):
     """
     Get a Div with input for uploading image
     :return: the div
     """
     div = DIV(DIV(LABEL('Image:', _for='image')),
-              DIV(INPUT(_name='image', _type='file', requires=db.Bootables.Image.requires)))
+              DIV(INPUT(_name='image', _type='file', requires=db.Bootables.Image.requires),
+                  _value=getFieldValue(values, 'image')))
     return div
