@@ -1,5 +1,7 @@
 __author__ = 'Y8191122'
 # This controller handles user manipulation
+def index():
+    redirect(URL('default', 'index'))
 
 def profile():
     """
@@ -9,7 +11,7 @@ def profile():
     """
     response.subtitle = 'User Profile'
     userID = session.user
-    #If user manually types url and is not loged in redirect to login
+    #If user manually types url and is not logged in redirect to login
     if userID is None:
         redirect(response.loginURL)
 

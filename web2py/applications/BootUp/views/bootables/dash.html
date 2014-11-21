@@ -15,10 +15,12 @@
     <div class="bootable">
         {{if bootable.State == bootableStates[0]:}}
             {{edit = A('Edit', _href=URL('edit', args=[bootable.id]), _type='button', _class='btn btn-primary pull-right')}}
+            {{delete = A('Delete', _href=URL('delete', args=[bootable.id]), _type='button', _class='btn btn-danger pull-right')}}
         {{else:}}
             {{edit = ''}}
+            {{delete = ''}}
         {{pass}}
-        {{=LEGEND(H2(A(bootable.Title, _href=URL('default', 'view', args=[bootable.id])), edit))}}
+        {{=LEGEND(H2(A(bootable.Title, _href=URL('default', 'view', args=[bootable.id])), edit, delete))}}
         <div class="dashImage">
             {{if bootable.State == bootableStates[0]:}}
                 {{=A(images[bootable.id], _href=URL('upload', args=[bootable.id]))}}

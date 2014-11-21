@@ -1,5 +1,7 @@
 __author__='Y8191122'
 # This controller is for bootable manipulation
+def index():
+    redirect(URL('default', 'index'))
 
 def create():
     """
@@ -559,3 +561,34 @@ def getImageUploadDiv(values=dict()):
               DIV(INPUT(_name='image', _type='file', requires=db.Bootables.Image.requires),
                   _value=getFieldValue(values, 'image')))
     return div
+
+def delete():
+    """
+    Page for deleting a bootable
+    :return: delete form
+    """
+    bootID = request.args(0)
+    boot = db(db.Bootables.id == bootID)
+    bootable = boot.select().first()
+
+    #Cant delete if open for pledges
+    if bootable.State == bootableStates[1]:
+        redirect(URL('dash'))
+    #Bootable must be owned by the user deleting
+    elif bootable.userID != session.user:
+        redirect((URL('default', 'index')))
+
+    response.subtitle = 'Delete Bootable'
+
+    form = FORM(INPUT(_type='submit', _name='cancelDelete', _value='Cancel', _class='btn btn-default'),
+                INPUT(_type='submit', _name='doDelete', _value='Delete', _class='btn btn-danger'),
+                formname='deleteForm')
+
+    if form.accepts(request.post_vars, session):
+        if request.post_vars.doDelete is not None:
+            boot.delete()
+            session.flash = 'Bootable Deleted!'
+
+        redirect(URL('dash'))
+
+    return dict(bootable=bootable, form=form)
