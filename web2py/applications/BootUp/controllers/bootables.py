@@ -180,7 +180,7 @@ def getPledgeForm(values, numRewards, inheritPledges, inheritLabel='Get inherita
                     DIV(INPUT(_name='name', requires=db.Pledges.Name.requires,
                               _value=getFieldValue(values, 'name'))),
                     DIV(LABEL('Value:', _for='value')),
-                    DIV(INPUT(_name='value', _tppe='number', _min='0', requires=db.Pledges.Value.requires,
+                    DIV(INPUT(_name='value', _type='number', _min='0', requires=db.Pledges.Value.requires,
                               _value=getFieldValue(values, 'value')))
                     ),
                 _name='pledgeForm')
