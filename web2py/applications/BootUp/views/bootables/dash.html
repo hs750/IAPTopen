@@ -13,14 +13,18 @@
 
 {{for bootable in bootables:}}
     <div class="bootable">
+        {{delButton = A('Delete', _href=URL('delete', args=[bootable.id]), _type='button', _class='btn btn-danger pull-right bootButton')}}
         {{if bootable.State == bootableStates[0]:}}
             {{edit = A('Edit', _href=URL('edit', args=[bootable.id]), _type='button', _class='btn btn-primary pull-right bootButton')}}
-            {{delete = A('Delete', _href=URL('delete', args=[bootable.id]), _type='button', _class='btn btn-danger pull-right bootButton')}}
+            {{delete = delButton}}
             {{addPledge = A('Add Pledge', _href=URL('createPledges', args=[bootable.id]), _class='btn btn-primary pull-right bootButton')}}
         {{else:}}
             {{edit = ''}}
             {{delete = ''}}
             {{addPledge = ''}}
+            {{if bootable.State != bootableStates[0]:}}
+                {{delete = delButton}}
+            {{pass}}
         {{pass}}
         {{=LEGEND(H2(A(bootable.Title, _href=URL('default', 'view', args=[bootable.id])), addPledge, edit, delete))}}
         <div class="dashImage">
@@ -52,15 +56,6 @@
                 </div>
             {{pass}}
         </div>
-        <div class="long-details">
-            {{=LEGEND('Long Description')}}
-            {{=DIV(bootable.LongDescription)}}
-        </div>
-        <div class="long-details">
-            {{=LEGEND('Personal Story')}}
-            {{=DIV(bootable.PersonalStory)}}
-        </div>
-
         <div class="rewards">
             {{ps = pledgeForBoot.get(bootable.id)}}
             {{if ps is not None:}}
@@ -98,5 +93,13 @@
             {{pass}}
         </div>
 
+        <div class="long-details">
+            {{=LEGEND('Long Description')}}
+            {{=DIV(bootable.LongDescription)}}
+        </div>
+        <div class="long-details">
+            {{=LEGEND('Personal Story')}}
+            {{=DIV(bootable.PersonalStory)}}
+        </div>
     </div>
 {{pass}}
