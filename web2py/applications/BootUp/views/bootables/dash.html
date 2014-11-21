@@ -1,11 +1,81 @@
 {{extend 'layout.html'}}
+{{pledgeForBoot = dict()}}
+{{for item in pledges:}}
+    <!-- Build up pledges for each bootable-->
+    {{pledgeIDs = pledgeForBoot.get(item.Bootables.id, [])}}
+    {{pledgeIDs += [item]}}
+    {{pledgeForBoot[item.Bootables.id] = pledgeIDs}}
+{{pass}}
 
-{{=BEAUTIFY(bootables)}}
-{{=BEAUTIFY(pledges)}}
-{{=BEAUTIFY(totals)}}
-{{=BEAUTIFY(percents)}}
-{{=BEAUTIFY(stateForms)}}
-        {{for image in images:}}
-            {{=image}}
-            {{=images[image]}}
+<div class="hint">
+        Bootables are editable only when they are in the state 'Not Available'.
+</div>
+
+{{for bootable in bootables:}}
+    <div class="bootable">
+        {{if bootable.State == bootableStates[0]:}}
+            {{edit = '<small>' + A('Edit.', _href=URL('edit', args=[bootable.id])).xml() + '</small>'}}
+        {{else:}}
+            {{edit = ''}}
         {{pass}}
+        {{=LEGEND(H2(bootable.Title, XML(edit)))}}
+        {{=images[bootable.id]}}
+        <div class="details">
+            <dl class="dl-horizontal">
+                <dt>Short Description</dt>
+                <dd>{{=bootable.ShortDescription}}</dd>
+                <dt>Funding Goal</dt>
+                <dd>£{{=bootable.FundingGoal}}</dd>
+                <dt>Total Pledged</dt>
+                <dd>£{{=totals[bootable.id]}}</dd>
+                <dt>Percent Complete</dt>
+                <dd>{{=percents[bootable.id]}}%</dd>
+                <dt>Category</dt>
+                <dd>{{=bootable.Category}}</dd>
+                <dt>Long Description</dt>
+                <dd>{{=bootable.LongDescription}}</dd>
+                <dt>Personal Story</dt>
+                <dd>{{=bootable.PersonalStory}}</dd>
+                <dt>State</dt>
+                <dd>{{=stateForms[bootable.id]}}</dd>
+            </dl>
+
+        </div>
+        <div class="rewards">
+            {{ps = pledgeForBoot[bootable.id]}}
+            {{rewardsForPledge = dict()}}
+            {{for pledge in ps:}}
+                {{reward = rewardsForPledge.get(pledge.Pledges.id, [pledge.Pledges.Name, pledge.Pledges.Value, []])}}
+                {{reward[2] = reward[2] + [pledge.Rewards.Description]}}
+                {{rewardsForPledge[pledge.Pledges.id] = reward}}
+            {{pass}}
+
+            {{=LEGEND('Pledges')}}
+            {{for pledgeID in rewardsForPledge:}}
+                {{item = rewardsForPledge[pledgeID]}}
+                <div class="details">
+                    {{if bootable.State == bootableStates[0]:}}
+                        {{edit = ' <small>' + A('Edit.', _href=URL('editPledge', args=[pledgeID])).xml() + '</small>'}}
+                    {{else:}}
+                         {{edit = ''}}
+                    {{pass}}
+                    {{=H4(item[0], XML(edit))}}
+                    <dl class="dl-horizontal">
+                        <dt>Pledge Value</dt>
+                        <dd>£{{=item[1]}}</dd>
+                        {{i = 1}}
+                        {{for reward in item[2]:}}
+                            {{if i == 1:}}
+                                <dt>Rewards</dt>
+                                {{i += 1}}
+                            {{pass}}
+                            <dd>{{=reward}}</dd>
+                        {{pass}}
+                    </dl>
+
+                </div>
+            {{pass}}
+        </div>
+
+    </div>
+{{pass}}

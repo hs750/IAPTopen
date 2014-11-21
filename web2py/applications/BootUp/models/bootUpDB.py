@@ -113,5 +113,6 @@ def getCompletionPercentage(bootID):
     percentageComplete = Decimal(0)
     if bootable is not None:
         percentageComplete = total / Decimal(bootable.FundingGoal)
+        percentageComplete = percentageComplete.quantize(Decimal('.01'), rounding=ROUND_HALF_DOWN)
 
     return percentageComplete

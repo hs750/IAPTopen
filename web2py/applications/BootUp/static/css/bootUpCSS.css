@@ -31,8 +31,10 @@
 }
 
 .dashImage {
+    float:left;
     margin:0 auto;
     text-align:center;
+    width: 50%;
 }
 
 .details {
@@ -53,5 +55,15 @@
 
 .top5{
     clear: both
+}
+
+.rewards .details{
+    width: 33%;
+}
+
+.hint{
+    padding: 10px;
+    align-content: center;
+    background-color: lightgrey;
 }
 

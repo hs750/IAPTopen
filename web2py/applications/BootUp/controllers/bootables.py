@@ -271,9 +271,12 @@ def dash():
                  (db.Pledges.bootID == db.Bootables.id) &
                  (db.Pledges.id == db.PledgeRewards.pledgeID) &
                  (db.Rewards.id == db.PledgeRewards.rewardID)).select('Bootables.id',
+                                                                      'Pledges.id',
                                                                       'Pledges.Name',
                                                                       'Pledges.Value',
-                                                                      'Rewards.Description')
+                                                                      'Rewards.Description',
+                                                                      'Rewards.id',
+                                                                      orderby=db.Pledges.Value)
     totalPledged = dict()
     percentComplete = dict()
     forms = dict()
@@ -284,8 +287,7 @@ def dash():
         totalPledged[bootable.id] = getTotalPledged(bootable.id)
         percentComplete[bootable.id] = getCompletionPercentage(bootable.id)
         formname = 'stateForm-' + str(bootable.id)
-        bootStateForm = FORM(LABEL('State:', _for='state-'+str(bootable.id)),
-                             SELECT(bootableStates, _name='state-'+str(bootable.id), value=bootable.State),
+        bootStateForm = FORM(SELECT(bootableStates, _name='state-'+str(bootable.id), value=bootable.State),
                              INPUT(_name='bootID-' + str(count), _value=bootable.id, _hidden=True, _type='hidden'),
                              INPUT(_name='submit-'+str(bootable.id), _type='submit'),
                              formname=formname,
