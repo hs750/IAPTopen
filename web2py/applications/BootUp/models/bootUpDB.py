@@ -12,9 +12,6 @@ db = DAL('sqlite://bootUpDB.db')
     The default web2py primary key ID is used in all tabled except where explicitly stated (which has type Long)
 """
 
-bootableCategories = ['Art', 'Comics', 'Crafts', 'Fashion', 'Film', 'Games', 'Music', 'Photography', 'Technology']
-bootableStates = ['Not Available', 'Open for Pledges', 'Funded', 'Not Funded']
-
 db.define_table('Addresses',
                 Field('StreetAddress', 'text', requires=IS_NOT_EMPTY()),
                 Field('City', 'string', requires=IS_NOT_EMPTY()),
