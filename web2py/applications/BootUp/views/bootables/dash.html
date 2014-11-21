@@ -43,10 +43,6 @@
                 <dd>{{=percents[bootable.id]}}%</dd>
                 <dt>Category</dt>
                 <dd>{{=bootable.Category}}</dd>
-                <dt>Long Description</dt>
-                <dd>{{=bootable.LongDescription}}</dd>
-                <dt>Personal Story</dt>
-                <dd>{{=bootable.PersonalStory}}</dd>
                 <dt>State</dt>
                 <dd>{{=bootable.State}}</dd>
             </dl>
@@ -56,6 +52,15 @@
                 </div>
             {{pass}}
         </div>
+        <div class="long-details">
+            {{=LEGEND('Long Description')}}
+            {{=DIV(bootable.LongDescription)}}
+        </div>
+        <div class="long-details">
+            {{=LEGEND('Personal Story')}}
+            {{=DIV(bootable.PersonalStory)}}
+        </div>
+
         <div class="rewards">
             {{ps = pledgeForBoot.get(bootable.id)}}
             {{if ps is not None:}}
