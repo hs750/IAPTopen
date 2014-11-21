@@ -61,15 +61,3 @@
     width: 32%;
 }
 
-.hint{
-    padding: 10px;
-    align-content: center;
-    background-color: lightgrey;
-}
-
-.pledged {
-    background-color: lightgreen;
-    padding-top: 10px;
-    padding-bottom: 10px;
-}
-
