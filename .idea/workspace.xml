@@ -2,13 +2,23 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cb5070bd-bb64-4466-8777-26586badfa50" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/views/subviews/bootableTile.html" afterPath="$PROJECT_DIR$/web2py/applications/BootUp/views/subviews/bootableTile.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/views/bootables/dash.html" afterPath="$PROJECT_DIR$/web2py/applications/BootUp/views/bootables/dash.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/views/users/profile.html" afterPath="$PROJECT_DIR$/web2py/applications/BootUp/views/users/profile.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/views/bootables/selectInheritedRewards.html" afterPath="$PROJECT_DIR$/web2py/applications/BootUp/views/bootables/selectInheritedRewards.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/views/users/user.html" afterPath="$PROJECT_DIR$/web2py/applications/BootUp/views/users/user.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/controllers/users.py" afterPath="$PROJECT_DIR$/web2py/applications/BootUp/controllers/users.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/views/default/view.html" afterPath="$PROJECT_DIR$/web2py/applications/BootUp/views/default/view.html" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/databases/1f1e1d04d55a366f7f5a27d60614959f_Addresses.table" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/databases/1f1e1d04d55a366f7f5a27d60614959f_Bootables.table" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/databases/1f1e1d04d55a366f7f5a27d60614959f_CreditCards.table" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/databases/1f1e1d04d55a366f7f5a27d60614959f_PledgeRewards.table" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/databases/1f1e1d04d55a366f7f5a27d60614959f_Pledges.table" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/databases/1f1e1d04d55a366f7f5a27d60614959f_Rewards.table" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/databases/1f1e1d04d55a366f7f5a27d60614959f_UserPledges.table" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/databases/1f1e1d04d55a366f7f5a27d60614959f_Users.table" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/databases/bootUpDB.db" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/uploads/Bootables.Image.8d7ef4f59cda52d7.7468655f6c65676f5f6d6f7669655f323031342d776964652e6a7067.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/uploads/Bootables.Image.95579555f43db51f.57696e74657266656c6c5f4578746572696f722e6a7067.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/uploads/Bootables.Image.98aa1198e243bb39.7468655f6c65676f5f6d6f7669655f323031342d776964652e6a7067.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/uploads/Bootables.Image.a0ca83289e522577.67616d652d6f662d7468726f6e65732d68626f2d726963686172642d323639303830352d31323830783732302e6a7067.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/uploads/Bootables.Image.a280f912cf3a07c1.7468655f6c65676f5f6d6f7669655f323031342d776964652e6a7067.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/uploads/Bootables.Image.a9ee67bbc2021463.67616d652d6f662d7468726f6e65732d68626f2d726963686172642d323639303830352d31323830783732302e6a7067.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/uploads/Bootables.Image.ab31db8e977d1aa3.57696e74657266656c6c5f4578746572696f722e6a7067.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/uploads/Bootables.Image.b825620bed884978.7468655f6c65676f5f6d6f7669655f323031342d776964652e6a7067.jpg" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="IAPTopen.iws" />
@@ -34,7 +44,18 @@
     <favorites_list name="IAPTopen" />
   </component>
   <component name="FileEditorManager">
-    <leaf />
+    <leaf>
+      <file leaf-file-name="default.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/web2py/applications/BootUp/controllers/default.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.5281457" vertical-offset="2276" max-vertical-offset="3000">
+              <caret line="173" column="34" selection-start-line="173" selection-start-column="34" selection-end-line="173" selection-end-column="34" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -69,7 +90,6 @@
         <option value="$PROJECT_DIR$/web2py/applications/BootUp/models/a_constants" />
         <option value="$PROJECT_DIR$/web2py/applications/BootUp/models/a_constants.py" />
         <option value="$PROJECT_DIR$/web2py/applications/BootUp/models/menu.py" />
-        <option value="$PROJECT_DIR$/web2py/applications/BootUp/controllers/default.py" />
         <option value="$PROJECT_DIR$/web2py/applications/BootUp/views/default/browse.html" />
         <option value="dbtable:/3099673/854fd4b3-2143-4404-b62a-4bd8a5f585aa/..Addresses" />
         <option value="$PROJECT_DIR$/web2py/applications/BootUp/static/css/bootUpCSS.css" />
@@ -84,6 +104,7 @@
         <option value="$PROJECT_DIR$/web2py/applications/BootUp/views/subviews/bootableTile.html" />
         <option value="$PROJECT_DIR$/web2py/applications/BootUp/views/users/profile.html" />
         <option value="$PROJECT_DIR$/web2py/applications/BootUp/views/users/user.html" />
+        <option value="$PROJECT_DIR$/web2py/applications/BootUp/controllers/default.py" />
       </list>
     </option>
   </component>
@@ -402,28 +423,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="uploads" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="IAPTopen" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="IAPTopen" />
-              <option name="myItemType" value="com.jetbrains.web2py.projectView.Web2PyBaseDirNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="applications" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BootUp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="static" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -473,6 +472,28 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="models" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IAPTopen" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IAPTopen" />
+              <option name="myItemType" value="com.jetbrains.web2py.projectView.Web2PyBaseDirNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="applications" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BootUp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="databases" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1081,14 +1102,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web2py/applications/BootUp/controllers/default.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2366" max-vertical-offset="2970">
-          <caret line="42" column="15" selection-start-line="42" selection-start-column="12" selection-end-line="42" selection-end-column="15" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web2py/applications/BootUp/controllers/users.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="6345">
@@ -1213,6 +1226,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.13157895" vertical-offset="0" max-vertical-offset="570">
           <caret line="5" column="8" selection-start-line="5" selection-start-column="8" selection-end-line="5" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web2py/applications/BootUp/controllers/default.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5281457" vertical-offset="2276" max-vertical-offset="3000">
+          <caret line="173" column="34" selection-start-line="173" selection-start-column="34" selection-end-line="173" selection-end-column="34" />
           <folding />
         </state>
       </provider>
