@@ -65,3 +65,12 @@
     margin-left: 2px;
 }
 
+.imageLink {
+    color: #000000;
+}
+
+.imageLink:link {
+    color: black;
+    text-decoration: none;
+}
+

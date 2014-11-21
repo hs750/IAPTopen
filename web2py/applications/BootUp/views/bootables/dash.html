@@ -26,7 +26,7 @@
         <div class="dashImage">
             {{if bootable.State == bootableStates[0]:}}
                 {{=A(images[bootable.id], _href=URL('upload', args=[bootable.id]))}}
-                {{=DIV(H3('Click to upload new image'), _class='dashImageCaption')}}
+                {{=A(DIV(H3('Click to upload new image'), _class='dashImageCaption'), _href=URL('upload', args=[bootable.id]), _class='imageLink')}}
             {{else:}}
                 {{=images[bootable.id]}}
             {{pass}}
