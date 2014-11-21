@@ -5,9 +5,5 @@
         Not already signed up? {{=A('Sign Up Here!', callback=URL(args=['register']))}}
     </p>
     {{pass}}
-    {{=P(response.flash)}}
     {{=form}}
-    <p>
-        {{=BEAUTIFY(request.post_vars)}}
-    </p>
 </div>
