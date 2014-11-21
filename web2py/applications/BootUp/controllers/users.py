@@ -100,7 +100,10 @@ def editProfile():
     values['postCode'] = user.Addresses.PostCode
 
     values['cardNumber'] = user.CreditCards.CardNumber
-    values['expDate'] = user.CreditCards.ExpiryDate
+    month = str(user.CreditCards.ExpiryDate.month)
+    if len(month) == 1:
+        month = '0' + month
+    values['expDate'] =  month + '/' + str(user.CreditCards.ExpiryDate.year)[2:]
     values['cardID'] = user.CreditCards.IDCode
 
     values['ccAddress'] = cardAddress.StreetAddress
@@ -195,6 +198,7 @@ def user():
             form = getRegistrationForm(False, request.post_vars)
         else:
             form = getRegistrationForm(False, request.post_vars)
+        print request.post_vars
         if (not formChanged) and form.accepts(request.post_vars, session, formname='regForm'):
             #Check if username is already taken (IS_NOT_IN_DB doesnt seem to work)
             if db(db.Users.Username == request.post_vars.username).select().first() is not None:
@@ -213,8 +217,11 @@ def user():
                                                       Country=request.post_vars.ccCountry,
                                                       PostCode=request.post_vars.ccPostCode)
 
+                expDate = request.post_vars.expDate
+                expDateParts = expDate.split('/')
+                expDate = '20' + expDateParts[1] + '-' + expDateParts[0] + '-01'
                 ccID = db.CreditCards.insert(CardNumber=request.post_vars.cardNumber,
-                                             ExpiryDate=request.post_vars.expDate,
+                                             ExpiryDate=expDate,
                                              IDCode=request.post_vars.cardID,
                                              addressID=ccAddressID)
                 userid = db.Users.insert(FirstName=request.post_vars.fName,
@@ -341,7 +348,7 @@ def getRegistrationForm(ccAddress, values, incUsernameAndPassword=True):
                     DIV(LABEL('Expiry Date:', _for='expDate')),
                     DIV(INPUT(_name='expDate', _type='date', requires=db.CreditCards.ExpiryDate.requires,
                               _value=getFieldValue(values, 'expDate'),
-                              _placeholder='YYYY-MM-DD')),
+                              _placeholder='MM/YY')),
                     DIV(LABEL('Card ID Code:', _for='cardID')),
                     DIV(INPUT(_name='cardID', requires=db.CreditCards.IDCode.requires,
                               _value=getFieldValue(values, 'cardID'),

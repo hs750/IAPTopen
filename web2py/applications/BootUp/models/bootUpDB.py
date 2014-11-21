@@ -27,7 +27,7 @@ db.define_table('Addresses',
 db.define_table('CreditCards',
                 Field('CardNumber', 'string', length=20, requires=[IS_NOT_EMPTY(), IS_MATCH('[0-9]{12}')]),
                 Field('ExpiryDate', 'date',
-                      requires=[IS_NOT_EMPTY(), IS_DATE()]),
+                      requires=[IS_NOT_EMPTY(), IS_DATE('%m/%y')]),
                 Field('IDCode', 'string', length=3, requires=[IS_NOT_EMPTY(), IS_MATCH('[0-9]{3}')]),
                 Field('addressID', db.Addresses, requires=IS_NOT_EMPTY())
                 )
