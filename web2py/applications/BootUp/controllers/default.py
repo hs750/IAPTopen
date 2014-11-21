@@ -86,7 +86,7 @@ def view():
             percentageComplete = getCompletionPercentage(bootID)
             if percentageComplete >= 100:
                 bootable.State = bootableStates[2]
-
+                bootable.update_record()
             response.flash = 'You have successfully pledged!'
         elif pledgeForm.errors:
             response.flash = 'There was a problem with your pledge'
