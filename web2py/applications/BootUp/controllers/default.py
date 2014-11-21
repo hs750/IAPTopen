@@ -175,9 +175,11 @@ def getTop5():
     for i in range(0, min(len(sortedPercent), 5)):
         sortedKeys += [sortedPercent[i][0]]
 
-    query = (db.Bootables.id == sortedKeys[0])
-    for i in range(1, len(sortedKeys)):
-        query |= (db.Bootables.id == sortedKeys[i])
+    query = None
+    if len(sortedKeys) > 0:
+        query = (db.Bootables.id == sortedKeys[0])
+        for i in range(1, len(sortedKeys)):
+            query |= (db.Bootables.id == sortedKeys[i])
 
     top5 = db(query).select(db.Bootables.ALL)
 
