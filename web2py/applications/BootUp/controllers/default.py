@@ -80,6 +80,13 @@ def view():
             db.UserPledges.insert(userID=session.user,
                                   bootID=bootID,
                                   Value=request.post_vars.pledgeValue)
+
+            #If the pledge tipped bootable over the edge of its funding goal
+            #Move bootable to funded state
+            percentageComplete = getCompletionPercentage(bootID)
+            if percentageComplete >= 100:
+                bootable.State = bootableStates[2]
+
             response.flash = 'You have successfully pledged!'
         elif pledgeForm.errors:
             response.flash = 'There was a problem with your pledge'
