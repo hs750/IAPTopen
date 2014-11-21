@@ -1,9 +1,7 @@
 {{extend 'layout.html'}}
-<div class="content">
-    {{if request.args(0) == 'login':}}
-    <p>
-        Not already signed up? {{=A('Sign Up Here!', callback=URL(args=['register']))}}
-    </p>
-    {{pass}}
-    {{=form}}
-</div>
+{{if request.args(0) == 'login':}}
+<p class="hint">
+    Not already signed up? {{=A('Sign Up Here!', callback=URL(args=['register']))}}
+</p>
+{{pass}}
+{{=form}}
