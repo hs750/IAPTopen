@@ -37,6 +37,16 @@
     width: 50%;
 }
 
+.viewImage {
+    margin:0 auto;
+    text-align:center;
+    width: 100%;
+}
+
+.viewImage img{
+    width: 100%
+}
+
 .details {
     float: left;
     width: 49%;
