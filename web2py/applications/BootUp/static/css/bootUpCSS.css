@@ -39,7 +39,8 @@
 
 .details {
     float: left;
-    width: 50%;
+    width: 49%;
+    margin-left: 1%;
 }
 
 .home{
@@ -49,7 +50,6 @@
 }
 
 .details form {
-    text-align: center;
     width: 100%;
 }
 

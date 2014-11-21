@@ -1,3 +1,40 @@
 {{extend 'layout.html'}}
-{{=form}}
-{{=pledge}}
+{{inheritCount = 0}}
+{{definedCount = 0}}
+{{for item in pledge:}}
+        {{if item.PledgeRewards.Inherited:}}
+            {{inheritCount += 1}}
+        {{else:}}
+            {{definedCount += 1}}
+        {{pass}}
+{{pass}}
+<div class="details home">
+    {{=LEGEND('Pledge Detials')}}
+    <dl class="dl-horizontal">
+        <dt>Name</dt>
+        <dd>{{=pledge.first().Pledges.Name}}</dd>
+        <dt>Value</dt>
+        <dd>{{=pledge.first().Pledges.Value}}</dd>
+    </dl>
+</div>
+{{if inheritCount > 0:}}
+    <div class="details home">
+        {{=form}}
+    </div>
+    <div class="details home">
+        {{if definedCount > 0:}}
+            {{=LEGEND('Rewards already defined')}}
+            <div>
+                <ul>
+                    {{for item in pledge:}}
+                        {{if not item.PledgeRewards.Inherited:}}
+                            <li class="description">{{=item.Rewards.Description}}</li>
+                        {{pass}}
+                    {{pass}}
+                </ul>
+            </div>
+        {{pass}}
+    </div>
+{{else:}}
+    {{=P('There are no rewards to inherit for this pledge ', A('Click Here', URL('dash')), ' to return to dash')}}
+{{pass}}
