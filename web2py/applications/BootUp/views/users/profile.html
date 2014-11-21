@@ -1,3 +1,4 @@
+{{from datetime import date}}
 {{extend 'layout.html'}}
 {{pledgeForBoot = dict()}}
 {{bootTitleForID = dict()}}
@@ -20,7 +21,12 @@
         <dt>Email</dt>
         <dd>{{=user.Users.Email}}</dd>
         <dt>Date of Birth</dt>
-        <dd>{{=user.Users.DateOfBirth}}</dd>
+        {{dob = user.Users.DateOfBirth}}
+        <dd>{{=dob}}</dd>
+        <dt>Age</dt>
+        {{today = date.today()}}
+        {{age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))}}
+        <dd>{{=age}}</dd>
     </dl>
 </div>
 <div class="details home">
