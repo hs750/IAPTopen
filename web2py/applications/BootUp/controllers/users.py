@@ -142,7 +142,7 @@ def editProfile():
         user.Addresses.PostCode = request.post_vars.postCode
 
         user.CreditCards.CardNumber = request.post_vars.cardNumber
-        user.CreditCards.ExpiryDate = request.post_vars.expDate
+        user.CreditCards.ExpiryDate = expDate = formatExpDate(request.post_vars.expDate)
         user.CreditCards.IDCode = request.post_vars.cardID
         user.Users.update_record()
         user.Addresses.update_record()
@@ -217,9 +217,7 @@ def user():
                                                       Country=request.post_vars.ccCountry,
                                                       PostCode=request.post_vars.ccPostCode)
 
-                expDate = request.post_vars.expDate
-                expDateParts = expDate.split('/')
-                expDate = '20' + expDateParts[1] + '-' + expDateParts[0] + '-01'
+                expDate = formatExpDate(request.post_vars.expDate)
                 ccID = db.CreditCards.insert(CardNumber=request.post_vars.cardNumber,
                                              ExpiryDate=expDate,
                                              IDCode=request.post_vars.cardID,
@@ -402,6 +400,11 @@ def getLoginForm():
                 name='loginForm'
                 )
     return form
+
+def formatExpDate(expDate):
+    expDateParts = expDate.split('/')
+    expDate = '20' + expDateParts[1] + '-' + expDateParts[0] + '-01'
+    return expDate
 
 
 
