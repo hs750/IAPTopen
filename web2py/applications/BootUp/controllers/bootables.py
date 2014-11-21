@@ -48,6 +48,9 @@ def createPledges():
     elif bootable.userID != session.user:
         #Can only edit if loged in as owning user
         redirect(loginURL)
+    elif bootable.State == bootableStates[0]:
+        #Cant create pledge for bootable that is not not available
+        redirect(URL('dash'))
 
     response.subtitle = 'Create pledge for Bootable: ' + bootable.Title
     #Number of rewards a pledge has
@@ -170,7 +173,7 @@ def getPledgeForm(values, numRewards, inheritPledges, inheritLabel='Get inherita
     :param incNextPledge: whether to unclude next pledge button (for editing)
     :return: the pledge creation / edit form
     """
-    form = FORM(DIV(DIV(H3('Pledge:')),
+    form = FORM(DIV(DIV(LEGEND('Pledge:')),
                     DIV(LABEL('Name:', _for='name')),
                     DIV(INPUT(_name='name', requires=db.Pledges.Name.requires,
                               _value=getFieldValue(values, 'name'))),
@@ -180,6 +183,7 @@ def getPledgeForm(values, numRewards, inheritPledges, inheritLabel='Get inherita
                     ),
                 _name='pledgeForm')
 
+    form.append(DIV(LEGEND('Rewards')))
     for i in range(1, int(numRewards)+1):
         form.append(getRewardDiv(values, str(i)))
 
@@ -237,7 +241,7 @@ def getPledgeInheritDiv(values, pledgeValue, bootID):
     ).select('Rewards.id', 'Rewards.Description', distinct=True)
 
     count = 0
-    rewardInheritanceDiv = DIV(DIV(H4('Inherit Rewards:')))
+    rewardInheritanceDiv = DIV(DIV(LEGEND('Inherit Rewards:')))
     for reward in otherRewards:
         count+=1
         rewardInheritanceDiv.append(DIV(INPUT(_name='reward-' + str(reward.id),
