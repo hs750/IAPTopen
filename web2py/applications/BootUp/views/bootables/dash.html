@@ -1,7 +1,7 @@
 {{extend 'layout.html'}}
 {{pledgeForBoot = dict()}}
 {{for item in pledges:}}
-    <!-- Build up pledges for each bootable-->
+    {{# Build up pledges for each bootable}}
     {{pledgeIDs = pledgeForBoot.get(item.Bootables.id, [])}}
     {{pledgeIDs += [item]}}
     {{pledgeForBoot[item.Bootables.id] = pledgeIDs}}
@@ -14,6 +14,7 @@
 {{for bootable in bootables:}}
     <div class="bootable">
         {{delButton = A('Delete', _href=URL('delete', args=[bootable.id]), _type='button', _class='btn btn-danger pull-right bootButton')}}
+        {{#Depending on the state of the bootable add buttons allowing user interaction}}
         {{if bootable.State == bootableStates[0]:}}
             {{edit = A('Edit', _href=URL('edit', args=[bootable.id]), _type='button', _class='btn btn-primary pull-right bootButton')}}
             {{delete = delButton}}
@@ -28,6 +29,7 @@
         {{pass}}
         {{=LEGEND(H2(A(bootable.Title, _href=URL('default', 'view', args=[bootable.id])), addPledge, edit, delete))}}
         <div class="dashImage">
+            {{#The bootable image, links to edit if appropriate}}
             {{if bootable.State == bootableStates[0]:}}
                 {{=A(images[bootable.id], _href=URL('upload', args=[bootable.id]))}}
                 {{=A(DIV(H3('Click to upload new image'), _class='dashImageCaption'), _href=URL('upload', args=[bootable.id]), _class='imageLink')}}
@@ -50,6 +52,8 @@
                 <dt>State</dt>
                 <dd>{{=bootable.State}}</dd>
             </dl>
+
+            {{#Form for changin the state of the bootable}}
             {{if bootable.State in bootableStates[:2]:}}
                 <div class="center">
                     {{=stateForms[bootable.id]}}
@@ -57,8 +61,11 @@
             {{pass}}
         </div>
         <div class="rewards">
+            {{#Display the pledges with their rewards}}
             {{ps = pledgeForBoot.get(bootable.id)}}
             {{if ps is not None:}}
+
+                {{#Build the list of rewards for the pledge}}
                 {{rewardsForPledge = dict()}}
                 {{for pledge in ps:}}
                     {{reward = rewardsForPledge.get(pledge.Pledges.id, [pledge.Pledges.Name, pledge.Pledges.Value, []])}}
@@ -67,6 +74,7 @@
                 {{pass}}
 
                 {{=LEGEND('Pledges')}}
+                {{#Display pledges with their rewards}}
                 {{for pledgeID in rewardsForPledge:}}
                     {{item = rewardsForPledge[pledgeID]}}
                     <div class="details">

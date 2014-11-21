@@ -403,6 +403,12 @@ def getLoginForm():
     return form
 
 def formatExpDate(expDate):
+    """
+    Expiry Date of credit card has the form MM/YY but the database wants the form YYYY-MM-DD
+    Sor format appropriately
+    :param expDate: date with format MM/YY
+    :return: date with format 20YY-MM-01
+    """
     expDateParts = expDate.split('/')
     expDate = '20' + expDateParts[1] + '-' + expDateParts[0] + '-01'
     return expDate

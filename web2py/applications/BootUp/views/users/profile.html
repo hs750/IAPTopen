@@ -5,7 +5,7 @@
 {{bootTotalForID = dict()}}
 {{bootPercentForID = dict()}}
 {{for item in pledges:}}
-    <!-- Build up pledges for each bootable-->
+    {{# Sort pledges, titles, totals and percentages for each bootable}}
     {{pledgeIDs = pledgeForBoot.get(item.Bootables.id, [])}}
     {{bootTitleForID[item.Bootables.id] = item.Bootables.Title}}
     {{bootTotalForID[item.Bootables.id] = totals[item.Bootables.id]}}
@@ -27,6 +27,7 @@
         <dt>Date of Birth</dt>
         {{dob = user.Users.DateOfBirth}}
         <dd>{{=dob}}</dd>
+        {{#Calculate the users age}}
         <dt>Age</dt>
         {{today = date.today()}}
         {{age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))}}
@@ -56,6 +57,7 @@
         <dt>Card ID Code</dt>
         <dd>{{=user.CreditCards.IDCode}}</dd>
 
+        {{#Display billing address if it is different from the home address}}
         {{if cardAddress.id != user.Users.addressID:}}
             {{=H5('Billing Address:')}}
             <dt>Street Address</dt>
@@ -76,10 +78,13 @@
 <div class="rewards">
     {{=LEGEND(H3('Pledges made to Bootables and their Expected Rewards'))}}
 
+    {{#Display the pledges make by the user and the users expectd rewards}}
     {{for item in pledgeForBoot:}}
         <div class="details home">
             {{ps = pledgeForBoot[item]}}
             {{rewardsForPledge = dict()}}
+
+            {{#Sort the rewards for each pledge}}
             {{for pledge in ps:}}
                 {{reward = rewardsForPledge.get(pledge.Pledges.id, [pledge.Pledges.Name, pledge.Pledges.Value, []])}}
                 {{reward[2] = reward[2] + [pledge.Rewards.Description]}}
@@ -93,6 +98,7 @@
                 <dt>Percentage Complete</dt>
                 <dd>{{=bootPercentForID[item]}}%</dd>
             </dl>
+            {{#Dislay the pledge details}}
             {{for pledgeID in rewardsForPledge:}}
                 {{item = rewardsForPledge[pledgeID]}}
                     <dl class="dl-horizontal">
@@ -101,6 +107,7 @@
                         <dt>Pledge Value</dt>
                         <dd>£{{=item[1]}}</dd>
                         {{i = 1}}
+                        {{#Display the rewards for each pledge}}
                         {{for reward in item[2]:}}
                             {{if i == 1:}}
                                 <dt>Rewards</dt>

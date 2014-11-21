@@ -1,4 +1,6 @@
 {{extend 'layout.html'}}
+
+{{#Count the number of rewards for the pledge}}
 {{inheritCount = 0}}
 {{definedCount = 0}}
 {{for item in pledge:}}
@@ -8,6 +10,7 @@
             {{definedCount += 1}}
         {{pass}}
 {{pass}}
+
 <div class="details home">
     {{=LEGEND('Pledge Detials')}}
     <dl class="dl-horizontal">

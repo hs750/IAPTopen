@@ -1,6 +1,8 @@
 <!-- Y8191122 -->
 {{extend 'layout.html'}}
 <h1>{{=bootable.Title}} <small>By {{=owner}}</small></h1>
+
+{{#If the current user has pledged to the bootable, tell them so}}
 {{if currentUserPledged:}}
     <div class="alert alert-success ">
         <div class="center">
@@ -8,6 +10,7 @@
         </div>
     </div>
 {{pass}}
+
 {{=DIV(image)}}
 <div class="details">
     {{=LEGEND('Bootable Details')}}
@@ -28,7 +31,8 @@
         {{order=dict()}}
         {{pledges=dict()}}
         {{i=1}}
-        <!-- Accociate rewards with pledges-->
+
+        {{#Accociate rewards with pledges}}
         {{for pledge in rewards:}}
             {{p = pledges.get(pledge.Pledges.id, [pledge.Pledges.Name,pledge.Pledges.Value,[]])}}
             {{p[2] = p[2] + [pledge.Rewards.Description]}}
@@ -36,10 +40,11 @@
             {{order[pledge.Pledges.id] = i}}
             {{i +=1}}
         {{pass}}
-        <!-- Dict doesnt keep order so need to reorder pledges in value order low to high-->
+
+        {{# Dict doesnt keep order so need to reorder pledges in value order low to high}}
         {{sortedOrder = sorted(order.items(), key=operator.itemgetter(1))}}
 
-        <!-- Serialise the pledges-->
+        {{#Serialise the pledges}}
         {{for orderID in sortedOrder:}}
             {{pID = orderID[0]}}
             {{i = 1}}
@@ -59,6 +64,8 @@
         {{pass}}
 
     </div>
+
+    {{#Display the users who have pledged and their expected rewards}}
     <div class="users">
         {{=LEGEND('Users already pledging')}}
         {{uRewards = dict()}}
@@ -82,6 +89,7 @@
     </div>
 </div>
 <div class="details">
+    {{#Display pledge button or message if pledgin not available}}
     {{=LEGEND('PLEDGE!')}}
     <div class="center">
 
