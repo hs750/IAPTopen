@@ -91,11 +91,6 @@ def view():
             response.flash = 'You have successfully pledged!'
         elif pledgeForm.errors:
             response.flash = 'There was a problem with your pledge'
-        else:
-            response.flash = 'You can pledge to this Bootable below'
-    else:
-        #Should never get here as form shouldnt be displayed if no user signed in
-        response.flash = 'Must be signed in to pledge!'
 
     #Get this after submition of form so that screen updated on refresh
     usersPledged = db(usersPledgedQuery).select('Users.id', 'Users.Username',
