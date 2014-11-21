@@ -151,7 +151,7 @@ def getTop5():
     # Get the pledges for each bootable, but only the bootables that are not not open
     pledges = db((db.UserPledges.bootID == db.Bootables.id) &
                  (db.Bootables.State != bootableStates[0])).select('Bootables.id',
-                                                                  'UserPledges.Value', 'Bootables.FundingGoal')
+                                                                   'UserPledges.Value', 'Bootables.FundingGoal')
 
     totals = dict()
     goals = dict()
@@ -175,7 +175,8 @@ def getTop5():
     for i in range(0, min(len(sortedPercent), 5)):
         sortedKeys += [sortedPercent[i][0]]
 
-    query = None
+    #If there are no bootables with pledges do a query which will return noting
+    query = (db.Bootables.State == 'No State')
     if len(sortedKeys) > 0:
         query = (db.Bootables.id == sortedKeys[0])
         for i in range(1, len(sortedKeys)):
@@ -185,7 +186,7 @@ def getTop5():
 
     #Add the percentage to the return
     for item in top5:
-        item['percent'] = percent[item.id]
+        item['percent'] = percent.get(item.id, 0)
 
     return top5
 
