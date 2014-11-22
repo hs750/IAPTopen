@@ -6,7 +6,6 @@
       <change type="DELETED" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/sessions/160/025/127.0.0.1-f6888e60-8378-4460-ae6d-67e648bb98f7" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/sessions/18b/1e9/127.0.0.1-654ded4b-e229-4225-9fbe-6caa27248edc" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/sessions/1f8/05a/127.0.0.1-834e5a1a-19a4-4211-94b0-5c13e407e288" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/databases/bootUpDB.db" afterPath="$PROJECT_DIR$/web2py/applications/BootUp/databases/bootUpDB.db" />
     </list>
     <ignored path="IAPTopen.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -52,10 +51,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="bootUpCSS.css" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="bootUpCSS.css" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/web2py/applications/BootUp/static/css/bootUpCSS.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.44221106" vertical-offset="606" max-vertical-offset="1395">
+            <state vertical-scroll-proportion="0.0" vertical-offset="606" max-vertical-offset="1395">
               <caret line="58" column="18" selection-start-line="58" selection-start-column="18" selection-end-line="58" selection-end-column="18" />
               <folding />
             </state>
@@ -72,11 +71,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="bootables.py" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="bootables.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/web2py/applications/BootUp/controllers/bootables.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="7141" max-vertical-offset="9855">
-              <caret line="476" column="4" selection-start-line="476" selection-start-column="4" selection-end-line="476" selection-end-column="4" />
+            <state vertical-scroll-proportion="0.33333334" vertical-offset="8904" max-vertical-offset="9855">
+              <caret line="606" column="44" selection-start-line="606" selection-start-column="41" selection-end-line="606" selection-end-column="44" />
               <folding>
                 <marker date="1416659559000" expanded="true" signature="23581:23646" placeholder="Select rewar..." />
               </folding>
@@ -1258,16 +1257,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web2py/applications/BootUp/controllers/bootables.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="7141" max-vertical-offset="9855">
-          <caret line="476" column="4" selection-start-line="476" selection-start-column="4" selection-end-line="476" selection-end-column="4" />
-          <folding>
-            <marker date="1416659559000" expanded="true" signature="23581:23646" placeholder="Select rewar..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web2py/applications/BootUp/views/bootables/selectInheritedRewards.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-18.958334" vertical-offset="160" max-vertical-offset="720">
@@ -1325,9 +1314,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/web2py/applications/BootUp/static/css/bootUpCSS.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.44221106" vertical-offset="606" max-vertical-offset="1395">
+        <state vertical-scroll-proportion="0.0" vertical-offset="606" max-vertical-offset="1395">
           <caret line="58" column="18" selection-start-line="58" selection-start-column="18" selection-end-line="58" selection-end-column="18" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web2py/applications/BootUp/controllers/bootables.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33333334" vertical-offset="8904" max-vertical-offset="9855">
+          <caret line="606" column="44" selection-start-line="606" selection-start-column="41" selection-end-line="606" selection-end-column="44" />
+          <folding>
+            <marker date="1416659559000" expanded="true" signature="23581:23646" placeholder="Select rewar..." />
+          </folding>
         </state>
       </provider>
     </entry>
