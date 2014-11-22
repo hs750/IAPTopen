@@ -326,6 +326,8 @@ def dash():
                 bootable.State = bootableStates[3]
                 response.flash = bootable.Title + ' has now been closed'
                 bootable.update_record()
+            #Redirect to this page so that the buttons get fully updated
+            redirect(URL())
 
     return dict(bootables=bootables,
                 pledges=pledges,
