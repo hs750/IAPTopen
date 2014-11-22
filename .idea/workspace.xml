@@ -2,12 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cb5070bd-bb64-4466-8777-26586badfa50" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/sessions/0ab/1eb/127.0.0.1-5cbfbe0d-3af1-4577-884c-9a15808f639c" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/sessions/160/025/127.0.0.1-f6888e60-8378-4460-ae6d-67e648bb98f7" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/sessions/18b/1e9/127.0.0.1-654ded4b-e229-4225-9fbe-6caa27248edc" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/sessions/1f8/05a/127.0.0.1-834e5a1a-19a4-4211-94b0-5c13e407e288" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/databases/bootUpDB.db" afterPath="$PROJECT_DIR$/web2py/applications/BootUp/databases/bootUpDB.db" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/models/a_constants.py" afterPath="$PROJECT_DIR$/web2py/applications/BootUp/models/a_constants.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/models/bootUpDB.py" afterPath="$PROJECT_DIR$/web2py/applications/BootUp/models/bootUpDB.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/views/bootables/dash.html" afterPath="$PROJECT_DIR$/web2py/applications/BootUp/views/bootables/dash.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/views/bootables/selectInheritedRewards.html" afterPath="$PROJECT_DIR$/web2py/applications/BootUp/views/bootables/selectInheritedRewards.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/views/default/view.html" afterPath="$PROJECT_DIR$/web2py/applications/BootUp/views/default/view.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/static/css/bootUpCSS.css" afterPath="$PROJECT_DIR$/web2py/applications/BootUp/static/css/bootUpCSS.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="IAPTopen.iws" />
@@ -44,31 +44,31 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="user.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web2py/applications/BootUp/views/users/user.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-1.875" vertical-offset="0" max-vertical-offset="180">
-              <caret line="3" column="58" selection-start-line="3" selection-start-column="58" selection-end-line="3" selection-end-column="58" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="dash.html" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="dash.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/web2py/applications/BootUp/views/bootables/dash.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.8125" vertical-offset="1210" max-vertical-offset="1800">
+            <state vertical-scroll-proportion="-18.958334" vertical-offset="1210" max-vertical-offset="1800">
               <caret line="111" column="55" selection-start-line="111" selection-start-column="55" selection-end-line="111" selection-end-column="55" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="bootUpCSS.css" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="bootUpCSS.css" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/web2py/applications/BootUp/static/css/bootUpCSS.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="771" max-vertical-offset="1395">
-              <caret line="71" column="22" selection-start-line="71" selection-start-column="22" selection-end-line="71" selection-end-column="22" />
+            <state vertical-scroll-proportion="0.44221106" vertical-offset="606" max-vertical-offset="1395">
+              <caret line="58" column="18" selection-start-line="58" selection-start-column="18" selection-end-line="58" selection-end-column="18" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="bootableTile.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web2py/applications/BootUp/views/subviews/bootableTile.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-0.0" vertical-offset="0" max-vertical-offset="225">
+              <caret line="0" column="96" selection-start-line="0" selection-start-column="96" selection-end-line="0" selection-end-column="96" />
               <folding />
             </state>
           </provider>
@@ -106,8 +106,8 @@
       <file leaf-file-name="bootUpDB.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/web2py/applications/BootUp/models/bootUpDB.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1231" max-vertical-offset="1815">
-              <caret line="116" column="0" selection-start-line="116" selection-start-column="0" selection-end-line="116" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="1216" max-vertical-offset="1800">
+              <caret line="115" column="29" selection-start-line="115" selection-start-column="29" selection-end-line="115" selection-end-column="29" />
               <folding />
             </state>
           </provider>
@@ -186,13 +186,13 @@
         <option value="$PROJECT_DIR$/web2py/applications/BootUp/views/users/user.html" />
         <option value="$PROJECT_DIR$/web2py/applications/BootUp/models/menu.py" />
         <option value="$PROJECT_DIR$/web2py/applications/BootUp/controllers/bootables.py" />
-        <option value="$PROJECT_DIR$/web2py/applications/BootUp/static/css/bootUpCSS.css" />
         <option value="$PROJECT_DIR$/web2py/applications/BootUp/controllers/default.py" />
         <option value="$PROJECT_DIR$/web2py/applications/BootUp/views/bootables/selectInheritedRewards.html" />
         <option value="$PROJECT_DIR$/web2py/applications/BootUp/models/bootUpDB.py" />
         <option value="$PROJECT_DIR$/web2py/applications/BootUp/models/a_constants.py" />
         <option value="$PROJECT_DIR$/web2py/applications/BootUp/views/default/view.html" />
         <option value="$PROJECT_DIR$/web2py/applications/BootUp/views/bootables/dash.html" />
+        <option value="$PROJECT_DIR$/web2py/applications/BootUp/static/css/bootUpCSS.css" />
       </list>
     </option>
   </component>
@@ -1212,14 +1212,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web2py/applications/BootUp/views/subviews/bootableTile.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.0" vertical-offset="0" max-vertical-offset="225">
-          <caret line="0" column="96" selection-start-line="0" selection-start-column="96" selection-end-line="0" selection-end-column="96" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web2py/applications/BootUp/views/users/editProfile.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-0.625" vertical-offset="0" max-vertical-offset="120">
@@ -1260,14 +1252,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web2py/applications/BootUp/static/css/bootUpCSS.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="771" max-vertical-offset="1395">
-          <caret line="71" column="22" selection-start-line="71" selection-start-column="22" selection-end-line="71" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web2py/applications/BootUp/controllers/default.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="2193" max-vertical-offset="3135">
@@ -1303,8 +1287,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/web2py/applications/BootUp/models/bootUpDB.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1231" max-vertical-offset="1815">
-          <caret line="116" column="0" selection-start-line="116" selection-start-column="0" selection-end-line="116" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="1216" max-vertical-offset="1800">
+          <caret line="115" column="29" selection-start-line="115" selection-start-column="29" selection-end-line="115" selection-end-column="29" />
           <folding />
         </state>
       </provider>
@@ -1327,8 +1311,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/web2py/applications/BootUp/views/bootables/dash.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8125" vertical-offset="1210" max-vertical-offset="1800">
+        <state vertical-scroll-proportion="-18.958334" vertical-offset="1210" max-vertical-offset="1800">
           <caret line="111" column="55" selection-start-line="111" selection-start-column="55" selection-end-line="111" selection-end-column="55" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web2py/applications/BootUp/views/subviews/bootableTile.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.0" vertical-offset="0" max-vertical-offset="225">
+          <caret line="0" column="96" selection-start-line="0" selection-start-column="96" selection-end-line="0" selection-end-column="96" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web2py/applications/BootUp/static/css/bootUpCSS.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.44221106" vertical-offset="606" max-vertical-offset="1395">
+          <caret line="58" column="18" selection-start-line="58" selection-start-column="18" selection-end-line="58" selection-end-column="18" />
           <folding />
         </state>
       </provider>
