@@ -4,14 +4,26 @@ __author__ = "Y8191122"
 def index():
     """
     The home page of BootUP
-    :return: the 5 newest bootables and the top5 closest to completion
+    :return: the 5 newest bootables and the top5 closest to completion,
+            the bootables total pledged and percentage complete
     """
     response.subtitle = 'Home'
     #The newest bootables assumes higher id = newer, bootable cant be not available
     newest = db((db.Bootables.id>0) &
                 (db.Bootables.State != bootableStates[0])).select(orderby=~db.Bootables.id, limitby=(0, 5))
     top5 = getTop5()
-    return dict(newest=newest, top=top5)
+
+    totals = dict()
+    percentages = dict()
+    for item in newest:
+        totals[item.id] = getTotalPledged(item.id)
+        percentages[item.id] = getCompletionPercentage(item.id)
+
+    for item in top5:
+        totals[item.id] = getTotalPledged(item.id)
+        percentages[item.id] = getCompletionPercentage(item.id)
+
+    return dict(newest=newest, top=top5, totals=totals, percent=percentages)
 
 
 def view():
@@ -115,7 +127,7 @@ def view():
 def search():
     """
     The search page for BootUP
-    :return: the search results
+    :return: the search results, the total pledges and percentages for each item
     """
     search = request.vars.search
     cat = request.vars.cat
@@ -132,7 +144,13 @@ def search():
                            (db.Bootables.State != bootableStates[0]) &
                             #Cant be not available
                            (db.Bootables.Category == cat)).select()
-    return dict(searchResults=searchResults)
+    totals = dict()
+    percentages = dict()
+    for item in searchResults:
+        totals[item.id] = getTotalPledged(item.id)
+        percentages[item.id] = getCompletionPercentage(item.id)
+
+    return dict(searchResults=searchResults, totals=totals, percent=percentages)
 
 def bootableImage():
     """

@@ -6,5 +6,11 @@
         <dd>{{=bootable.ShortDescription}}</dd>
         <dt>Category</dt>
         <dd>{{=bootable.Category}}</dd>
+        <dt>Goal</dt>
+        <dd>£{{=bootable.FundingGoal}}</dd>
+        <dt>Total Pledged</dt>
+        <dd>£{{=totals[bootable.id]}}</dd>
+        <dt>Percentage Complete</dt>
+        <dd>{{=percent[bootable.id]}}%</dd>
     </dl>
 </div>
