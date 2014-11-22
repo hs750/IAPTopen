@@ -90,8 +90,8 @@
     </div>
 </div>
 <div class="details">
-    {{=DIV(LEGEND('Description'), DIV(bootable.LongDescription), _class='longDesc')}}
-    {{=DIV(LEGEND('My Story'), DIV(bootable.PersonalStory), _class='longDesc')}}
+    {{=DIV(LEGEND('Description'), DIV(paragraphise(bootable.LongDescription)), _class='longDesc')}}
+    {{=DIV(LEGEND('My Story'), DIV(paragraphise(bootable.PersonalStory)), _class='longDesc')}}
 </div>
 {{#Display the users who have pledged and their expected rewards}}
 <div class="details">

@@ -105,11 +105,11 @@
 
         <div class="long-details">
             {{=LEGEND('Long Description')}}
-            {{=DIV(bootable.LongDescription)}}
+            {{=DIV(paragraphise(bootable.LongDescription))}}
         </div>
         <div class="long-details">
             {{=LEGEND('Personal Story')}}
-            {{=DIV(bootable.PersonalStory)}}
+            {{=DIV(paragraphise(bootable.PersonalStory))}}
         </div>
     </div>
 {{pass}}
