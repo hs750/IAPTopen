@@ -168,7 +168,15 @@ def getTop5():
         percent[totalID] = totals[totalID] / goals[totalID]
 
     #list of bootID, percent complete pairs in order, most complete first
-    sortedPercent = sorted(percent.items(), key=operator.itemgetter(1), reverse=True)
+    sortedPercentTemp = sorted(percent.items(), key=operator.itemgetter(1), reverse=True)
+    sortedPercent = []
+
+    #Dont show funded projects in top 5 (otherwise top5 will only end up being the completed projects
+    for item in sortedPercentTemp:
+        print item
+        if item[1] < 1:
+            sortedPercent += [item]
+
     sortedKeys = []
 
     #pick out the bootIDs of the top 5 bootables
