@@ -69,7 +69,7 @@ if searchForm.accepts(request.post_vars, session, formname='searchForm'):
                                                 cat=request.post_vars.cat)))
 
 #Include dev menues
-DEVELOPMENT_MENU = True
+DEVELOPMENT_MENU = False
 
 #########################################################################
 ## provide shortcuts for development. remove in production

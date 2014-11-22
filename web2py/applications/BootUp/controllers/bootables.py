@@ -198,13 +198,14 @@ def getPledgeForm(values, numRewards, inheritPledges, inheritLabel='Get inherita
 
     form.append(INPUT(_name='inheritPledges', _type='submit', _value=inheritLabel, _id='inheritPledges'))
 
-    buttonDiv = DIV(DIV(INPUT(_name='delReward', _type='submit', _value='Delete last reward')),
+    buttonDiv = DIV(DIV(INPUT(_name='delReward', _type='submit', _value='Delete last reward', _class='btn btn-warning')),
                     DIV(INPUT(_name='addReward', _type='submit', _value='Add another reward')))
 
     if incNextPledge:
-        buttonDiv.append(DIV(INPUT(_name='nextPledge', _type='submit', _value='Add another pledge', _id='nextPledge')))
+        buttonDiv.append(DIV(INPUT(_name='nextPledge', _type='submit', _value='Add another pledge',
+                                   _id='nextPledge', _class='btn btn-success')))
 
-    buttonDiv.append(DIV(INPUT(_name='done', _type='submit', _value='Done', _id='doneSubmit')))
+    buttonDiv.append(DIV(INPUT(_name='done', _type='submit', _value='Done', _id='doneSubmit', _class='btn btn-success')))
     form.append(buttonDiv)
 
     #Must set formkey in all paths
