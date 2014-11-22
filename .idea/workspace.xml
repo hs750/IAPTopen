@@ -7,8 +7,6 @@
       <change type="DELETED" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/sessions/18b/1e9/127.0.0.1-654ded4b-e229-4225-9fbe-6caa27248edc" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/sessions/1f8/05a/127.0.0.1-834e5a1a-19a4-4211-94b0-5c13e407e288" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/databases/bootUpDB.db" afterPath="$PROJECT_DIR$/web2py/applications/BootUp/databases/bootUpDB.db" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web2py/applications/BootUp/static/css/bootUpCSS.css" afterPath="$PROJECT_DIR$/web2py/applications/BootUp/static/css/bootUpCSS.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="IAPTopen.iws" />
     <ignored path=".idea/workspace.xml" />
