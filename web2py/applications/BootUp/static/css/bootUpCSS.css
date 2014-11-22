@@ -90,3 +90,7 @@
     text-justify: inter-word;
 }
 
+.bootable .rewards {
+    clear: both;
+}
+
