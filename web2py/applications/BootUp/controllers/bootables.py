@@ -439,7 +439,6 @@ def editPledge():
             valueChanged = True
             db(db.Pledges.id == pledgeID).update(Value=request.post_vars.value)
 
-        print 'count' + str(count)
         rewardDiff = 0
         if numRewards < count:
             rewardDiff = count - numRewards

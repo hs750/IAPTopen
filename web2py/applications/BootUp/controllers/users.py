@@ -199,7 +199,7 @@ def user():
             form = getRegistrationForm(False, request.post_vars)
         else:
             form = getRegistrationForm(False, request.post_vars)
-        print request.post_vars
+
         if (not formChanged) and form.accepts(request.post_vars, session, formname='regForm'):
             #Check if username is already taken (IS_NOT_IN_DB doesnt seem to work)
             if db(db.Users.Username == request.post_vars.username).select().first() is not None:

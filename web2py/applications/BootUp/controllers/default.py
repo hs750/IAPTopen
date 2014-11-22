@@ -191,7 +191,6 @@ def getTop5():
 
     #Dont show funded projects in top 5 (otherwise top5 will only end up being the completed projects
     for item in sortedPercentTemp:
-        print item
         if item[1] < 1:
             sortedPercent += [item]
 
