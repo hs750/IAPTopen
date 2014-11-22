@@ -119,8 +119,6 @@ def createPledges():
             redirect(URL('dash'))
     elif form.errors:
         response.flash = 'There was a problem with what you entered.'
-    else:
-        response.flash = 'Please enter Pledge details'
     return dict(form=form)
 
 
