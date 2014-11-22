@@ -69,6 +69,7 @@
 
 .rewards .details{
     width: 32%;
+    min-height: 250px;
 }
 
 .bootButton {
