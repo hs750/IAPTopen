@@ -85,3 +85,8 @@
     text-decoration: none;
 }
 
+.long {
+    text-align: justify;
+    text-justify: inter-word;
+}
+
