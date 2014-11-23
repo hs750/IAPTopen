@@ -345,7 +345,7 @@ def getRegistrationForm(ccAddress, values, incUsernameAndPassword=True):
                               _value=getFieldValue(values, 'cardNumber'),
                               _placeholder='012345678901', _maxlength=12)),
                     DIV(LABEL('Expiry Date:', _for='expDate')),
-                    DIV(INPUT(_name='expDate', _type='date', requires=db.CreditCards.ExpiryDate.requires,
+                    DIV(INPUT(_name='expDate', requires=db.CreditCards.ExpiryDate.requires,
                               _value=getFieldValue(values, 'expDate'),
                               _placeholder='MM/YY')),
                     DIV(LABEL('Card ID Code:', _for='cardID')),
