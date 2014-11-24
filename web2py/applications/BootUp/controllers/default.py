@@ -48,7 +48,7 @@ def view():
     if (bootable is None) or ((bootable.State == bootableStates[0]) & (bootable.userID != session.user)):
         redirect(URL('index'))
     response.subtitle = bootable.Title
-    owner = db(db.Users.id == bootable.userID).select('Username').first().Username
+    owner = db(db.Users.id == bootable.userID).select('FirstName', 'LastName').first()
 
 
     #The bootable image
@@ -106,7 +106,9 @@ def view():
 
     #Get this after submition of form so that screen updated on refresh
     usersPledged = db(usersPledgedQuery).select('Users.id', 'Users.Username',
-                                                            'UserPledges.Value')
+                                                            'UserPledges.Value',
+                                                            'Users.FirstName',
+                                                            'Users.LastName')
 
     currentUserPledged = False
     for up in usersPledged:

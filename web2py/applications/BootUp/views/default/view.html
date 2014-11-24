@@ -1,6 +1,6 @@
 <!-- Y8191122 -->
 {{extend 'layout.html'}}
-<h1>{{=bootable.Title}} <small>By {{=owner}}</small></h1>
+<h1>{{=bootable.Title}} <small>By {{=owner.FirstName + ' ' + owner.LastName}}</small></h1>
 
 {{#If the current user has pledged to the bootable, tell them so}}
 {{if currentUserPledged:}}
@@ -103,7 +103,7 @@
         {{uRewards[reward.Users.id] = ur}}
     {{pass}}
     {{for user in users:}}
-        {{=H4(user.Users.Username)}}
+        {{=H4(user.Users.FirstName + ' ' + user.Users.LastName)}}
         <dl class="dl-horizontal">
             <dt>Amount Pledged</dt>
             <dd>{{='£' + str(user.UserPledges.Value)}}</dd>
