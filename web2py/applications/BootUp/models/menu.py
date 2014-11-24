@@ -8,8 +8,8 @@
 #Modified by Y8191122
 
 
-response.logo = A(B('boot',SPAN('UP')),XML('&trade;&nbsp;'),
-                  _class="brand",_href=URL('BootUP', 'default', 'index'))
+response.logo = A(B('boot',SPAN('UP')), XML('&trade;&nbsp;'),
+                  _class="brand",_href=URL('default', 'index'))
 response.title = request.application.replace('_',' ').title()
 response.subtitle = ''
 
@@ -30,17 +30,17 @@ searchForm = FORM(INPUT(_type='search', _placeholder='Search', _name='searchBox'
                   _id='searchForm')
 
 #URL of login page, this is used in multiple places, hence why it is defined here
-response.loginURL = URL('BootUP', 'users', 'user', args=['login'])
+response.loginURL = URL('users', 'user', args=['login'])
 
 browseMenu = []
 for cat in bootableCategories:
-    browseMenu += [(T(cat), False, URL('BootUP', 'default', 'search', vars=dict(cat=cat, search='')))]
+    browseMenu += [(T(cat), False, URL('default', 'search', vars=dict(cat=cat, search='')))]
 
 
 #The main application menu
 response.menu = [
-    (T('Create Bootable'), False, URL('BootUP', 'bootables', 'create')),
-    (T('Browse Bootables'), False, URL('BootUP', 'default', 'search', vars=dict(cat='All', search='')), browseMenu),
+    (T('Create Bootable'), False, URL('bootables', 'create')),
+    (T('Browse Bootables'), False, URL('default', 'search', vars=dict(cat='All', search='')), browseMenu),
     ('Search:', False, searchForm)
 
 ]
@@ -49,19 +49,19 @@ response.menu = [
 if session.user is None:
     response.user_menu = [
         (T('Log in'), False, response.loginURL),
-        (T('Sign Up'), False, URL('BootUP', 'users', 'user', args=['register']))
+        (T('Sign Up'), False, URL('users', 'user', args=['register']))
     ]
 else:
     response.user_menu = []
     #If user owns bootables, give link to boot manager dashboard
     if db(db.Bootables.userID == session.user).count() > 0:
         response.user_menu += [
-            (T('Bootable Dashboard'), False, URL('BootUp', 'bootables', 'dash'))
+            (T('Bootable Dashboard'), False, URL('bootables', 'dash'))
         ]
 
     response.user_menu += [
-        (T('View Profile'), False, URL('BootUP', 'users', 'profile')),
-        (T('Log out'), False, URL('BootUP', 'users', 'user', args=['logout']))
+        (T('View Profile'), False, URL('users', 'profile')),
+        (T('Log out'), False, URL('users', 'user', args=['logout']))
     ]
 
 
