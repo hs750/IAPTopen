@@ -5,6 +5,8 @@
 ## Customize your APP title, subtitle and menus here
 #########################################################################
 
+#Modified by Y8191122
+
 
 response.logo = A(B('boot',SPAN('UP')),XML('&trade;&nbsp;'),
                   _class="brand",_href=URL('BootUP', 'default', 'index'))

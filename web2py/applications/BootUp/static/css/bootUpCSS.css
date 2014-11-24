@@ -1,9 +1,4 @@
 /* author = Y8191122*/
-/* Make the search form at the top of every page display neatly*/
-#searchForm *{
-    margin-top: 5px;
-    margin-right: 5px;
-}
 
 .form-inline * {
     margin-top: 5px;
