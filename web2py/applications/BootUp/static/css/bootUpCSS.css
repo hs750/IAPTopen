@@ -14,11 +14,10 @@
 }
 
 .dashImageCaption {
-    background: #ffffff;
+    background: white;
     opacity: 0.75;
-    margin: 0 auto;
     margin-top: -54px;
-    text-align:center
+    text-align: center
     position: relative;
     width:100%;
 
