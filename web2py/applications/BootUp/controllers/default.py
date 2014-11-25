@@ -202,14 +202,10 @@ def getTop5():
     for i in range(0, min(len(sortedPercent), 5)):
         sortedKeys += [sortedPercent[i][0]]
 
-    #If there are no bootables with pledges do a query which will return noting
-    query = (db.Bootables.State == 'No State')
-    if len(sortedKeys) > 0:
-        query = (db.Bootables.id == sortedKeys[0])
-        for i in range(1, len(sortedKeys)):
-            query |= (db.Bootables.id == sortedKeys[i])
-
-    top5 = db(query).select(db.Bootables.ALL)
+    #Get the top 5 bootables in order
+    top5 = list()
+    for i in range(0, len(sortedKeys)):
+        top5.append(db(db.Bootables.id == sortedKeys[i]).select().first())
 
     #Add the percentage to the return
     for item in top5:
