@@ -98,6 +98,11 @@ def getFieldValue(vars, key, default=''):
     return default
 
 def getTotalPledged(bootID):
+    """
+    Get the total amount pledged to a bootable
+    :param bootID: The ID of the bootable
+    :return: the total amount pledged
+    """
     pledges = db(db.UserPledges.bootID == bootID).select('Value')
     total = Decimal(0)
     for item in pledges:
@@ -105,6 +110,11 @@ def getTotalPledged(bootID):
     return total
 
 def getCompletionPercentage(bootID):
+    """
+    Get the percentage to which a bootable is to reaching its funding goal
+    :param bootID: The ID of the bootable
+    :return: the percentage complete
+    """
     bootable = db(db.Bootables.id == bootID).select('FundingGoal').first()
     total = getTotalPledged(bootID)
     percentageComplete = Decimal(0)

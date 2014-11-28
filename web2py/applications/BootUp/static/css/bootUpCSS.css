@@ -1,18 +1,17 @@
 /* author = Y8191122*/
 
+/* Fix inline form positioning */
 .form-inline * {
     margin-top: 5px;
     margin-right: 5px;
 }
 
+/* Stop search form expanding menu bar*/
 #searchForm {
     margin-bottom: 0px;
 }
 
-.navbar-inner {
-    align-self: center;
-}
-
+/* Styling for a semi transparent label on a bootable image on the bootable dash*/
 .dashImageCaption {
     background: white;
     opacity: 0.75;
@@ -24,6 +23,7 @@
 
 }
 
+/* Style and positioning for images on dash*/
 .dashImage {
     float:left;
     margin:0 auto;
@@ -31,59 +31,72 @@
     width: 50%;
 }
 
+/* Styling for image on bootable view page*/
 .viewImage {
     margin:0 auto;
     text-align:center;
     width: 100%;
 }
 
+/* make view image expand to width of page */
 .viewImage img{
     width: 100%
 }
 
+/* Styling for page sections in bootable view
+    width and margin so that there is slight spacing between columns */
 .details {
     float: left;
     width: 49%;
     margin-left: 1%;
 }
 
+/* Styling for home page grid */
 .home{
     width: 32%;
     margin-left: 1%;
     min-height: 350px;
 }
 
+/* For pledge form */
 .details form {
     width: 100%;
 }
 
+/* Each home page section clears the floats of the one above */
 .top5{
     clear: both
 }
 
+/* Style for pledge-rewards grid on dash */
 .rewards .details{
     width: 32%;
     min-height: 250px;
 }
 
+/* Buttons on dash have small spacing between them */
 .bootButton {
     margin-left: 2px;
 }
 
+/* Make the link on the dash image caption not change colour */
 .imageLink {
     color: #000000;
 }
 
+/* Make the link on the dash image caption not change colour */
 .imageLink:link {
     color: black;
     text-decoration: none;
 }
 
+/* For long description and personal storeys justify the text*/
 .long {
     text-align: justify;
     text-justify: inter-word;
 }
 
+/* Reward section on dash clears above content */
 .bootable .rewards {
     clear: both;
 }
