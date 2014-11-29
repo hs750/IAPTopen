@@ -70,14 +70,21 @@ def view():
                         (db.Bootables.id == db.UserPledges.bootID) & \
                         (db.UserPledges.userID == db.Users.id)
 
+    usersPledged = getUsersPledged(usersPledgedQuery)
+    currentUserPledged = hasUserPledged(session.user, usersPledged)
+
     #Collect the values of pledges available for this bootable
     pledgeValues = db(db.Pledges.bootID == bootID).select('Value')
     values = []
     for item in pledgeValues:
         values += [item.Value]
 
+    submitText = 'Pledge!'
+    if currentUserPledged:
+        submitText = 'Update Pledge Amount'
+
     pledgeForm = FORM(SELECT(values, _name='pledgeValue'),
-                      INPUT(_type='submit', _name='pledgeSubmit', _value='Pledge!', _class='btn btn-success'),
+                      INPUT(_type='submit', _name='pledgeSubmit', _value=submitText, _class='btn btn-success'),
                       _name='userPledgeForm',
                       _class='form-inline')
     #must to a form.accepts on every path though the code to make sure form.form key and session.formkey[formname]
@@ -86,9 +93,18 @@ def view():
     if session.user is not None:
         #Only do anything with the form if user logged in
         if pledgeForm.accepts(request.post_vars, session, formname='userPledgeForm'):
-            db.UserPledges.insert(userID=session.user,
-                                  bootID=bootID,
-                                  Value=request.post_vars.pledgeValue)
+            if currentUserPledged:
+                currentUserPledgeRecord = db((db.UserPledges.userID == session.user) &
+                                             (db.UserPledges.bootID == bootID)).select().first()
+                currentUserPledgeRecord.Value = request.post_vars.pledgeValue
+                currentUserPledgeRecord.update_record()
+                response.flash = 'Pledge value updated.'
+            else:
+                db.UserPledges.insert(userID=session.user,
+                                      bootID=bootID,
+                                      Value=request.post_vars.pledgeValue)
+
+                response.flash = 'You have successfully pledged!'
 
             #If the pledge tipped bootable over the edge of its funding goal
             #Move bootable to funded state
@@ -96,7 +112,6 @@ def view():
             if percentageComplete >= 100:
                 bootable.State = bootableStates[2]
                 bootable.update_record()
-            response.flash = 'You have successfully pledged!'
         elif pledgeForm.errors:
             response.flash = 'There was a problem with your pledge'
 
@@ -105,14 +120,8 @@ def view():
                      rewardQuery).select('Users.id', 'Rewards.Description')
 
     #Get this after submition of form so that screen updated on refresh
-    usersPledged = db(usersPledgedQuery).select('Users.id', 'Users.Username',
-                                                            'UserPledges.Value',
-                                                            'Users.FirstName',
-                                                            'Users.LastName')
-
-    currentUserPledged = False
-    for up in usersPledged:
-        currentUserPledged = currentUserPledged or (up.Users.id == session.user)
+    usersPledged = getUsersPledged(usersPledgedQuery)
+    currentUserPledged = hasUserPledged(session.user, usersPledged)
 
     return dict(bootable=bootable,
                 total=total,
@@ -213,6 +222,17 @@ def getTop5():
 
     return top5
 
+def getUsersPledged(usersPledgedQuery):
+    usersPledged = db(usersPledgedQuery).select('Users.id', 'Users.Username',
+                                                            'UserPledges.Value',
+                                                            'Users.FirstName',
+                                                            'Users.LastName')
+    return usersPledged
 
+def hasUserPledged(userID, usersPledged):
+    userPledged = False
+    for up in usersPledged:
+        userPledged = userPledged or (up.Users.id == userID)
+    return userPledged
 
 
