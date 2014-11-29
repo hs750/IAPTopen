@@ -80,11 +80,10 @@ def view():
         values += [item.Value]
 
     submitText = 'Pledge!'
-    if currentUserPledged:
-        submitText = 'Update Pledge Amount'
+    submitButton = INPUT(_type='submit', _name='pledgeSubmit', _value=submitText, _class='btn btn-success')
 
     pledgeForm = FORM(SELECT(values, _name='pledgeValue'),
-                      INPUT(_type='submit', _name='pledgeSubmit', _value=submitText, _class='btn btn-success'),
+                      submitButton,
                       _name='userPledgeForm',
                       _class='form-inline')
     #must to a form.accepts on every path though the code to make sure form.form key and session.formkey[formname]
@@ -122,6 +121,11 @@ def view():
     #Get this after submition of form so that screen updated on refresh
     usersPledged = getUsersPledged(usersPledgedQuery)
     currentUserPledged = hasUserPledged(session.user, usersPledged)
+
+    #Change submit button text if user has already pledged
+    if currentUserPledged:
+        submitText = 'Update Pledge Amount'
+        submitButton['_value'] = submitText
 
     return dict(bootable=bootable,
                 total=total,
